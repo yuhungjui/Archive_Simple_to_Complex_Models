@@ -1,0 +1,90 @@
+! PSWM input file for run pstest:  standard test run
+! --------------------------------------------------------------------
+! Model parameters (read by routine read_params--see module pswm_pars)
+! --------------------------------------------------------------------
+
+! Problem domain and physical constants:
+! -------------------------------------
+lunits	km
+x0	-400	x-coordinate of origin
+y0	-400	y-coordinate of origin
+!xl	 0	domain length in x (if zero, xl=2*abs(x0) for centered domain)
+!yl	 0	domain length in x (if zero, yl=2*abs(y0) for centered domain)
+cval	70	reference phase speed (m/s)
+fcor	0	Coriolis parameter (1/s)
+dlat	35	latitude (degrees)
+! Note:  Specify either  fcor  or  dlat  (the other will be set accordingly)
+
+! Model equations:
+! ---------------
+ieq	 2	equation form:  1=u,v,p  2=z,d,p  3=q,d,p  (negative for linear)
+icond	 1	initial z specified (or use icond=ieq to specify predicted vars)
+iforce	 0	no forcing
+
+! Dissipation (see also Sponge):
+! -----------------------------
+idiss	0	exponent of (-del^2) in dissipation (0 for Rayleigh friction)
+cdiss	0	coefficient of dissipation (specified directly)
+tdiss	0	corresponding e-folding time (in HOURS) for shortest wave
+! Note:  Specify either  cdiss  or  tdiss  (the other will be set accordingly)
+
+! Sponge (see also Dissipation):
+! -----------------------------
+isponge	  0	exponent of (-del^2) in sponge layer (0 for Rayleigh friction)
+fsponge   3	specifies sponge function
+lsponge  -0.2	length scale of sponge (negative for relative to domain size)
+csponge   0	coefficient of sponge (specified directly)
+tsponge	  0.1	corresponding e-folding time (in HOURS) for shortest wave
+! Note:  Specify either csponge or tsponge (the other will be set accordingly)
+
+! Discretization:
+! --------------
+nx	128	number of grid intervals in  x  on transform grid
+ny	128	number of grid intervals in  y  on transform grid
+mx	  0	spectral truncation in  x  (index of last  x  mode carried)
+my	  0	spectral truncation in  y  (index of last  x  mode carried)
+itd	  3	specifies the time discretization scheme (see setup_time)
+tunits	min	time units for input:  seconds, minutes, hours, or days
+dt	 10	time step for execution
+
+! Output specification:
+! --------------------
+tunits	hrs	time units for input:  seconds, minutes, hours, or days
+tstop	 24 	model time to end run (if negative, number of time steps)
+tunits	min	time units for input:  seconds, minutes, hours, or days
+dtout0	 30	time increment between output of scalar diagnostics
+dtout2	 60	time increment between output of two-dimensional fields
+! Note:  If negative, interpret the absolute value as the number of time steps
+j1	  0	output at x(j) for j=j1,j2,jinc
+j2	  0	output at x(j) for j=j1,j2,jinc
+jinc	  4	output at x(j) for j=j1,j2,jinc
+k1	  0	output at y(k) for k=k1,k2,kinc
+k2	  0	output at y(k) for k=k1,k2,kinc
+kinc	  4	output at y(k) for k=k1,k2,kinc
+
+! ifield specifies which field(s) to output as sum of:
+!   1: u           x-component of velocity
+!   2: v           y-component of velocity
+!   4: p           scaled geopotential deviation:  p = grav*(h - href)/cval
+!   8: d = delta   divergence
+!  16: z = zeta    relative  vorticity
+!  32: q           potential vorticity:  q = (fcor + zeta)/(1 + p/cval)
+!                  NOTE:  q  as output may be wrong (bug needs fixing)
+ifield	31
+
+end of model parameters
+
+! ------------------------------------------------------------------------
+! Initial condition parameters (read by read_icpars--see module pswm_data)
+! ------------------------------------------------------------------------
+lunits	km
+xc	 0	x-center
+yc	 0	y-center
+
+! Parameters for initial Gaussian vortex:
+! --------------------------------------
+rmax	50	radius of maximum wind
+vmax	 4	value  of maximum wind
+imbalance 0.1	relative excess of geopotential (beyond geostrophic balance)
+
+end of initial condition parameters

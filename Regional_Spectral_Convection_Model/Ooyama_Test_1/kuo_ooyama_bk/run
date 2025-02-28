@@ -1,0 +1,3 @@
+pgf77 -r8 main.f cfftlib.f -o reconv
+reconv
+rm -rf reconv *.o

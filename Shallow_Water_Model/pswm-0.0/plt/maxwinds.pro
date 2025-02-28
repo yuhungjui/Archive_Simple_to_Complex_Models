@@ -1,0 +1,176 @@
+dir = ''
+var = ''
+temp = ''
+outfile = ''
+infilene = ''
+infile2 = ''
+
+dir = '/ldata0/hendric/pswm/pubsim2/'
+infiles = ['f6e','f5t','f7t']
+
+plotcolor = 0.0
+
+CLOSE, 1, 2, 3
+
+;######################################################################
+; Set up plotting colors
+;######################################################################
+
+new_color_table
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Rainbow Colors.
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+rbw_red_color = [153, 125, 077, 000, 070, 070, 070, 070, 050, 200, 255, $
+238, 238, 220, 238, 220, 255]
+rbw_gre_color = [050, 095, 000, 000, 070, 150, 235, 255, 220, 255, 255, $
+205, 154, 105, 069, 075, 000]
+rbw_blu_color = [204, 186, 186, 205, 255, 255, 255, 160, 050, 050, 000, $
+000, 000, 000, 000, 075, 000]
+
+; THIS IS MODIFIED RAINBOW SO LAST COLOR IS WHITE (FOR NEGATIVE VALUES)
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Rainbow Colors.
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+rbw_red_color = [254, 125, 077, 000, 070, 070, 070, 070, 050, 200, 255, $
+                 238, 238, 220, 238, 220, 255]
+rbw_gre_color = [254, 095, 000, 000, 070, 150, 235, 255, 220, 255, 255, $
+                 205, 154, 105, 069, 075, 000]
+rbw_blu_color = [254, 186, 186, 205, 255, 255, 255, 160, 050, 050, 000, $
+                 000, 000, 000, 000, 075, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Cold to warm
+;c2w_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+;c2w_red_color = [000, 032, 064, 096, 128, 160, 191, 223, 254, 255, 255, $
+;255, 255, 255, 255, 255, 255]
+;c2w_gre_color = [000, 032, 064, 096, 128, 160, 191, 223, 254, 213, 181, $
+;150, 118, 086, 054, 022, 000]
+;c2w_blu_color = [255, 255, 255, 255, 255, 255, 255, 255, 254, 223, 191, $
+;160, 128, 096, 064, 032, 000]
+
+;
+; NOTE: THIS C2W HAS TWO WHITES IN THE CENTER
+; DONE FOR THE DIVERGENCE PLOTS FOR THE RADIATIVE VORTEX
+;
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Cold to warm
+;c2w_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+c2w_red_color = [000, 032, 064, 096, 128, 160, 191, 254, 254, 255, 255, $
+255, 255, 255, 255, 255, 255]
+c2w_gre_color = [000, 032, 064, 096, 128, 160, 191, 254, 254, 213, 181, $
+150, 118, 086, 054, 022, 000]
+c2w_blu_color = [255, 255, 255, 255, 255, 255, 255, 254, 254, 223, 191, $
+160, 128, 096, 064, 032, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors (low value - black, high value - white)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwh_red_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+bwh_gre_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+bwh_blu_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors. (low value - white, high value - black)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwl_red_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+bwl_gre_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+bwl_blu_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors HIGH CONTRAST. (low value - white, high value - black)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwc_red_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+bwc_gre_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+bwc_blu_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+
+c2w_plot_colors = c32(c2w_red_color, c2w_gre_color, c2w_blu_color, 1)
+rbw_plot_colors = c32(rbw_red_color, rbw_gre_color, rbw_blu_color, 1)
+bwh_plot_colors = c32(bwh_red_color, bwh_gre_color, bwh_blu_color, 1)
+bwl_plot_colors = c32(bwl_red_color, bwl_gre_color, bwl_blu_color, 1)
+bwc_plot_colors = c32(bwc_red_color, bwc_gre_color, bwc_blu_color, 1)
+NLEV1 = FIX(SIZE(c2w_plot_colors, /DIMENSIONS))
+NLEV  = NLEV1(0)
+black_cons = c32(intarr(NLEV), intarr(NLEV), intarr(NLEV), 1)
+
+;
+; DEFINE THE PV CONTOUR LEVELS
+;
+
+if (plotcolor LT 0.5) then begin
+;    pcolors = c2w_plot_colors
+   pcolors = rbw_plot_colors
+endif else begin
+   pcolors = bwl_plot_colors
+endelse
+
+omega = 7.292d-05
+nfiles = 1000
+pi = 3.14159d0
+g = 9.81d0
+ostamp = ''
+
+;
+; BEGIN FILE LOOP
+;
+tmp4 = SIZE(infiles)
+runmax = tmp4(1)
+;ntmax = 961
+ntmax = 481
+maxwind=FLTARR(ntmax,runmax)
+timearr=FLTARR(ntmax)
+outfile1 = dir+'maxwind.ps'
+
+FOR l = 0, runmax-1 DO BEGIN
+
+;
+; OPEN THE OUTPUT FILES
+; 
+
+infile1 = dir + infiles[l] + '/'+ infiles[l] + '_maxwinds.dat'  
+OPENR, 1, infile1, ERROR = err
+if (err NE 0) then begin 
+   PRINT, "** pswm.pro: file not found, exiting..."  
+   break
+endif
+tmp = ''
+READF,1, tmp
+FOR j = 0, ntmax-1 DO BEGIN
+   READF, 1, tmp2, tmp3
+   timearr(j) = tmp2
+   maxwind(j,l) = tmp3
+ENDFOR
+CLOSE,1
+
+ENDFOR
+
+PRINT, "** maxwind.pro: plotting ..."
+
+xaxis = "Time (h)"
+yaxis = "Maximum wind (m s!E-1!N)"
+titles = ['Varying Heating Profile',xaxis,yaxis]
+bounds = [0,120,0,100] 
+;bounds = [10,20,30,38]
+pcolors = rbw_plot_colors
+onedoverplotter2, maxwind, timearr, TITLES, BOUNDS, outfile1
+
+PRINT, "** maxwind.pro: DONE."
+
+END

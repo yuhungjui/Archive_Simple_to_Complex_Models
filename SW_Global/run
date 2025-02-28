@@ -1,0 +1,20 @@
+cd jetsmodel/
+mv enave0.dat esplot
+mv enave80.dat esplot
+
+cd esplot
+pgf77 1denspc0.f sortml.f
+./a.out
+pgf77 1denspc80.f sortml.f
+./a.out
+pgf77 order0.f
+./a.out
+pgf77 order80.f
+./a.out
+cd ../..
+
+cd DATAOUT
+mv -f *.OUT 8
+pgf77 trans.f
+./a.out
+

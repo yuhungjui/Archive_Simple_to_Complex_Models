@@ -1,0 +1,22 @@
+      subroutine gettopo(nxr,myr,topo)
+c
+      dimension topo(nxr,myr)
+c
+      indextopo=1
+      if (indextopo.eq.1)then
+        nxmy=nxr*myr*8
+        open(47,file='../dat/taiwan.out',form='unformatted'
+     *       ,access='direct',recl=nxmy,status='unknown')
+        read(47,rec=1)topo
+        close(47)
+      else
+        do i=1,nxr
+        do j=1,myr
+        topo(i,j)=0.
+        enddo
+        enddo
+      endif
+c
+      write(41,rec=1)topo
+      return
+      end

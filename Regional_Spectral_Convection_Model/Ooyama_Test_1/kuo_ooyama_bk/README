@@ -1,0 +1,124 @@
+
+        Regional Spectral Convection Model
+                   
+                 (program reconv)
+
+        ==================================
+
+
+Original Author: Hung-Chi Kuo
+Author         : Yu-Ming Tsai
+Date           : Dec. 07 2009
+Institute      : CSUAS, Fort Collins, CO
+
+
+This model implements Ooyama(1990) thermodynamics
+scheme with double spectral method.
+X-direction: Fourier Galerkin method.
+Z-direction: Chebyshev Tau method.
+Time integration scheme: 4th order Runge-Kutta method.
+The program language used in this model is Fortran 77.
+
+
+***************************************************
+*  Reference document:                            *
+*                                                 *
+*  Kuo, Hung-Chi and Chao-Tzuen Cheng, 1999:      *
+*  Experiments with a Spectral Convection Model.  *
+*  TAO, Vol. 10, No. 4, 651-692.                  *
+***************************************************
+
+
+-------------------------------------------------
+This model could run all the 2-D examples given 
+in this paper.
+ex.1) Dry hydrostatic adjustment experiment.
+     (Hydrostatic adjustment by acoustic wave.)
+ex.2) Rising dry bubble in a hydrostatic atmosphere.
+ex.3) Rising moist bubble in a hydrostatic atmosphere.
+ex.4) Condensation with a specified tilt updraft.
+-------------------------------------------------
+
+
+-------------------------------------------------
+The model is located at the directory -- kuo_ooyama_bk
+This directory contains:
+(A) Files
+1) main.f        <--  The main reconv model code
+2) cfftlib.f     <--  Spectral method subroutines
+3) c2o.f         <--  The include file
+4) run           <--  The execution file
+5) README        <--  The file you are reading now.
+                      The description of the model.
+
+(B) Directories
+1) dataout       <--  The output files located
+2) plot_program  <--  The matlab program for drawing
+                      output data.
+-------------------------------------------------
+
+
+-------------------------------------------------
+How to run the model?
+1) Change direction to kuo_ooyama_bk.
+2) Type "run" in the terminal and the model will 
+   begin to compile and integrate.
+
+ps. The execution file 'run':
+
+      pgf77 -r8 main.f cfftlib.f -o reconv
+      reconv
+      rm -rf reconv *.o
+
+
+3) During the integration process,
+   you will see the values of 8 variables
+   (entropy, dry air density, moist density, 
+    u, w, temperature, pressure) 
+   on both grids (16,16) and (22,22).
+
+Note: The model default will use DOUBLE PRECISION 
+to integrate, which can be changed in the "run" file.
+-------------------------------------------------
+
+
+-------------------------------------------------
+How to change the resolution of the model?
+The control of model resolution is at the first line in c2o.f
+mx and mz represent the wave number truncation in both directions.
+The grid points required are nx=mx/3*2 and nz=mz/3*2 respectively.
+For example:
+if mx=48, mz=48, then the model will truncate at wave number 32
+in both directions, and the output is on the 'regular' grid points 32 by 32.
+
+                  !!!!! Important !!!!!
+If you increase the resolution of the model,
+remember also to decrease the time step (delt)
+to fit the CFL criteria according to the 
+explicit time integration scheme -- RK4.
+-------------------------------------------------
+
+
+-------------------------------------------------
+How to handle the output data?
+The output data named *_asc.dat is the ascii file,
+so you could directly open it to see the value on each grid.
+The matlab drawing program is located in 
+plot_program. Download all the .dat files to your
+pc and open matlab to draw the model outputs.
+
+                                                
+
+
+
+                                                 Enjoy ~~
+-------------------------------------------------End.
+
+
+
+
+
+
+
+
+

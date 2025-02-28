@@ -1,0 +1,1515 @@
+% requires LaTeX (LaTeX2e)
+\documentclass[12pt]{article}
+
+% ****************** BASIC FORMATTING ************************
+
+\setlength{\textheight}{9.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+%\setlength{\footskip}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\marginparsep}{0in}
+\setlength{\marginparwidth}{0in}
+
+% ****************** BIBLIOGRAPHY ************************
+
+%\usepackage{AMS}
+\bibliographystyle{AMS}
+
+% ****************** GRAPHICS ************************
+
+\usepackage[final]{graphicx} % works with latex, pdflatex--leave off extensions
+
+% ****************** OTHER PACKAGES ************************
+
+% HYPERREF:  This package creates hyperlinks to equations, sections, 
+% references, etc.  It works with either LaTeX or pdflatex
+% and the resulting links work with acrobat, xpdf, and xdvi
+% PUT THIS EARLY--IT POLLUTES THE NAMESPACE WITH THINGS LIKE \v
+%\usepackage{hyperref}
+
+\usepackage{amssymb, amsmath, amsfonts}
+
+% ****************** MORE FORMATTING ************************
+
+%\setlength{\parindent}{0pt}
+\setlength{\parskip}{12pt plus6pt minus3pt}
+\setlength{\jot}{6pt} % extra space between equations in \eqnarray or \align
+
+% commands to number equations by section, e.g., (2.3):
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+% NOTE:  you must also reset the equation counter "equation" at each section:
+%\section{Title of Section}
+%\setcounter{equation}{0}
+
+% Another approach (which doesn't seem to work):
+%%% The following set of commands will force the numbering of equations
+%%% to restart automatically when entering a new section
+%\makeatletter      % '@' is now a normail "letter" for TeX
+%\@addtoreset{equation}{section}
+%\makeatother       % '@' is restored as a "non-letter" character for TeX
+
+% Theorem Environments
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newenvironment{proof}{\par\noindent\textbf{Proof: }}{\hfill\qed\par}
+\newcommand{\qed}{\fbox{\rule[-0.0ex]{0pt}{1.5ex}\hspace*{0.1em}}}
+
+% macros for narrower captions:
+% \mycaption{text} or \mycaption[width]{text}
+\newcommand{\mycaption}[2][5.5in]{\parbox[t]{#1}{\caption{#2}}}
+%\newcommand{\mycaption}[1]{\Mycaption{5.5in}{#1}}
+%\newcommand{\Mycaption}[2]{\parbox[t]{#1}{\caption{#2}}}
+
+% ****************** SYMBOLS ************************
+
+\usepackage{amsfonts}
+
+% standard mathematical symbols
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+% absolute value, norm, condition number, and inner product:
+%     \abs{stuff}
+%     \norm{stuff}  or \norm[type]{stuff}   ex:  \norm[\infty]{x}
+%     \cond{stuff}  or \cond[type]{stuff}   ex:  \cond[2]{x}
+%     \ip{arg}{arg} or \ip[type]{arg}{arg}  ex:  ex:  \ip[A]{f}{g}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\norm}[2][{}]{\ensuremath{\left\|{#2}\right\|_{#1}}}
+\newcommand{\cond}[2][{}]{\ensuremath{\text{cond}\!\left({#2}\right)}_{#1}}
+\newcommand{\ip}[3][{}]{\ensuremath{\left\langle{#2},{#3}\right\rangle_{#1}}}
+
+% symbols for complex numbers
+\newcommand{\cc}[1]{\bar{#1}}           % complex conjugate
+\newcommand{\Cc}[1]{\overline{#1}}      % longer version of complex conjugate
+\newcommand{\CC}[1]{{#1}^{*}}           % asterisk as alternate version
+\renewcommand\Re{\real} \DeclareMathOperator{\real}{Re} % looks better than
+\renewcommand\Im{\imag} \DeclareMathOperator{\imag}{Im} % standard LaTex
+
+% symbols for use with sets and functions
+\newcommand{\set}[1]{\left\{{#1}\right\}}  % use $\set{stuff}$ for a set
+\newcommand{\suchthat}{:}                  % for use with sets
+\newcommand{\from}{\colon}                 % for use with functions
+
+% symbols for variables, operators, and equations
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecV}{\mathbf{V}}
+\newcommand{\veck}{\mathbf{k}}
+\newcommand{\Fmom}{\mathbf{F}}
+\newcommand{\Fmass}{F_h}
+\newcommand{\Fphi}{F_\p}
+\newcommand{\Fzeta}{F_{\zeta}}
+\newcommand{\Fdelta}{F_{\delta}}
+\newcommand{\solvec}{\psi}
+\newcommand{\href}{\bar{h}}
+\renewcommand{\v}{\mathbf{v}}
+\newcommand{\p}{{p}}   % mass variable:  scaled deviation geopotential
+\renewcommand{\P}{{P}} % corresponding forcing
+\newcommand{\PV}{q}    % potential vorticity
+\newcommand{\FPV}{F_q} % corresponding forcing
+\newcommand{\opA}{\mathcal{A}}
+\newcommand{\opB}{\mathcal{B}}
+\newcommand{\opC}{\mathcal{C}}
+
+% symbols for vectors and vector operations
+\newcommand{\kbar}{\bar{k}}
+\newcommand{\cross}{\times}
+\newcommand{\del}{\nabla}
+\newcommand{\laplacian}[1]{\del^2#1}
+%\newcommand{\fluxdiv}[2]{\mathcal{F}\left(#1,#2\right)}
+\newcommand{\fluxdiv}[2]{\del\cdot\left(#1\del#2\right)}
+\newcommand{\jacobian}[2]{\mathcal{J}\left(#1,#2\right)}
+
+% symbols for Fourier analysis
+\newcommand{\fc}[1]{\widetilde{#1}} % Fourier (series) coefficient
+\newcommand{\dfc}[1]{\widehat{#1}}  % discrete Fourier coefficient
+\newcommand{\Fc}[1]{\dfc{#1}}       % alternate name
+
+% symbols for discretization
+\newcommand{\dt}{\Delta t}
+
+% other symbols for this paper
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pswm}{\code{pswm}}
+
+% ****************** OTHER DEFINITIONS ************************
+
+\newcommand{\units}[1]{\,\mbox{#1}}
+
+% ****************** FRONT MATTER ************************
+
+\title{PSWM: a Periodic Shallow-Water Model}
+
+\author{Scott R. Fulton
+\\[12pt]
+\emph{Department of Mathematics and Computer Science}\\
+\emph{Clarkson University, Potsdam, NY 13699--5815}
+}
+
+\date{Revised 19 July 2007}
+%\date{Revised \today}
+
+% ****************** START OF DOCUMENT ************************
+
+\begin{document}
+\maketitle
+
+% ****************** ABSTRACT ************************
+
+\begin{abstract}
+\noindent
+These notes summarize several mathematical details underlying the periodic
+shallow water model \pswm, including the equation forms used for semi-implicit
+time differencing and the details of the Fourier transforms used.
+\end{abstract}
+
+%\thispagestyle{empty}
+
+% ****************** TEXT ************************
+
+\pagebreak[3]
+\section{Equation Forms\label{sec:equations}}
+\setcounter{equation}{0}
+
+The shallow-water equations may be formulated in various ways for
+semi-implicit time differencing, based on various choices of the form of 
+equations and which terms to treat implicitly.  A fairly comprehensive
+overview is given in~\cite{Fulton07}; here we consider only the details of the
+equations in the various forms used in the periodic shallow water model \pswm.
+In each case we write the time-continuous equations in the split form
+\begin{equation}
+  \solvec'(t) - \opA(\solvec(t)) = \opB(\solvec(t)) ,
+\label{eq:ODE}
+\end{equation}
+where $\solvec(t)$ represents the solution variables,
+$\opA(\solvec(t))$ represents the terms to be treated implicitly, and
+$\opB(\solvec(t))$ represents the terms to be treated explicitly.
+When discretized by an $m$-step semi-implicit scheme using solution values
+$\solvec^n\approx\solvec(t_n)$ with $t_n=n\dt$, the corresponding implicit
+system to be solved for $\solvec^{n+1}$ takes the form
+\begin{equation}
+  \solvec^{n+1}-\tau\opA(\solvec^{n+1}) = \opC^{n},
+\label{eq:implicit}
+\end{equation}
+where $\tau$ is a multiple of the time step and $\opC^{n}$ is a linear
+combination of values of $\solvec$, $\opA(\solvec)$, $\opB(\solvec)$ at
+times~$t_n$, $t_{n-1}$, \dots, $t_{n-m+1}$.  In the model $\opC^{n}$ is
+generated by the package \verb+sitpack+ based on the explicit and implicit
+schemes chosen; the details do not concern us here.  In the sections that
+follow we express the model equations in a time-continuous split form
+corresponding to~\eqref{eq:ODE} and a time-discrete implicit system
+corresponding to~\eqref{eq:implicit}, and show how to solve that system.  
+We do this below for 
+the momentum form, %(sec.~\ref{sec:momentum}),
+the vorticity/divergence form, %(sec.~\ref{sec:vd}),
+and the potential vorticity/divergence form. %(sec.~\ref{sec:pvd}).
+
+\pagebreak[2]
+\subsection{Momentum Form\label{sec:momentum}}
+
+We can write the momentum and mass continuity equations of the shallow-water
+system in the form
+\begin{align}
+  \frac{\partial \vecv}{\partial t} + \vecv\cdot\del\vecv 
+    + f\veck\cross\vecv + g\del h &= \Fmom, 
+\label{eq:momentum-h}
+\\
+  \frac{\partial h}{\partial t} + \del\cdot(h\vecv) &= \Fmass,
+\label{eq:continuity-h}
+\end{align}
+where $\vecv$ is the (horizontal) vector velocity, $h$ is the free surface
+height, $f$ is the Coriolis parameter, $g$ is the gravitational constant,
+$\veck$ is the vertical unit vector, and the operator $\del$ is restricted to
+the horizontal.  The source terms $\Fmom$ for momentum and $\Fmass$ for mass
+are regarded as known functions of $t$ (and possibly of $\vecv$ and $h$).
+
+In this model we identify the gravity-wave terms using a splitting based on a
+constant reference depth $\href$.  It is convenient to work with the scaled
+deviation geopotential $\p := g(h-\href)/c$, where $c:=(g\href)^{1/2}$, in
+place of the depth.\footnote{This eliminates $g$ from the problem and gives
+variables which have the same units.}  With this change, 
+\eqref{eq:momentum-h} and \eqref{eq:continuity-h} become
+\begin{align}
+  \frac{\partial \vecv}{\partial t} + \vecv\cdot\del\vecv 
+    + f\veck\cross\vecv + c\del \p &= \Fmom, 
+\label{eq:momentum}
+\\
+  \frac{\partial\p}{\partial t} + c\del\cdot\vecv + \del\cdot(\p\vecv) 
+      &= \Fphi ,
+\label{eq:continuity}
+\end{align}
+where $\Fphi := g\Fmass/c$.
+It should be noted that the advective form \eqref{eq:momentum} is equivalent
+to the rotational form
+\begin{equation}
+  \frac{\partial \vecv}{\partial t} + (f+\zeta)\veck\cross\vecv 
+   + \del(c\p + K) = \Fmom, 
+\label{eq:rotational}
+\end{equation}
+where $\zeta = \veck\cdot\del\cross\vecv$ is the relative vorticity and
+$K=\frac12\vecv\cdot\vecv$ is the specific kinetic energy.  The differences
+between these two forms affect only the nonlinear terms---which will be
+treated explicitly---and thus do not impact the implicit system to be solved.
+
+To use a semi-implicit time discretization, we put the terms to be treated 
+implicitly (height gradient and linear part of the divergence term) on the
+left and those to be treated explicitly (including the Coriolis terms for
+simplicity) on the right [cf.~\eqref{eq:ODE}].  This gives the split form
+\begin{align}
+   \frac{\partial \vecv}{\partial t} + c\del \p &= 
+      \Fmom - \vecv\cdot\del\vecv - f\veck\cross\vecv 
+\label{eq:momentum:split}
+\\
+   \frac{\partial\p}{\partial t} + c\del\cdot\vecv 
+      &= \Fphi - \del\cdot(\p\vecv) .
+\label{eq:continuity:split}
+\end{align}
+With any semi-implicit scheme, the implicit system [cf.~\eqref{eq:implicit}]
+generated from \eqref{eq:momentum:split}--\eqref{eq:continuity:split} is
+\begin{align}
+   \vecv + \tau c\del \p &= \vecV ,
+\label{eq:momentum:imp}
+\\
+   \p + \tau c\del\cdot\vecv &= \P ,
+\label{eq:continuity:imp}
+\end{align}
+where $\tau$ is a multiple of the time step $\dt$, $\vecv$ and $\p$ now
+represent the variables \emph{at the new time level} (i.e., $\solvec^{n+1}$
+with the superscript dropped for simplicity), and $\vecV$ and $\P$ are
+generated (by \verb+sitpack+) from the right-hand side of
+\eqref{eq:momentum:split}--\eqref{eq:continuity:split} and values of $\vecv$
+and $\p$ at the previous time level(s).  To solve this system, we substitute
+for $\vecv$ from \eqref{eq:momentum:imp} in \eqref{eq:continuity:imp} to
+obtain the modified Helmholtz equation
+\begin{equation}
+  \p - \tau^2 c^2\del^2 \p = G := \P - \tau c\del\cdot\vecV.
+\label{eq:Helmholtz}
+\end{equation}
+Once this is solved for $\p$, the corresponding $\vecv$ can be obtained from
+\eqref{eq:momentum:imp}.  If the solution of \eqref{eq:Helmholtz} is only
+approximate, then $\p$ should be recomputed from $\vecv$ via
+\eqref{eq:continuity:imp} to ensure exact mass continuity in the discretized
+system.
+
+\pagebreak[2]
+\subsection{Vorticity/divergence form\label{sec:vd}}
+
+The momentum form \eqref{eq:momentum}--\eqref{eq:continuity} treated above has
+the disadvantage that the components of the velocity $\vecv$ are not true
+scalars (i.e., their values depend on the coordinate system chosen).  An
+alternate approach uses vorticity and divergence instead.  To do so, we take
+the dot product of $\veck$ with the curl of the momentum equation in the form
+\eqref{eq:rotational} to obtain the vorticity equation 
+\begin{equation}
+   \frac{\partial \zeta}{\partial t} + \del\cdot(\eta\vecv) =
+      \Fzeta := \veck\cdot\del\cross\Fmom ,
+\label{eq:vorticity}
+\end{equation}
+where $\eta:=f+\zeta$ is the absolute vorticity.  Likewise, taking the
+divergence of \eqref{eq:rotational} gives the divergence equation
+\begin{equation}
+   \frac{\partial \delta}{\partial t} - \veck\cdot\del\cross(\eta\vecv) 
+      + \del^2 \left(c\p + K\right) = \Fdelta := \del\cdot\Fmom ,
+\label{eq:divergence}
+\end{equation}
+where $\delta = \del\cdot\vecv$ is the divergence.  Combining these equations
+with \eqref{eq:continuity} gives a system for predicting $\zeta$, $\delta$,
+and $h$.  To close this system we introduce a velocity potential $\chi$ and
+streamfunction $\psi$ satisfying 
+\begin{equation}
+   \vecv = \del\chi + \veck\cross\del\psi ,
+\label{eq:wind}
+\end{equation}
+which implies that
+\begin{equation}
+   \del^2\psi = \zeta, \qquad \del^2\chi = \delta .
+\label{eq:Poisson}
+\end{equation}
+
+Coupling \eqref{eq:vorticity} and \eqref{eq:divergence} with the continuity
+equation \eqref{eq:continuity} and putting the terms to be treated implicitly
+on the left and those to be treated explicitly 
+on the right gives the split form
+[cf.~\eqref{eq:ODE}]
+\begin{alignat}{2}
+   &\frac{\partial \zeta}{\partial t} &&= \Fzeta - \del\cdot(\eta\vecv) ,
+\label{eq:vorticity:split}
+\\
+   &\frac{\partial \delta}{\partial t} + c\del^2 \p &&= 
+      \Fdelta + \veck\cdot\del\cross(\eta\vecv) - \del^2 K ,
+\label{eq:divergence:split}
+\\
+   &\frac{\partial\p}{\partial t} + c\delta &&= \Fphi - \del\cdot(\p\vecv) .
+\label{eq2:continuity:split}
+\end{alignat}
+If desired, the right-hand side of this system may be written in terms of 
+$\chi$ and $\psi$ instead of~$\vecv$ using the identities
+\begin{equation}
+   \del\cdot(\alpha\vecv) = 
+      \del\cdot(\alpha\del\chi) - \jacobian{\alpha}{\psi}
+\label{eq:identity1}
+\end{equation}
+and
+\begin{equation}
+   \veck\cdot\del\cross(\alpha\vecv) = 
+      \del\cdot(\alpha\del\psi) + \jacobian{\alpha}{\chi} ,
+\label{eq:identity2}
+\end{equation}
+where $\jacobian{\alpha}{\beta}=\veck\cdot(\del\alpha\cross\del\beta)$ is the
+Jacobian operator and $\alpha$ and $\beta$ represent any scalars. 
+With these substitutions, 
+\eqref{eq:vorticity:split}--\eqref{eq2:continuity:split} take the form
+\begin{alignat}{2}
+   &\frac{\partial \zeta}{\partial t} &&= 
+      \Fzeta - \del\cdot(\eta\del\chi) + \jacobian{\eta}{\psi},
+\label{eq:vorticity:split:psichi}
+\\
+   &\frac{\partial \delta}{\partial t} + c\del^2 \p &&= 
+      \Fdelta + \del\cdot(\eta\del\psi) + \jacobian{\eta}{\chi} - \del^2 K ,
+\label{eq:divergence:split:psichi}
+\\
+   &\frac{\partial\p}{\partial t} + c\delta &&= 
+      \Fphi - \del\cdot(\p\del\chi) + \jacobian{\p}{\psi} .
+\label{eq2:continuity:split:psichi}
+\end{alignat}
+In this way, $\vecv$ is eliminated, and if we express the kinetic energy as
+\begin{equation}
+   K = \frac12\left[ \fluxdiv{\chi}{\chi} - \chi\laplacian\chi
+                   + \fluxdiv{\psi}{\psi} - \psi\laplacian\psi \right]
+      + \jacobian{\psi}{\chi}.
+\label{eq:K:psichi}
+\end{equation}
+then the only operators needed are the flux divergence, Jacobian, and
+Laplacian.  However, this form is less efficient for the spectral model, since
+it requires more terms to be transformed than the form
+\eqref{eq:vorticity:split}--\eqref{eq2:continuity:split}.
+
+With a semi-implicit time discretization, the implicit system generated from
+\eqref{eq:vorticity:split}--\eqref{eq2:continuity:split} or
+\eqref{eq:vorticity:split:psichi}--\eqref{eq2:continuity:split:psichi} is
+\begin{alignat}{2}
+   &\zeta &&= Z ,
+\label{eq:vorticity:imp}
+\\
+   &\delta + \tau c\del^2 \p &&= D ,
+\label{eq:divergence:imp}
+\\
+   &\p + \tau c\delta &&= \P ,
+\label{eq2:continuity:imp}
+\end{alignat}
+where $\zeta$, $\delta$, and $\p$ now represent the variables at the new
+time level and $Z$, $D$, and $\P$ are generated (via \verb+sitpack+) from
+the right-hand side of
+\eqref{eq:vorticity:split}--\eqref{eq2:continuity:split} and values of
+$\zeta$, $\delta$, and $\p$ at the previous time level(s).  
+To solve this system, we eliminate $\delta$ between 
+\eqref{eq:divergence:imp} and \eqref{eq2:continuity:imp} to
+obtain the modified Helmholtz equation
+\begin{equation}
+  \p - \tau^2 c^2\del^2 \p = G := \P - \tau c D
+\label{eq2:Helmholtz}
+\end{equation}
+[cf.~\eqref{eq:Helmholtz}].
+Once this is solved for $\p$, the corresponding $\delta$ can be obtained
+from \eqref{eq2:continuity:imp}, $\zeta$ is given directly by
+\eqref{eq:vorticity:imp}, and $\psi$ and $\chi$ are obtained by solving
+\eqref{eq:Poisson}.  If needed, the corresponding $\vecv$ can be computed from
+\eqref{eq:wind}.
+
+\pagebreak[2]
+\subsection{Potential vorticity/divergence form\label{sec:pvd}}
+
+By combining the vorticity equation \eqref{eq:vorticity} with the continuity
+equation \eqref{eq:continuity} we can obtain the potential vorticity equation
+\begin{equation}
+   \frac{\partial \PV}{\partial t} + \vecv\cdot\del\PV = \FPV ,
+\label{eq:PV}
+\end{equation}
+where
+\begin{equation}
+   \PV := \frac{h}{\href}\eta = \frac{f+\zeta}{1+\p/c}
+\label{def:PV}
+\end{equation}
+is the potential vorticity and
+\begin{equation}
+   \FPV := \frac{(1+\p/c)\Fzeta - \eta\Fmass/c}{(1+p/c)^2} ,
+\label{def:FPV}
+\end{equation}
+is the corresponding forcing.  Coupling \eqref{eq:PV} with the divergence
+equation \eqref{eq:divergence} and the continuity equation
+\eqref{eq:continuity} and putting the terms to be treated implicitly on the
+left and those to be treated explicitly on the right gives the split form
+[cf.~\eqref{eq:ODE}]
+\begin{alignat}{2}
+   &\frac{\partial\PV}{\partial t} &&= \FPV - \vecv\cdot\del\PV ,
+\label{eq:PV:split}
+\\
+   &\frac{\partial \delta}{\partial t} + c\del^2 \p &&= 
+      \Fdelta + \veck\cdot\del\cross(\eta\vecv) - \del^2 K ,
+\label{eq3:divergence:split}
+\\
+   &\frac{\partial\p}{\partial t} + c\delta &&= \Fphi - \del\cdot(\p\vecv) .
+\label{eq3:continuity:split}
+\end{alignat}
+As before, $\vecv$ may be replaced in terms of $\psi$ and $\chi$ on the
+right-hand side of this system using \eqref{eq:identity1} and
+\eqref{eq:identity2}.
+
+With a semi-implicit time discretization, the implicit system generated from
+\eqref{eq:PV:split}--\eqref{eq3:continuity:split} is
+\begin{alignat}{2}
+   &\PV &&= Q ,
+\label{eq:PV:imp}
+\\
+   &\delta + \tau c\del^2 \p &&= D ,
+\label{eq3:divergence:imp}
+\\
+   &\p + \tau c\delta &&= \P ,
+\label{eq3:continuity:imp}
+\end{alignat}
+where $\PV$, $\delta$, and $\p$ now represent the variables at the new
+time level and $Q$, $D$, and $\P$ are generated (via \verb+sitpack+) from
+the right-hand side of
+\eqref{eq:PV:split}--\eqref{eq3:continuity:split} and values of
+$\PV$, $\delta$, and $\p$ at the previous time level(s).  
+To solve this system, we eliminate $\delta$ between 
+\eqref{eq3:divergence:imp} and \eqref{eq3:continuity:imp} to
+obtain the modified Helmholtz equation
+\begin{equation}
+  \p - \tau^2 c^2\del^2 \p = G := \P - \tau c D
+\label{eq3:Helmholtz}
+\end{equation}
+[cf.~\eqref{eq:Helmholtz}].
+Once this is solved for $\p$, the corresponding $\delta$ can be obtained from
+\eqref{eq3:continuity:imp}, $\PV$ is given directly by \eqref{eq:PV:imp},
+$\eta$ is obtained from \eqref{def:PV}, and $\psi$ and $\chi$ are obtained by
+solving \eqref{eq:Poisson}.  If needed, the corresponding $\vecv$ can be
+computed from \eqref{eq:wind}.
+
+\pagebreak[2]
+\subsection{Initialization\label{sec:initialization}}
+
+To initialize any of the above forms of the model we can specify the predicted
+variables, i.e., $u$, $v$, and $p$ for the momentum form, 
+$\zeta$, $\delta$, and $p$ for the vorticity/divergence form, or
+$\PV$, $\delta$, and $p$ for the potential vorticity/divergence form.
+However, this will in general include a significant gravity-inertia wave
+component in the initial fields.  A better approach is to use the nonlinear
+balance equation as follows.
+
+Setting $\partial\delta/\partial t=0$ and $\Fdelta=0$ in the divergence
+equation \eqref{eq:divergence} and using Cartesian coordinates $(x,y)$ we
+obtain
+\begin{equation}
+   - (\eta v)_x + (\eta u)_y + \del^2 \left(c\p + K\right) = 0 ,
+\label{eq:div:1}
+\end{equation}
+where $u$ and $v$ are the velocity components in the $x$ and $y$ directions
+and the subscripts denote partial derivatives.
+Assuming the flow is purely rotational (nondivergent), then \eqref{eq:wind}
+and \eqref{eq:K:psichi} reduce to
+\begin{equation}
+   u = -\psi_y,
+\qquad
+   v =  \psi_x,
+\qquad
+   K = \tfrac12\left( \psi_x^2 + \psi_y^2 \right).
+\label{eq:wind:K:nondivergent}
+\end{equation}
+With these substitutions (and a lot of algebra), \eqref{eq:div:1} reduces to
+the nonlinear balance equation
+\begin{equation}
+   f\laplacian\psi + 2\left(\psi_{xx}\psi_{yy} - \psi_{xy}^2 \right)
+   = c\laplacian{p}.
+\label{eq:NLB}
+\end{equation}
+If we specify the relative vorticity $\zeta$, the corresponding streamfunction
+$\psi$ can be obtained by solving
+\begin{equation}
+   \laplacian\psi = \zeta,
+\label{eq:psi:zeta}
+\end{equation}
+and then the corresponding height field $p$ (in nonlinear balance) can be
+obtained by solving \eqref{eq:NLB}.  Note that with $\psi$ known this equation
+is linear, and thus easy to solve.
+
+\pagebreak[4]
+\section{Fourier Transforms and Spectral-Space Operations\label{sec:Fourier}}
+\setcounter{equation}{0}
+
+The periodic shallow water model \pswm\ is formulated using a Fourier spectral
+representation  on a two-dimensional rectangular domain which is periodic in
+both directions.  In principle this is easy:  the Fourier modes are
+eigenfunctions of the derivative and Laplacian operators, so these operations
+can be computed (and inverted) easily in spectral space.  In practice, there
+are some subtleties in the discrete version of this representation which must 
+be taken into account.  In this section we first explain discrete Fourier 
+representations in detail in one dimension, and then document how the
+corresponding two-dimensional representations are used in the model.
+
+\pagebreak[2]
+\subsection{Fourier representations in one dimension}
+
+\newcommand{\period}{L}
+Consider a function $f\from\R\to\C$ which is $\period$-periodic, i.e.,
+$f(x+\period)=f(x)$ for all $x\in\R$.  Such a function has the Fourier series
+representation\footnote{The existence and convergence of this expansion depend
+on the smoothness of $f$.  For example, if $f$ is continuously differentiable,
+then the series exists and converges uniformly.  Here we ignore such
+questions.}
+\begin{equation}
+   f(x) = \sum_{k=-\infty}^{\infty} \fc{f}_k e^{2\pi ikx/\period},
+\qquad x\in\R,
+\label{eq:FS}
+\end{equation}
+where
+\begin{equation}
+   \fc{f}_k = \frac{1}{\period}\int_{0}^{\period} f(x) 
+              e^{-2\pi ikx/\period} \,dx ,
+\qquad k\in\Z.
+\label{eq:FC}
+\end{equation}
+Note from \eqref{eq:FC} that if $f$ is real then $\fc{f}_{-k} = \CC{\fc{f}}_k$
+(where the asterisk represents the complex conjugate); in particular,
+$\fc{f}_0$ is real.  We represent such a function on the computer by the
+discrete values $f_j:=f(j\period/N)$ for integer values of~$j$, where $N$ is
+some positive integer.  Since $f_{j+N}=f_j$ by periodicity, only $N$ values
+are needed; normally we will use $j=0,\dots,N-1$.  Clearly this is not enough
+information to determine the Fourier coefficients $\fc{f}_k$ for all $k\in\Z$.
+Here we first derive the Discrete Fourier Transform pair, and then show how it
+can be used to represent functions which are band-limited, i.e., exactly
+represented by a \emph{truncated} Fourier series.  We then examine how such
+Fourier representations can be used to compute derivatives and nonlinear
+terms.
+
+\pagebreak[1]
+\subsubsection{Discrete Fourier transforms}
+
+The key to discrete Fourier transforms is the following discrete orthogonality
+property:
+
+\begin{lemma}\label{lemma:orthogonality}
+If $N$ is a positive integer and $j,k\in\Z$, then
+\begin{equation}
+   \frac{1}{N} \sum_{k=0}^{N-1} e^{2\pi ijk/N} = \begin{cases}
+      1, & \text{$j\equiv 0\pmod{N}$}, \\
+      0, & \text{otherwise}.
+   \end{cases}
+\label{eq:orthogonality}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Setting $z=\exp(2\pi ij/N)$ we can sum the finite geometric series
+\begin{equation}
+   \sum_{k=0}^{N-1} e^{2\pi ijk/N} 
+               = \sum_{k=0}^{N-1} z^{k} 
+               = \begin{cases} N,    & \text{$z=1$},\\
+                 \dfrac{1-z^N}{1-z}, & \text{$z\ne1$}. \end{cases}
+\end{equation}
+Since $z=1$ if and only if $j\equiv0\pmod{N}$ and $z^N = \exp(2\pi ij)=1$ for
+any $j\in\Z$, this reduces to \eqref{eq:orthogonality}.
+\end{proof}
+This orthogonality property leads directly to the Discrete Fourier
+Transform pair:
+\begin{lemma}\label{lemma:DFT}
+Two sequences $f_0,f_1,\dots,f_{N-1}$ and
+$\dfc{f}_0,\dfc{f}_1,\dots,\dfc{f}_{N-1}$ of $N>0$ complex numbers are related
+by the Discrete Fourier Transform (DFT)
+\begin{equation}
+   \dfc{f}_k = \frac{1}{N} \sum_{j=0}^{N-1} f_j e^{-2\pi ijk/N},
+\qquad k=0,\dots,N-1 
+\label{eq:DFT}
+\end{equation}
+if and only if they are related by the Inverse Discrete Fourier Transform 
+(IDFT)
+\begin{equation}
+   f_j = \sum_{k=0}^{N-1} \dfc{f}_k e^{2\pi ijk/N},
+\qquad j=0,\dots,N-1 .
+\label{eq:IDFT}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Direct calculation using \eqref{eq:DFT} with $j$ replaced by $l$ shows that
+for $j=0,\dots,N-1$,
+\begin{equation}
+   \sum_{k=0}^{N-1} \dfc{f}_k e^{2\pi ijk/N}
+   = \sum_{k=0}^{N-1} \left[
+      \frac{1}{N} \sum_{l=0}^{N-1} f_l e^{-2\pi ilk/N}\right] e^{2\pi
+ijk/N}
+   = \sum_{l=0}^{N-1} \left[
+      \frac{1}{N} \sum_{k=0}^{N-1} e^{2\pi i(j-l)k/N}\right] f_l = f_j,
+\end{equation}
+where the last step follows from Lemma~\ref{lemma:orthogonality}.
+The converse follows by a similar argument.
+\end{proof}
+Both sequences $f_j$ and $\dfc{f}_k$ may be extended by periodicity to be
+$N$-periodic.  Also, if the sequence $f_j$ is real then the sequence
+$\dfc{f}_k$ is ``half-complex'', i.e., $\dfc{f}_{N-k} = \CC{\dfc{f}}_k$; in
+particular, $\dfc{f}_0$ is real, as is $\dfc{f}_{N/2}$ if $N$ is even.  The
+Fast Fourier Transform (FFT) is an algorithm for computing the DFT or IDFT in
+$O\big(N\log(N)\big)$ operations; it normally uses a transform length $N$
+which is either a power of~2 or an even number with many small prime factors.
+
+\pagebreak[1]
+\subsubsection{Representing functions by the DFT}
+
+According to Lemma~\ref{lemma:DFT}, the DFT pair
+\eqref{eq:IDFT}--\eqref{eq:DFT} relates two sequences of numbers, namely,
+$f_0$, \dots, $f_{N-1}$ and $\dfc{f}_0$, \dots, $\dfc{f}_{N-1}$:  knowing
+either sequence is equivalent to knowing the other.  To use this
+representation in solving differential equations, we must relate this data
+(i.e., either sequence of numbers) to a function $f(x)$ which we can
+differentiate.  In particular, we want to relate the DFT coefficients
+$\dfc{f}_k$ to the Fourier coefficients $\fc{f}_k$ of a function $f$ so we can
+compute operations (such as derivatives) on $f$ in spectral space (i.e., in
+terms of its Fourier coefficients).
+Since there are only finitely many DFT coefficients, we can at best
+expect them to determine a function with finitely many nonzero Fourier
+coefficients, i.e., a \emph{band-limited} function of the form
+\begin{equation}
+   f(x) = \sum_{k=-M}^{M} \fc{f}_k e^{2\pi ikx/\period},
+\qquad x\in\R.
+\label{eq:FS:truncated}
+\end{equation}
+We refer to the integer $M$ here as the \emph{spectral truncation}; it
+is the maximum index for which $\fc{f}_{k}$ or $\fc{f}_{-k}$ may be nonzero.
+When $N>2M$ this relationship is as shown in Fig.~\ref{fig:coefficients}.
+We can understand this relationship in two ways as follows.
+
+\begin{figure}
+\begin{center}
+\setlength{\unitlength}{38pt}
+\begin{picture}(11,4.5)(-3,-1)
+%\thicklines
+%\thinlines
+\newcommand{\V}{3.2}   % vertical location of values
+\renewcommand{\C}{1.6} % vertical location of coefficients
+\newcommand{\A}{0.8}   % vertical location of arrows (lower)
+\newcommand{\B}{2.4}   % vertical location of arrows (upper)
+\put(-3,-0.8){\vector(0,1){0.4}}
+\put(-3,-0.8){\line(1,0){9}}
+\put(-3,0){\makebox(0,0)[c]{$\fc{f}_{-M}$}}
+\put(-2,0){\makebox(0,0)[c]{$\dots$}}
+\put(-1, 0){\makebox(0,0)[c]{$\fc{f}_{-1}$}}
+\put(-1,-1){\vector(0,1){0.6}}
+\put(-1,-1){\line(1,0){9}}
+\put( 0, 0){\makebox(0,0)[c]{$\fc{f}_{ 0}$}}
+\put( 0,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 0,\C){\makebox(0,0)[c]{$\Fc{f}_{ 0}$}}
+\put( 0,\C){\makebox(0,0)[r]{DFT coefficients:\qquad}}
+\put( 0,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 0,\V){\makebox(0,0)[c]{${f}_{ 0}$}}
+\put( 0,\V){\makebox(0,0)[r]{Function values:\qquad}}
+\put( 1, 0){\makebox(0,0)[c]{$\dots$}}
+\put( 1,\C){\makebox(0,0)[c]{$\dots$}}
+\put( 1,\V){\makebox(0,0)[c]{$\dots$}}
+\put( 2, 0){\makebox(0,0)[c]{$\fc{f}_{ M}$}}
+\put( 2,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 2,\C){\makebox(0,0)[c]{$\Fc{f}_{ M}$}}
+\put( 2,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 2,\V){\makebox(0,0)[c]{${f}_{ M}$}}
+\put( 3, 0){\makebox(0,0)[c]{$0$}}
+\put( 3,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 3,\C){\makebox(0,0)[c]{$\Fc{f}_{M+1}$}}
+\put( 3,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 3,\V){\makebox(0,0)[c]{${f}_{M+1}$}}
+\put( 4, 0){\makebox(0,0)[c]{$\dots$}}
+\put( 4,\C){\makebox(0,0)[c]{$\dots$}}
+\put( 4,\V){\makebox(0,0)[c]{$\dots$}}
+\put( 5, 0){\makebox(0,0)[c]{$0$}}
+\put( 5,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 5,\C){\makebox(0,0)[c]{$\Fc{f}_{N-M-1}$}}
+\put( 5,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 5,\V){\makebox(0,0)[c]{${f}_{N-M-1}$}}
+\put( 6, 0){\makebox(0,0)[c]{$\fc{f}_{-M}$}}
+\put( 6,-0.8){\vector(0,1){0.4}}
+\put( 6,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 6,\C){\makebox(0,0)[c]{$\Fc{f}_{N-M}$}}
+\put( 6,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 6,\V){\makebox(0,0)[c]{${f}_{N-M}$}}
+\put( 7, 0){\makebox(0,0)[c]{$\dots$}}
+\put( 7,\C){\makebox(0,0)[c]{$\dots$}}
+\put( 7,\V){\makebox(0,0)[c]{$\dots$}}
+\put( 8, 0){\makebox(0,0)[c]{$\fc{f}_{-1}$}}
+\put( 8,-1){\vector(0,1){0.6}}
+\put( 8,\A){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 8,\C){\makebox(0,0)[c]{$\Fc{f}_{N-1}$}}
+\put( 8,\B){\makebox(0,0)[c]{$\updownarrow$}}
+\put( 8,\V){\makebox(0,0)[c]{${f}_{N-1}$}}
+\end{picture}
+\caption{\label{fig:coefficients}
+Relation between the coefficients of a DFT and a truncated Fourier series.}
+\end{center}
+\end{figure}
+
+First, suppose the function $f$ is given as in \eqref{eq:FS:truncated}.
+Evaluating this at the points $x_j=j\period/N$ gives the discrete values
+\begin{equation}
+   f_j = f(x_j) = \sum_{k=-M}^{M} \fc{f}_k e^{2\pi ijk/N},
+\qquad j=0,\dots,N-1 .
+\label{eq:FS:j}
+\end{equation}
+If $N>2M$ we can define the sequence $\dfc{f}_0,\dots,\dfc{f}_{N-1}$ by
+\begin{equation}
+   \dfc{f}_k := \begin{cases} 
+      \fc{f}_k,     & \text{$k=0,\dots,M$}, \\
+      0,            & \text{$k=M+1,\dots,N-M-1$}, \\
+      \fc{f}_{k-N}, & \text{$k=N-M,\dots,N-1$}
+   \end{cases}
+\label{def:dfc:1}
+\end{equation}
+(see Fig.~\ref{fig:coefficients}).
+Then \eqref{eq:FS:j} reduces to the IDFT \eqref{eq:IDFT}, so $\dfc{f}_k$ is
+given by the DFT \eqref{eq:DFT}.  Thus, for the band-limited function
+\eqref{eq:FS:truncated} the DFT coefficients $\dfc{f}_k$ are identical to the
+Fourier series coefficients $\fc{f}_k$ (modulo~$N$) provided that $N>2M$. 
+Mote that if we choose $N=2M+1$ then both the DFT and Fourier series
+representations of $f$ use $N=2M+1$ degrees of freedom, and none of the 
+coefficients \eqref{def:dfc:1} are automatically zero; if $N>2M+1$ then there
+are ``extra'' terms in the DFT corresponding to Fourier coefficients which
+vanish.
+
+Conversely, suppose we know either of the two $N$-periodic sequences
+$f_0,\dots,f_{N-1}$ or $\dfc{f}_0,\dots,\dfc{f}_{N-1}$ which are related by
+the DFT pair.  If $N$ is \emph{odd}, this data uniquely determines a function
+$f$ which satisfies $f(x_j)=f_j$ as follows:  setting $M=(N-1)/2$, we invert
+\eqref{def:dfc:1} to yield $\fc{f}_k = \dfc{f}_k$ for $\abs{k}\le M$.  The
+corresponding band-limited function $f$ given by \eqref{eq:FS:truncated} then
+satisfies $f(x_j)=f_j$ for $j=0,\dots,N-1$.  Thus, if $N$ is odd we can
+interpret the DFT coefficients $\dfc{f}_0,\dots,\dfc{f}_{N-1}$ directly as the
+Fourier series coefficients $\fc{f}_k$ (modulo~$N$) of the band-limited
+function given by \eqref{eq:FS:truncated}.
+
+However, it is awkward to use $N$ odd in discrete Fourier representations,
+since the FFT codes generally require $N$ to be even.  What happens if we try
+to relate the sequence $f_0,\dots,f_{N-1}$ (or $\dfc{f}_0,\dots,\dfc{f}_{N-1}$
+via the DFT) to a band-limited function $f$ of the form
+\eqref{eq:FS:truncated} when $N$ is \emph{even}?  If we set $M=N/2$, it is
+clear that something must be lost: the $N$ values $f_0,\dots,f_{N-1}$ or
+corresponding coefficients $\dfc{f}_0,\dots,\dfc{f}_{N-1}$ cannot contain the
+same information as the $2M+1=N+1$ Fourier series coefficients
+$\fc{f}_{-M},\dots,\fc{f}_{M}$.  If we insist that the function $f$ match the
+specified values, i.e., require that $f(x_j) = f_j$ for $j=0,\dots,N-1$, then
+we find that \eqref{eq:FS:j} with $N=2M$ reduces to
+\begin{equation}
+   f_j = \sum_{k=-M+1}^{M-1} \fc{f}_k e^{2\pi ijk/N} 
+       + (-1)^j\left(\fc{f}_{-M} + \fc{f}_{M}\right),
+\qquad j=0,\dots,N-1 .
+\label{eq:FS:j:expanded}
+\end{equation}
+If we set $\fc{f}_k=\dfc{f}_k$ for $\abs{k}<M=N/2$ and choose $\fc{f}_{-M}$
+and $\fc{f}_{M}$ satisfying $\fc{f}_{-M}+\fc{f}_{M}=\dfc{f}_{M}$, then
+\eqref{eq:FS:j:expanded} reduces to the IDFT \eqref{eq:IDFT}, which implies
+that the function $f$ defined by \eqref{eq:FS:truncated} with these Fourier
+series coefficients $\fc{f}_k$ matches the specified values $f_j$.  It almost
+matches the DFT coefficients $\dfc{f}_k$ as well, doing so for $\abs{k}<M$;
+however, only the sum $\fc{f}_{-M} + \fc{f}_{M}$ is determined by the
+data.  Thus, \emph{there is a one-parameter family of band-limited functions}
+$f$ which match the values $f_0,\dots,f_{N-1}$ when $N$ is even, one function
+corresponding to each choice of the difference $d:=\fc{f}_{M} - \fc{f}_{-M}$.
+Which one is ``right'' or ``best''?
+
+A simple approach is to set $d=\dfc{f}_{M}$, which gives $\fc{f}_{M} =
+\dfc{f}_{M}$ and $\fc{f}_{-M} = 0$ so that $\fc{f}_k=\dfc{f}_k$ for
+$k=-M+1,\dots,M$.  With this choice the numbers $\dfc{f}_0$, \dots,
+$\dfc{f}_{N-1}$ correspond to the function
+\begin{equation}
+   f(x) = f_1(x) := \sum_{k=-M+1}^{M} \dfc{f}_k e^{2\pi ikx/\period} .
+\label{eq:FS:1}
+\end{equation}
+This function agrees with the data values $f_0,\dots,N-1$ and its Fourier
+series coefficients $\fc{f}_k$ match the DFT coefficients $\dfc{f}_k$
+(modulo~$N$).  However, this simple approach is problematic, at least in the
+case where $f$ is real.\footnote{Even if $f$ is not necessarily real, the
+truncation is ``unbalanced'' in $k$ (i.e., $\fc{f}_{-M}$ must vanish but
+$\fc{f}_{M}$ may not), which seems unreasonable.  It is not clear whether this
+is really a problem.}  Specifically, if the data values $f_j$ are real then we
+expect $f$ to be a real function, but the condition $\fc{f}_{-M} =
+\CC{\fc{f}}_{M}$ implies we must have $\dfc{f}_{M}=0$---which is not
+necessarily what the data gives.  Therefore, interpreting the (real) data
+$f_0,\dots,f_{N-1}$ as corresponding to the function \eqref{eq:FS:1} is
+contradictory in general:  unless $\dfc{f}_{M}$ happens to be zero, then the
+function is not strictly real (i.e., real for all $x$), and if it is forced to
+be real by setting $\dfc{f}_{M}=0$, then it no longer matches the values
+$f_j$.  
+
+A potentially better choice is to set $d=0$, which gives $\fc{f}_{M} =
+\fc{f}_{-M} = \frac12\dfc{f}_{M}$ and corresponds to the function
+\begin{equation}
+   f(x) = f_2(x) := \sum_{k=-M+1}^{M-1} \dfc{f}_k e^{2\pi ikx/\period}
+        + \dfc{f}_{M}\cos\left(\frac{2\pi Mx}{\period}\right) .
+\label{eq:FS:2}
+\end{equation}
+Now in the case where the data $f_0,\dots,f_{N-1}$ is real, the condition
+$\fc{f}_{-M} = \CC{\fc{f}}_{M}$ implies only that $\dfc{f}_{M}$ must be
+real---which it is automatically, as a result of the DFT as noted above.
+Thus, interpreting the data as corresponding to the function \eqref{eq:FS:2}
+is at least consistent:  $f$~matches the function values and is real if they
+are real.  However, with this interpretation the DFT coefficients $\dfc{f}_k$
+do not (quite) match the Fourier series coefficients $\fc{f}_k$:  the factor
+of two difference for the highest mode must be taken into account if the
+series is to be evaluated on a grid with a different number of points, as in a
+Fourier psuedospectral multigrid method~\cite{BrandtEtAl84}.
+
+\pagebreak[1]
+\subsubsection{Derivatives of Fourier representations}
+
+If $f$ is any function given by a truncated Fourier series of the form
+\eqref{eq:FS:truncated}, then its derivative $g=f'$ is given exactly by the
+truncated Fourier series
+\begin{equation}
+   g(x) = \sum_{k=-M}^{M} \fc{g}_k e^{2\pi ikx/\period},
+\qquad x\in\R,
+\label{eq:FS:truncated:deriv}
+\end{equation}
+where
+\begin{equation}
+   \fc{g}_k = \left(\frac{2\pi i k}{\period}\right) \fc{f}_k ,
+\qquad k=-M,\dots,M.
+\label{eq:FC:deriv}
+\end{equation}
+Thus, the fact that the Fourier basis functions $\exp(2\pi ikx/\period)$ are
+eigenfunctions of the derivative operator makes the representation of this
+operator ``diagonal'' in terms of the Fourier series coefficients $\fc{f}_k$.
+Is this same result true for the DFT coefficients $\dfc{f}_k$?  That is, can
+we replace \eqref{eq:FC:deriv} by
+\begin{equation}
+   \dfc{g}_k = \left(\frac{2\pi i k}{\period}\right) \dfc{f}_k 
+\label{eq:DFC:deriv}
+\end{equation}
+for the appropriate values of $k$?  
+
+If we represent the truncated series \eqref{eq:FS:truncated} using $N>2M$
+values $f_j$ or coefficients $\dfc{f}_k$ related by the DFT pair, the answer
+is yes, since the DFT coefficients $\dfc{f}_k$ match the Fourier series
+coefficients $\fc{f}_k$ exactly.  More precisely, just as evaluating the
+truncated series \eqref{eq:FS:truncated} at $x_j=j\period/N$ gives the IDFT
+\eqref{eq:IDFT} with $\dfc{f}_k=\fc{f}_k$ for $k=0,\dots,N-1$ (with
+$\fc{f}_k=0$ for $\abs{k}>M$, and $\dfc{f}_k$ is interpreted modulo $N$),
+evaluating the truncated series \eqref{eq:FS:truncated:deriv} at the same
+points gives
+\begin{equation}
+   g_j = g\left(\frac{j\period}{N}\right) 
+       = \sum_{k=0}^{N-1} \dfc{g}_k e^{2\pi ijk/N},
+\qquad j=0,\dots,N-1 ,
+\label{eq:IDFT:g}
+\end{equation}
+where $\dfc{g}_k=\fc{g}_k$ and \eqref{eq:DFC:deriv} holds for $k=0,\dots,N-1$
+(interpreted modulo $N$).  Conversely, given either of the $N$-periodic
+sequences $f_0,\dots,f_{N-1}$ or $\dfc{f}_0$, \dots, $\dfc{f}_{N-1}$ related
+by the DFT pair, if $N$ is \emph{odd} there is a unique function $f$ of the
+form \eqref{eq:FS:truncated} with $M=(N-1)/2$ satisfying $f(x_j)=f_j$, and its
+derivative \eqref{eq:FS:truncated:deriv} will have the values
+\eqref{eq:IDFT:g} as above.  
+
+However, if $N$ is \emph{even} and we attempt to use either of the sequences
+$f_0,\dots,f_{N-1}$ or $\dfc{f}_0,\dots,\dfc{f}_{N-1}$ (which are related by
+the DFT pair) to determine a band-limited function $f$ and then find its
+derivative, the situation is more complicated.  As discussed above, we will
+choose $f$ of the form \eqref{eq:FS:truncated} with $M=N/2$ and coefficients
+$\fc{f}_k=\dfc{f}_k$ for $\abs{k}<M$; however, the coefficients with
+$\abs{k}=M$ need only satisfy $\fc{f}_{-M}+\fc{f}_{M}=\dfc{f}_{M}$.
+If we choose $\fc{f}_{-M}=0$ and $\fc{f}_M=\dfc{f}_M$ so that $f$ is given by
+\eqref{eq:FS:1}, its derivative is 
+\begin{equation}
+   g(x) = f_1'(x) = \sum_{k=-M+1}^{M} \dfc{g}_k e^{2\pi ikx/\period} 
+\label{eq:FS:1:deriv}
+\end{equation}
+with $\dfc{g}_k$ given by \eqref{eq:DFC:deriv}.  However, it must be recalled
+that for real data $f_0,\dots,f_{N-1}$ the function $f_1(x)$ is real for all
+$x$ only if the highest Fourier mode is dropped.  In particular, evaluating
+\eqref{eq:FS:1:deriv} at $x_j=j\period/N$ and using \eqref{eq:DFC:deriv} gives
+\begin{equation}
+   g_j = g(x_j) = \sum_{k=-M+1}^{M-1} \dfc{g}_k e^{2\pi ijk/N} 
+       + (-1)^j\left(\frac{2\pi iM}{\period}\right)\dfc{f}_{M},
+\qquad j=0,\dots,N-1 ,
+\label{eq:FS:deriv:1:expanded}
+\end{equation}
+and since $\dfc{f}_{M}$ is real, this results in \emph{complex} values of the
+derivative.\footnote{If \eqref{eq:FS:deriv:1:expanded} is evaluated using an
+FFT code for real functions, the imaginary part will probably be dropped.}
+Once again, we conclude that this interpretation of the data is problematic.
+
+On the other hand, if we choose $\fc{f}_{M} = \fc{f}_{-M} =
+\frac12\dfc{f}_{M}$ so that $f$ is given by \eqref{eq:FS:2}, its derivative is
+\begin{equation}
+   g(x) = f_2'(x) = \sum_{k=-M+1}^{M-1} \dfc{g}_k e^{2\pi ikx/\period}
+        - \left(\frac{2\pi M}{\period}\right) 
+          \dfc{f}_{M}\sin\left(\frac{2\pi Mx}{\period}\right) ,
+\label{eq:FS:2:deriv}
+\end{equation}
+with $\dfc{g}_k$ given by \eqref{eq:DFC:deriv} for $\abs{k}<M$.  It should
+be noted that when evaluated at $x_j=j\period/N$ the last term in
+\eqref{eq:FS:2:deriv} vanishes, so the contribution from the highest Fourier
+mode is lost at those points.  This problem can be solved and exact values of
+the derivative obtained by evaluating the at the \emph{midpoints} $x_{j+1/2} =
+(j+\tfrac12)\period/N$ instead; we will not pursue this approach here (for
+details, see~\cite{BrandtEtAl84}).
+
+\pagebreak[1]
+\subsubsection{Transforms of nonlinear terms}
+
+Suppose the model contains a quadratic nonlinear term $f(x)=g(x)h(x)$, 
+where $g$ and $h$ are represented in the model by truncated Fourier series
+\begin{equation}
+   g(x) = \sum_{k=-M}^{M} \fc{g}_k e^{2\pi ikx/\period},
+\qquad
+   h(x) = \sum_{k=-M}^{M} \fc{h}_k e^{2\pi ikx/\period},
+\qquad x\in\R.
+\label{eq:FS:g,h}
+\end{equation}
+By direct multiplication we have
+\begin{equation}
+   f(x) = \sum_{k=-2M}^{2M} \fc{f}_k e^{2\pi ikx/\period},
+\qquad x\in\R.
+\label{eq:FS:g*h}
+\end{equation}
+where the coefficients are given explicitly by
+\begin{equation}
+   \fc{f}_k = \frac{1}{\period}\int_{0}^{\period} f(x) 
+              e^{-2\pi ikx/\period} \,dx 
+            = \sum_{l=-M}^{M} \fc{g}_l \fc{h}_{k-l}
+\qquad k\in\Z,
+\label{eq:FC:g*h}
+\end{equation}
+where $\fc{g}_k$ and $\fc{h}_k$ vanish for $\abs{k}>M$.  While $f$ contains
+contributions from Fourier modes $\abs{k}\le 2M$, we assume that only the
+modes $\abs{k}\le M$ will be retained in the model, so we want to compute the
+Fourier coefficients $\fc{f}_k$ for $k=-M,\dots,M$ \emph{without aliasing},
+i.e., compute these coefficients exactly and simply drop the higher
+coefficients.
+
+The formula on the right side of \eqref{eq:FC:g*h} shows how the Fourier modes
+in $g$ and $h$ interact to produce Fourier mode~$k$ in~$f$.  However, it is
+computationally too expensive to evaluate this sum directly, since it requires
+$O(M)$ operations for each~$k$ and thus $O(M^2)$ operations to compute
+$\fc{f}_k$ for $k=-M,\dots,M$.  Instead, we use the \emph{transform method}
+(e.g.,~\cite{Orszag70}) as follows:
+\begin{enumerate}
+\item From the Fourier coefficients $\fc{g}_k$ and $\fc{h}_k$ for 
+$k=-M,\dots,M$, evaluate $g$ and $h$ on the transform grid $x_j=j\period/N$
+for $j=0,\dots,N-1$ in physical space, i.e., compute $g_j=g(x_j)$ and
+$h_j=h(x_j)$.
+\item Multiply these values together to evaluate $f$ on the transform grid,
+i.e., $f_j=g_j h_j$ for $j=0,\dots,N-1$.
+\item From the values $f_j$ compute the Fourier coefficients 
+$\fc{f}_k$ for $k=-M,\dots,M$.
+\end{enumerate}
+The key to the efficiency of the method is the fact that we can compute the
+transforms in steps~1 and~3 exactly by an IDFT and DFT, respectively, if the
+length~$N$ is large enough.  Since step~2 requires $N$ operations, if we use
+the FFT algorithm then the overall operation count is only
+$O\big(N\log(N)\big)$ operations.
+
+To show that the transforms can be computed exactly---and to establish the
+transform length required---we use the following:
+\begin{lemma}\label{lemma:integration}
+The left-sum approximation
+\begin{equation}
+   I(\phi) :=  \frac{1}{\period }\int_0^\period \phi(x)\,dx 
+          \approx \frac{1}{N}\sum_{j=0}^{N-1}
+          \phi\left(\frac{j\period}{N}\right) =: I_N(\phi)
+\label{eq:lemma}
+\end{equation}
+is exact on the function $\phi_k(x) = \exp(2\pi ikx/\period)$ with $k\in\Z$
+provided that $\abs{k}<N$.  
+%Furthermore, if $\abs{k}=N$ then $I_N(\phi_k) = 1$.
+\end{lemma}
+\begin{proof}
+The true integral is
+\begin{equation}
+   I(\phi_k) =  \frac{1}{\period}\int_0^\period e^{2\pi ikx/\period} \,dx 
+             = \begin{cases} 1, & \text{$k=0$},\\
+                             0, & \text{$k\ne0$}, \end{cases}
+\label{eq:I}
+\end{equation}
+and by Lemma~\ref{lemma:orthogonality} the left-sum approximation is
+\begin{equation}
+   I_N(\phi_k) = \frac{1}{N}\sum_{j=0}^{N-1} e^{2\pi ijk/N} 
+               = \begin{cases} 1, & \text{$k\equiv0\pmod{N}$},\\
+                               0, & \text{otherwise}. \end{cases}
+\label{eq:I_N}
+\end{equation}
+Comparing \eqref{eq:I} and \eqref{eq:I_N} we see that $I(\phi_k)=I_N(\phi_k)$
+provided that $\abs{k}<N$.  
+%Furthermore, \eqref{eq:I_N} also shows that if $\abs{k}=N$ 
+%then $I_N(\phi_k)=1$.
+\end{proof}
+
+To apply this Lemma we express the left side of \eqref{eq:FC:g*h} in the 
+notation introduced above and substitute from \eqref{eq:FS:g*h} with $k$ 
+replaced by $l$ to obtain
+\begin{equation}
+   \fc{f}_k = I\left(f\phi_{-k}\right) 
+            = I\left(\sum_{l=-2M}^{2M} \fc{f}_l \phi_l \phi_{-k}\right)
+            = \sum_{l=-2M}^{2M} \fc{f}_l I\left(\phi_{l-k}\right),
+\label{eq:FC:g*h:I}
+\end{equation}
+which we want to compute exactly for $\abs{k}\le M$.  Likewise, the left-sum
+approximation using $N$ points is
+\begin{equation}
+   \frac{1}{N}\sum_{j=0}^{N-1} f_j e^{-2\pi ijk/N} = I_N\left(f\phi_{-k}\right) 
+      = \sum_{l=-2M}^{2M} \fc{f}_l I_N\left(\phi_{l-k}\right).
+\label{eq:FC:g*h:I_N}
+\end{equation}
+Since $\abs{l}\le 2M$ and $\abs{k}\le n$, we have $\abs{k-l}\le 3M$, so by 
+Lemma~\ref{lemma:integration}, $I_N(\phi_{k-l})=I(\phi_{k-l})$ and thus
+\begin{equation}
+   \fc{f}_k = \frac{1}{N}\sum_{j=0}^{N-1} f_j e^{2\pi ijk/N},
+\qquad k=-M,\dots,M
+\end{equation}
+provided that $N>3M$.  Therefore, the transform method as described above
+computes the coefficients of the quadratic nonlinear term $f=gh$ exactly if
+$N>3M$, where $N$ is the transform length and $M$ is the spectral truncation,
+i.e., the index of the highest Fourier coefficient retained in the
+spectral representations of $f$, $g$, and $h$.  Since the transform length $N$
+is greater than the number $2M+1$ of Fourier coefficients retained, the
+coefficients of $g$ and $h$ must be ``padded'' with zeros before computing the
+IDFT (see Fig.~\ref{fig:coefficients} for an example of this padding).
+Likewise, the coefficients of $f$ computed by the DFT must be truncated, i.e.,
+the coeffients $\fc{f}_k$ for $\abs{k}>M$ must be set to zero.\footnote{It is
+possible that by interpreting the DFT coefficients in terms of ``unbalanced''
+discrete Fourier representations such as \eqref{eq:FS:1} the transform length
+$N$ needed for exact results may be slightly smaller; we will not pursue this
+possiblity here.}
+
+\pagebreak[4]
+\subsection{Fourier representations in two dimensions}
+
+The model domain for \pswm\ is doubly periodic with period $\period_x$ and
+$\period_y$ in $x$ and $y$ respectively.  Here we give the details of
+two-dimensional Fourier representations on this domain.
+
+\subsubsection{Discrete Fourier transforms}
+
+Suppose that a given function $f$ can be represented as a truncated double
+Fourier series with spectral truncation $M_x$ and $M_y$ in $x$ and $y$,
+respectively.  Repeating the one-dimensional representation developed above
+gives
+\begin{equation}
+   f(x,y) = \sum_{l=-M_x}^{M_x} \fc{f}_{l}(y) e^{2\pi ilx/\period_x}
+          = \sum_{l=-M_x}^{M_x} \sum_{m=-M_y}^{M_y}
+      \fc{f}_{l,m} e^{2\pi ilx/\period_x} e^{2\pi imy/\period_y},
+\qquad x,y\in\R,
+\label{eq:FS2}
+\end{equation}
+where
+\begin{equation}
+   \fc{f}_l(y) = \frac{1}{\period_x}\int_{0}^{\period_x} f(x,y) 
+              e^{-2\pi ilx/\period_x} \,dx ,
+\quad
+   \fc{f}_{l,m} = \frac{1}{\period_y}\int_{0}^{\period_y} \fc{f}_l(y) 
+              e^{-2\pi imy/\period_y} \,dy ,
+\qquad l,m\in\Z.
+\label{eq:FC2}
+\end{equation}
+Evaluating the series in \eqref{eq:FS2} at $x_j=j\period_x/N_x$ and
+$y_k=k\period_y/N_y$ gives
+\begin{equation}
+   f_{j,k} = f(x_j,y_k) = \sum_{l=-M_x}^{M_x} \fc{f}_{l}(y_k) e^{2\pi ijl/N_x}
+          = \sum_{l=-M_x}^{M_x} \sum_{m=-M_y}^{M_y}
+      \fc{f}_{l,m} e^{2\pi ijl/N_x} e^{2\pi ikm/N_y}
+\label{eq:FS2:discrete}
+\end{equation}
+for $j=0,\dots,N_x-1$ and $k=0,\dots,N_y-1$.
+As explained above, if $N_x>2M_x$ and $N_y>2M_y$, the Fourier series
+coefficients \eqref{eq:FC2} may be evaluated exactly by the DFTs
+\begin{equation}
+   \Fc{f}_l(y_k) = \frac{1}{N_x}\sum_{j=0}^{N_x-1} f_{j,k}
+              e^{-2\pi ijl/N_x} ,
+\quad
+   \Fc{f}_{l,m} = \frac{1}{N_y}\sum_{k=0}^{N_y-1} \Fc{f}_l(y_k) 
+              e^{-2\pi ikm/N_y} 
+\label{eq:DFT2}
+\end{equation}
+for $l=0,\dots,N_x-1$ and $m=0,\dots,N_y-1$; the DFT coefficients
+$\Fc{f}_l(y_k)$ and $\Fc{f}_{l,m}$ match the Fourier series coefficients
+$\fc{f}_l(y_k)$ and $\fc{f}_{l,m}$ for $\abs{l}\le M_x$ and $\abs{m}\le M_y$
+and vanish for larger $l$ and $m$.  Since the DFT coeffcients are periodic, we
+can write the series \eqref{eq:FS2:discrete} using IDFTs, i.e., in the form
+\begin{equation}
+   f_{j,k} = \sum_{l=0}^{N_x-1} \Fc{f}_{l}(y_k) e^{2\pi ijl/N_x}
+          = \sum_{l=0}^{N_x-1} \sum_{m=0}^{N_y-1}
+      \Fc{f}_{l,m} e^{2\pi ijl/N_x} e^{2\pi ikm/N_y}
+\label{eq:IDFT2}
+\end{equation}
+for $j=0,\dots,N_x-1$ and $k=0,\dots,N_y-1$.  It should be noted that if
+$N_x=2M_x$ and $N_y=2M_y$ then the above results still hold, except that
+$\fc{f}_l(y_k) = \frac12\Fc{f}_l(y_k)$ for $\abs{l}=M_x$ and $\fc{f}_{l,m} =
+\frac12\Fc{f}_{l,m}$ for $\abs{m}=M_y$.  Also, if $f$ is real (the only case
+in which we are interested) then
+\begin{equation}
+   \fc{f}_{-l}(y) = \CC{\fc{f}}_l(y),
+\qquad
+   \fc{f}_{-l,-m} = \CC{\fc{f}}_{l,m},
+\label{eq:CC}
+\end{equation}
+and
+\begin{equation}
+   \Fc{f}_{-l}(y_k) = \CC{\Fc{f}}_l(y_k).
+\qquad
+   \Fc{f}_{-l,-m} = \CC{\Fc{f}}_{l,m}.
+\label{eq:CC:discrete}
+\end{equation}
+
+\subsubsection{Computation and storage}
+
+On the computer, we use the FFT routine \code{fft99} by Temperton
+\cite{Temperton83a,Temperton83b,Temperton83c} to compute the DFTs and IDFTs in
+\eqref{eq:DFT2} and \eqref{eq:IDFT2}, respectively.  This routine computes
+real-to-``half-complex'' transforms (or vice-versa), so applying it to the
+$y$-transforms---which are complex-to-complex transforms since $\Fc{f}_l(y_k)$
+are complex numbers---does not produce the numbers $\Fc{f}_{k,l}$ directly.
+The procedure for using this routine is explained below and illustrated in 
+Fig.~\ref{fig:transforms}.
+
+We start with the numbers $f_{j,k}$ stored with explicit periodicity, i.e.,
+stored for $j=-1,\dots,N_x$ and $k=-1,\dots,N_y$ as shown in
+Fig.~\ref{fig:transforms} (top part).  ``Explicit periodicity'' means that
+$f_{-1,k}=f_{N_x-1,k}$ and $f_{Nx,k}=f_{0,k}$ (with analogous periodicity
+in~$k$); the two ``extra'' storage locations are needed for the calculations.
+The $x$-transform [first part of \eqref{eq:DFT2}] produces the half-complex
+sequence $\Fc{f}_{l}(y_k)$ for each $k=-1,\dots,N_y$; what is actually
+returned by the routine \code{fft99} consists of the real and imaginary parts
+of this sequence, i.e., the real numbers $a_{l,k}$ and $b_{l,k}$ satisfying
+\begin{equation} 
+   \Fc{f}_{l}(y_k) = a_{l,k} + ib_{l,k} 
+\label{eq:FC2:RI}
+\end{equation} 
+for $l=0,\dots,M_x$, stored as shown in Fig.~\ref{fig:transforms} (middle
+part).  Here we use the notation $M_x=N_x/2$ for simplicity.\footnote{This is
+just notation here, \emph{not} the spectral truncation.  The model actually
+uses the spectral trunctation $M_x<N_x/3$ in order to compute quadratic
+nonlinearities without aliasing as discussed previously.}  The remaining
+coefficients $\Fc{f}_{l}(y_k)$ for $l=Mx+1,\dots,Nx-1$ are not computed
+explicitly but could be computed from $\Fc{f}_{Nx-l}(y_k) =
+\CC{\Fc{f}}_{l}(y_k) = a_{l,k} - ib_{l,k}$.  Also, $b_{0,k}=b_{M_x,k}=0$
+(since the values $f_{j,k}$ are real) corresponding to the two ``extra''
+storage locations used for the input values.
+
+Likewise, for the $y$ transform [second part of \eqref{eq:DFT2}],
+since the DFT is linear we have
+\begin{equation}
+   \Fc{f}_{l,m} = \Fc{a}_{l,m} + i\Fc{b}_{l,m}
+\label{eq:DFT2:RI}
+\end{equation}
+where
+\begin{equation}
+   \Fc{a}_{l,m} = \frac{1}{N_y}\sum_{k=0}^{N_y-1} a_{l,k} e^{-2\pi ikm/N_y},
+\qquad
+   \Fc{b}_{l,m} = \frac{1}{N_y}\sum_{k=0}^{N_y-1} b_{l,k} e^{-2\pi ikm/N_y}
+\label{eq:DFT2:a,b}
+\end{equation}
+are the DFTs of the (real) sequences $a_{l,k}$ and $b_{l,k}$, respectively.
+The sequences $\Fc{a}_{l,m}$ and $\Fc{b}_{l,m}$ are half-complex, i.e.,
+\begin{equation}
+   \Fc{a}_{l,N_y-m}=\CC{\Fc{a}}_{l,m},
+\qquad
+   \Fc{b}_{l,N_y-m}=\CC{\Fc{b}}_{l,m},
+\label{eq:CC:a,b}
+\end{equation}
+so $\code{fft99}$ returns their real and imaginary parts, which we denote here 
+by
+\begin{equation}
+   \Fc{a}_{l,m} = A_{l,m} + iC_{l,m},
+\qquad
+   \Fc{b}_{l,m} = B_{l,m} + iD_{l,m}
+\label{eq:DFT2:RI:A,B}
+\end{equation}
+for $m=0,\dots,M_y=N_y/2$ as shown in Fig.~\ref{fig:transforms} (bottom
+part).  Once again, since the sequences $a_{l,k}$ and $b_{l,k}$ are real, 
+we have ${C}_{l,0}={C}_{l,M_y}=0$ and ${D}_{l,0}={D}_{l,M_y}=0$.
+
+\renewcommand{\ss}[1]{{\scriptstyle #1}}
+\begin{figure}
+\begin{displaymath}
+\begin{matrix}
+\ss{k=N_y}  & f_{-1,N_y} & f_{0,N_y} & f_{1,N_y} & f_{2,N_y} & \dots &
+f_{j,N_y} & \dots & f_{N_x-1,N_y} & f_{N_x,N_y} 
+\\[4pt]
+\ss{k=N_y-1}  & f_{-1,N_y-1} & f_{0,N_y-1} & f_{1,N_y-1} & f_{2,N_y-1} & \dots &
+f_{j,N_y-1} & \dots & f_{N_x-1,N_y-1} & f_{N_x,N_y-1} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+\ss{k}  & f_{-1,k} & f_{0,k} & f_{1,k} & f_{2,k} & \dots & f_{j,k} & \dots
+& f_{N_x-1,k} & f_{N_x,k} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+%\ss{k=2}  & f_{-1,2} & f_{0,2} & f_{1,2} & f_{2,2} & \dots & f_{j,2} & \dots
+%& f_{N_x-1,2} & f_{N_x,2} 
+%\\[4pt]
+%\ss{k=1}  & f_{-1,1} & f_{0,1} & f_{1,1} & f_{2,1} & \dots & f_{j,1} & \dots
+%& f_{N_x-1,1} & f_{N_x,1} 
+%\\[4pt]
+\ss{k=0}  & f_{-1,0} & f_{0,0} & f_{1,0} & f_{2,0} & \dots & f_{j,0} & \dots
+& f_{N_x-1,0} & f_{N_x,0} 
+\\[4pt]
+\ss{k=-1}  & f_{-1,-1} & f_{0,-1} & f_{1,-1} & f_{2,-1} & \dots & f_{j,-1} & \dots
+& f_{N_x-1,-1} & f_{N_x,-1} 
+\\[6pt]
+   & \ss{j=-1} & \ss{j=0} & \ss{j=1} & \ss{j=2} & \dots & \ss{j} & \dots &
+\ss{j=N_x-1} & \ss{j=N_x} 
+\end{matrix}
+\end{displaymath}
+\begin{displaymath}
+   \Downarrow\text{forward $x$-transform} \Downarrow 
+   \qquad \qquad 
+   \Uparrow \text{inverse $x$-transform} \Uparrow
+\end{displaymath}
+\begin{displaymath}
+\setcounter{MaxMatrixCols}{12}
+\begin{matrix}
+\ss{k=N_y}  & a_{0,N_y} & b_{0,N_y} & a_{1,N_y} & b_{1,N_y} & \dots &
+a_{l,N_y} & b_{l,N_y} & \dots & a_{M_x,N_y} & b_{M_x,N_y} 
+\\[4pt]
+\ss{k=N_y-1}  & a_{0,N_y-1} & b_{0,N_y-1} & a_{1,N_y-1} & b_{1,N_y-1} & \dots &
+a_{l,N_y-1} & b_{l,N_y-1} & \dots & a_{M_x,N_y-1} & b_{M_x,N_y-1} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+\ss{k}  & a_{0,k} & b_{0,k} & a_{1,k} & b_{1,k} & \dots &
+a_{l,k} & b_{l,k} & \dots & a_{M_x,k} & b_{M_x,k} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+%\ss{k=2}  & a_{0,2} & b_{0,2} & a_{1,2} & b_{1,2} & \dots &
+%a_{l,2} & b_{l,2} & \dots & a_{M_x,2} & b_{M_x,2} 
+%\\[4pt]
+%\ss{k=1}  & a_{0,1} & b_{0,1} & a_{1,1} & b_{1,1} & \dots &
+%a_{l,1} & b_{l,1} & \dots & a_{M_x,1} & b_{M_x,1} 
+%\\[4pt]
+\ss{k=0}  & a_{0,0} & b_{0,0} & a_{1,0} & b_{1,0} & \dots &
+a_{l,0} & b_{l,0} & \dots & a_{M_x,0} & b_{M_x,0} 
+\\[4pt]
+\ss{k=-1}  & a_{0,-1} & b_{0,-1} & a_{1,-1} & b_{1,-1} & \dots &
+a_{l,-1} & b_{l,-1} & \dots & a_{M_x,-1} & b_{M_x,-1} 
+\\[6pt]
+   & \ss{j=-1} & \ss{j=0} & \ss{j=1} & \ss{j=2} & \dots & \ss{j=2l-1} &
+\ss{j=2l} & \dots & \ss{j=N_x-1} & \ss{j=N_x} 
+%   & \multicolumn{2}{c}{l=0} & \multicolumn{2}{c}{l=1} & \dots 
+%   & \multicolumn{2}{c}{l} & \dots & \multicolumn{2}{c}{l=M_x} 
+\end{matrix}
+\end{displaymath}
+\begin{displaymath}
+   \Downarrow\text{forward $y$-transform} \Downarrow 
+   \qquad \qquad 
+   \Uparrow \text{inverse $y$-transform} \Uparrow
+\end{displaymath}
+\begin{displaymath}
+\setcounter{MaxMatrixCols}{12}
+\begin{matrix}
+\ss{k=N_y}  & C_{0,M_y} & D_{0,M_y} & C_{1,M_y} & D_{1,M_y} & \dots &
+C_{l,M_y} & D_{l,M_y} & \dots & C_{M_x,M_y} & D_{M_x,M_y} 
+\\[4pt]
+\ss{k=N_y}  & A_{0,M_y} & B_{0,M_y} & A_{1,M_y} & B_{1,M_y} & \dots &
+A_{l,M_y} & B_{l,M_y} & \dots & A_{M_x,M_y} & B_{M_x,M_y} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+\ss{k=2m}  & C_{0,m} & D_{0,m} & C_{1,m} & D_{1,m} & \dots &
+C_{l,m} & D_{l,m} & \dots & C_{M_x,m} & D_{M_x,m} 
+\\[4pt]
+\ss{k=2m-1}  & A_{0,m} & B_{0,m} & A_{1,m} & B_{1,m} & \dots &
+A_{l,m} & B_{l,m} & \dots & A_{M_x,m} & B_{M_x,m} 
+\\[4pt]
+\vdots  & \vdots & \vdots & \vdots & \vdots & & \vdots & 
+& \vdots & \vdots 
+\\[4pt]
+\ss{k=2}  & C_{0,1} & D_{0,1} & C_{1,1} & D_{1,1} & \dots &
+C_{l,1} & D_{l,1} & \dots & C_{M_x,1} & D_{M_x,1} 
+\\[4pt]
+\ss{k=1}  & A_{0,1} & B_{0,1} & A_{1,1} & B_{1,1} & \dots &
+A_{l,1} & B_{l,1} & \dots & A_{M_x,1} & B_{M_x,1} 
+\\[4pt]
+\ss{k=0}  & C_{0,0} & D_{0,0} & C_{1,0} & D_{1,0} & \dots &
+C_{l,0} & D_{l,0} & \dots & C_{M_x,0} & D_{M_x,0} 
+\\[4pt]
+\ss{k=-1}  & A_{0,0} & B_{0,0} & A_{1,0} & B_{1,0} & \dots &
+A_{l,0} & B_{l,0} & \dots & A_{M_x,0} & B_{M_x,0} 
+\\[6pt]
+   & \ss{j=-1} & \ss{j=0} & \ss{j=1} & \ss{j=2} & \dots & \ss{j=2l-1} &
+\ss{j=2l} & \dots & \ss{j=N_x-1} & \ss{j=N_x} 
+\end{matrix}
+\end{displaymath}
+\begin{center}
+\mycaption[4.5in]{\label{fig:transforms}
+Storage for values of a function $f$ and corresponding Fourier coefficients
+(here $M_x=N_x/2$ and $M_y=N_y/2$).}
+\end{center}
+\vspace*{-2pt}
+\end{figure}
+
+\pagebreak[2]
+
+From \eqref{eq:DFT2:RI} and \eqref{eq:DFT2:RI:A,B} we see that for each
+$l=0,\dots,N_x$ and $m=0,\dots,N_y$ the four numbers $A_{l,m}$, $B_{l,m}$,
+$C_{l,m}$, and $D_{l,m}$ yield the Fourier coefficients
+\begin{align}
+   \Fc{f}_{l,m} &= (A_{l,m} - D_{l,m}) + i(B_{l,m} + C_{l,m}) ,
+\label{eq:DFT2:RI:results:a}
+\\
+\intertext{and using \eqref{eq:CC:discrete} and \eqref{eq:CC:a,b} we find that}
+   \Fc{f}_{Nx-l,m} &= (A_{l,m} + D_{l,m}) - i(B_{l,m} - C_{l,m}) ,
+\\
+   \Fc{f}_{l,N_y-m} &= (A_{l,m} + D_{l,m}) + i(B_{l,m} - C_{l,m}) ,
+\\
+   \Fc{f}_{N_x-l,N_y-m} &= (A_{l,m} - D_{l,m}) - i(B_{l,m} + C_{l,m}) .
+\label{eq:DFT2:RI:results}
+\end{align}
+We can denote these formulas by the relation
+\begin{equation}
+   \Fc{f}_{l,m} \leftrightarrow
+   \begin{bmatrix} C_{l,m} & D_{l,m} \\ A_{l,m} & B_{l,m} \end{bmatrix}
+\label{eq:DFC:matrix}
+\end{equation}
+where the array on the right-hand side is neither a matrix nor a stencil, but
+simply a schematic representation of the locations of the four numbers
+$A_{l,m}$, $B_{l,m}$, $C_{l,m}$, and $D_{l,m}$ related to the coefficient
+$\Fc{f}_{l,m}$ in the array produced by two applications of the FFT routine
+\code{fft99}.
+However, it is probably never necessary to actually compute the Fourier
+coefficients $\Fc{f}_{l,m}$ explicitly; all necessary calculations can be done
+with these four numbers directly.  For testing the transforms, we can invert
+\eqref{eq:DFT2:RI:results:a}--\eqref{eq:DFT2:RI:results} to obtain
+\begin{align}
+   A_{l,m} &= \frac{1}{4}\left(
+      \Fc{f}_{l,m} + \Fc{f}_{-l,m} + \Fc{f}_{l,-m} + \Fc{f}_{-l,-m} \right) ,
+\\
+   B_{l,m} &= \frac{1}{4i}\left(
+      \Fc{f}_{l,m} - \Fc{f}_{-l,m} + \Fc{f}_{l,-m} - \Fc{f}_{-l,-m} \right) ,
+\\
+   C_{l,m} &= \frac{1}{4i}\left(
+      \Fc{f}_{l,m} + \Fc{f}_{-l,m} - \Fc{f}_{l,-m} - \Fc{f}_{-l,-m} \right) ,
+\\
+   D_{l,m} &= \frac{1}{4}\left(
+     -\Fc{f}_{l,m} + \Fc{f}_{-l,m} + \Fc{f}_{l,-m} - \Fc{f}_{-l,-m} \right) .
+\label{eq:DFT2:inverted}
+\end{align}
+
+\subsubsection{Derivatives}
+
+The most important operations computed in spectral space are the derivatives.
+Letting $g$ and $h$ denote the $x$ and $y$ derivatives of $f$, respectively,
+then by \eqref{eq:DFC:deriv} their spectral coefficients are given by
+\begin{equation}
+   \dfc{g}_{l,m} = \left(\frac{2\pi i l}{\period_x}\right) \dfc{f}_{l,m} ,
+\qquad
+   \dfc{h}_{l,m} = \left(\frac{2\pi i m}{\period_y}\right) \dfc{f}_{l,m} .
+\label{eq:DFC:deriv:xy}
+\end{equation}
+Using \eqref{eq:DFT2:RI:results} in these formulas gives
+\begin{align}
+   \Fc{g}_{l,m} &= \left(\frac{2\pi l}{\period_x}\right)
+      \Big[ -(B_{l,m} + C_{l,m}) + i(A_{l,m} - D_{l,m})\Big] ,
+\\
+   \Fc{g}_{Nx-l,m} &= \left(\frac{2\pi l}{\period_x}\right)
+      \Big[ -(B_{l,m} - C_{l,m}) - i(A_{l,m} + D_{l,m})\Big] ,
+\\
+   \Fc{g}_{l,N_y-m} &= \left(\frac{2\pi l}{\period_x}\right)
+      \Big[ -(B_{l,m} - C_{l,m}) + i(A_{l,m} + D_{l,m})\Big] ,
+\\
+   \Fc{g}_{N_x-l,N_y-m} &= \left(\frac{2\pi l}{\period_x}\right)
+      \Big[ -(B_{l,m} + C_{l,m}) - i(A_{l,m} - D_{l,m})\Big] 
+\label{eq:DFT2:RI:deriv:x}
+\end{align}
+and
+\begin{align}
+   \Fc{h}_{l,m} &= \left(\frac{2\pi m}{\period_y}\right)
+      \Big[ -(B_{l,m} + C_{l,m}) + i(A_{l,m} - D_{l,m})\Big] ,
+\\
+   \Fc{h}_{Nx-l,m} &= \left(\frac{2\pi m}{\period_y}\right)
+      \Big[ (B_{l,m} - C_{l,m}) + i(A_{l,m} + D_{l,m})\Big] ,
+\\
+   \Fc{h}_{l,N_y-m} &= \left(\frac{2\pi m}{\period_y}\right)
+      \Big[ (B_{l,m} - C_{l,m}) - i(A_{l,m} + D_{l,m})\Big] ,
+\\
+   \Fc{h}_{N_x-l,N_y-m} &= \left(\frac{2\pi m}{\period_y}\right)
+      \Big[ -(B_{l,m} + C_{l,m}) - i(A_{l,m} - D_{l,m})\Big] .
+\label{eq:DFT2:RI:deriv:y}
+\end{align}
+These may be summarized in the schematic notation of \eqref{eq:DFC:matrix}
+in the form
+\begin{equation}
+   (\Fc{f_{x}})_{l,m} \leftrightarrow\left(\frac{2\pi l}{\period_x}\right)
+   \begin{bmatrix} -D_{l,m} & C_{l,m} \\ -B_{l,m} & A_{l,m} \end{bmatrix},
+\qquad
+   (\Fc{f_{y}})_{l,m} \leftrightarrow\left(\frac{2\pi m}{\period_y}\right)
+   \begin{bmatrix} A_{l,m} & B_{l,m} \\ -C_{l,m} & -D_{l,m} \end{bmatrix}.
+\label{eq:DFC:matrix:deriv}
+\end{equation}
+Also, second derivatives have the simpler representation
+\begin{equation}
+   (\Fc{f_{xx}})_{l,m} \leftrightarrow -\left(\frac{2\pi l}{\period_x}\right)^2
+   \begin{bmatrix} A_{l,m} & B_{l,m} \\ C_{l,m} & D_{l,m} \end{bmatrix},
+\qquad
+   (\Fc{f_{yy}})_{l,m} \leftrightarrow -\left(\frac{2\pi m}{\period_y}\right)^2
+   \begin{bmatrix} A_{l,m} & B_{l,m} \\ C_{l,m} & D_{l,m} \end{bmatrix}.
+\label{eq:DFC:matrix:deriv2}
+\end{equation}
+The important point here is that the operations of taking derivatives may be
+represented in spectral space by scaling the four numbers corresponding to a
+given Fourier $(l,m)$ and rearranging them and changing their signs as needed.  
+
+Also note the point made in the previous section about discrete Fourier
+representations when the transform length~$N$ is twice the spectral
+truncation~$M$.  Suppose, for example, that we wish to take the $x$-derivative
+of a real-valued function $f$ represented in Fourier spectral space with
+$N_x=2M_x$.  Since $\Fc{f}_{l}(y_k)$ is real for $l=M_x$ in \eqref{eq:FC2:RI},
+we have $b_{M_x,k}=0$ and thus $B_{M_x,m}=D_{M_x,m}=0$ from
+\eqref{eq:DFT2:RI:A,B}.  From the first part of \eqref{eq:DFC:matrix:deriv} we
+see that the information in Fourier mode $l=M_x$ (i.e., $A_{M_x,m}$ and
+$C_{M_x,m}$) will be lost in taking the derivative, since \code{fft99} ignores
+the imaginary part of this mode (it must be zero to produce real values).
+This problem does not affect the second derivative as in
+\eqref{eq:DFC:matrix:deriv2}, nor will it affect derivatives when $M_x<2N_x$.
+
+\pagebreak[3]
+\begin{thebibliography}{99}
+
+\bibitem{Fulton07}
+Fulton, S. R., 2007:
+Semi-Implicit Discretization of the Shallow-Water Equations.
+Unpublished manuscript.
+
+\bibitem{BrandtEtAl84}
+Brandt, A., S. R. Fulton, and G. D. Taylor, 1984:
+Improved spectral multigrid methods for periodic elliptic problems.
+\textsl{J.\ Comp.\ Phys.}, \textbf{58}, 96--112.
+
+\bibitem{Orszag70}
+Orszag, S. A., 1970:
+Transform method for the calculation of vector-coupled sums:
+application to the spectral form of the vorticity equation.
+\textsl{J. Atmos.\ Sci.}, \textbf{27}, 890--895.
+
+\bibitem{Temperton83a}
+Temperton, C., 1983a:  
+Self-sorting mixed-radix fast Fourier transforms. 
+\textsl{J. Comp.\ Phys.}, \textbf{52}, 1--23.
+
+\bibitem{Temperton83b}
+Temperton, C., 1983b:  
+A note on prime factor FFT algorithms.  
+\textsl{J. Comp.\ Phys.}, \textbf{52}, 198--204.
+
+\bibitem{Temperton83c}
+Temperton, C., 1983c:  
+Fast mixed-radix real Fourier transforms.  
+\textsl{J.  Comp.\ Phys.}, \textbf{52}, 340--350.
+
+\end{thebibliography}
+
+\end{document}

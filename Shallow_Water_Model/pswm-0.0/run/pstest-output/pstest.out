@@ -1,0 +1,590 @@
+pswm version 0.90 (08/01/07)
+fcor=  8.365038747744E-05 beta=  0.000000000000E+00 cval=  7.000000000000E+01
+
+step     0:  time=0.00000E+00       minimum        maximum        average
+u:  x-component of velocity      -4.00000E+00    4.00000E+00    2.15016E-23
+v:  y-component of velocity      -4.00000E+00    4.00000E+00   -2.08803E-23
+p:  geopotential deviation       -4.33451E-01    1.95834E-17   -2.72345E-10
+d:  divergence                   -5.39089E-18    5.39089E-18    4.04600E-44
+z:  relative  vorticity          -3.57008E-05    2.63795E-04    2.87294E-29
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79496E-05    3.47446E-04    8.36504E-05
+Z:  enstrophy                     3.65096E-48    3.47940E-08    5.46543E-18
+K:  kinetic energy                1.06233E-34    5.57897E+02    4.76909E-07
+A:  available potential energy    9.68686E-40    6.57579E+00    2.06584E-09
+
+step     3:  time=1.80000E+03       minimum        maximum        average
+u:  x-component of velocity      -3.98458E+00    3.98458E+00   -1.89288E-24
+v:  y-component of velocity      -3.98458E+00    3.98458E+00    1.41453E-25
+p:  geopotential deviation       -8.01088E-01    8.78989E-03   -2.75211E-10
+d:  divergence                   -2.06274E-07    3.52555E-06    3.00263E-17
+z:  relative  vorticity          -3.56725E-05    2.61341E-04    5.61875E-20
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79779E-05    3.44991E-04    8.36504E-05
+Z:  enstrophy                     1.38233E-24    3.41495E-08    5.42354E-18
+K:  kinetic energy                5.64370E-29    5.52940E+02    4.73887E-07
+A:  available potential energy    2.31442E-14    2.24610E+01    4.45881E-09
+
+step     6:  time=3.60000E+03       minimum        maximum        average
+u:  x-component of velocity      -3.98955E+00    3.98955E+00   -6.89638E-25
+v:  y-component of velocity      -3.98955E+00    3.98955E+00   -6.29840E-26
+p:  geopotential deviation       -7.21937E-01    1.03928E-02   -3.11660E-10
+d:  divergence                   -3.26611E-06    6.47244E-07    3.53863E-16
+z:  relative  vorticity          -3.57173E-05    2.62724E-04   -1.85750E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79331E-05    3.46374E-04    8.36504E-05
+Z:  enstrophy                     4.83670E-21    3.45119E-08    5.44059E-18
+K:  kinetic energy                1.21136E-28    5.54030E+02    4.74100E-07
+A:  available potential energy    7.99392E-13    1.82418E+01    4.77619E-09
+
+step     9:  time=5.40000E+03       minimum        maximum        average
+u:  x-component of velocity      -3.99414E+00    3.99414E+00    1.55656E-24
+v:  y-component of velocity      -3.99414E+00    3.99414E+00    1.59747E-25
+p:  geopotential deviation       -6.74216E-01    2.28922E-03   -4.14932E-10
+d:  divergence                   -6.91759E-07    1.47482E-06    9.08777E-16
+z:  relative  vorticity          -3.57194E-05    2.62847E-04   -9.10437E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14185E-12
+e:  absolute  vorticity           4.79310E-05    3.46497E-04    8.36504E-05
+Z:  enstrophy                     2.14503E-22    3.45443E-08    5.45144E-18
+K:  kinetic energy                1.88942E-28    5.55655E+02    4.75343E-07
+A:  available potential energy    5.18824E-16    1.59099E+01    3.89257E-09
+
+step    12:  time=7.20000E+03       minimum        maximum        average
+u:  x-component of velocity      -3.99013E+00    3.99013E+00    1.20855E-24
+v:  y-component of velocity      -3.99013E+00    3.99013E+00    1.12528E-26
+p:  geopotential deviation       -7.24774E-01   -1.99758E-05   -4.91896E-10
+d:  divergence                   -3.17315E-07    4.95300E-07    4.90372E-16
+z:  relative  vorticity          -3.56835E-05    2.62384E-04   -1.58731E-16
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14188E-12
+e:  absolute  vorticity           4.79669E-05    3.46035E-04    8.36504E-05
+Z:  enstrophy                     4.54069E-24    3.44228E-08    5.43912E-18
+K:  kinetic energy                2.00883E-28    5.54391E+02    4.74758E-07
+A:  available potential energy    1.39662E-08    1.83854E+01    4.21782E-09
+
+step    15:  time=9.00000E+03       minimum        maximum        average
+u:  x-component of velocity      -3.99130E+00    3.99130E+00   -6.68734E-25
+v:  y-component of velocity      -3.99130E+00    3.99130E+00    1.11465E-26
+p:  geopotential deviation       -7.07953E-01    3.10659E-03   -4.07682E-10
+d:  divergence                   -2.68254E-07    2.81841E-07   -9.13967E-16
+z:  relative  vorticity          -3.57098E-05    2.62678E-04   -9.75243E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14184E-12
+e:  absolute  vorticity           4.79406E-05    3.46328E-04    8.36504E-05
+Z:  enstrophy                     3.26684E-20    3.44998E-08    5.44352E-18
+K:  kinetic energy                6.45356E-29    5.54638E+02    4.74661E-07
+A:  available potential energy    2.62628E-09    1.75419E+01    4.32928E-09
+
+step    18:  time=1.08000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99108E+00    3.99108E+00    6.23100E-25
+v:  y-component of velocity      -3.99108E+00    3.99108E+00    5.72679E-26
+p:  geopotential deviation       -7.06924E-01    1.38055E-02   -2.70894E-10
+d:  divergence                   -2.94448E-07    1.22923E-07   -1.02675E-15
+z:  relative  vorticity          -3.57069E-05    2.62538E-04    1.11690E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79435E-05    3.46188E-04    8.36504E-05
+Z:  enstrophy                     1.21639E-23    3.44631E-08    5.44323E-18
+K:  kinetic energy                2.32974E-30    5.54689E+02    4.74700E-07
+A:  available potential energy    1.69847E-09    1.74910E+01    4.10438E-09
+
+step    21:  time=1.26000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99176E+00    3.99176E+00    8.81060E-26
+v:  y-component of velocity      -3.99176E+00    3.99176E+00   -4.59600E-26
+p:  geopotential deviation       -6.90585E-01    7.89524E-03   -2.57494E-10
+d:  divergence                   -2.93648E-07    2.10234E-07    1.00435E-16
+z:  relative  vorticity          -3.56900E-05    2.62651E-04    8.81667E-18
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14177E-12
+e:  absolute  vorticity           4.79604E-05    3.46301E-04    8.36504E-05
+Z:  enstrophy                     1.26987E-21    3.44927E-08    5.44369E-18
+K:  kinetic energy                3.62771E-30    5.54982E+02    4.75051E-07
+A:  available potential energy    2.75480E-11    1.66918E+01    3.73583E-09
+
+step    24:  time=1.44000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99286E+00    3.99286E+00   -7.10275E-25
+v:  y-component of velocity      -3.99286E+00    3.99286E+00   -6.73445E-26
+p:  geopotential deviation       -6.78906E-01    9.92391E-03   -2.95150E-10
+d:  divergence                   -1.22902E-07    1.37130E-07    2.68619E-16
+z:  relative  vorticity          -3.56916E-05    2.62737E-04   -2.50972E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79587E-05    3.46388E-04    8.36504E-05
+Z:  enstrophy                     1.15263E-27    3.45155E-08    5.44618E-18
+K:  kinetic energy                4.76927E-29    5.55360E+02    4.75313E-07
+A:  available potential energy    1.06151E-13    1.61320E+01    3.57380E-09
+
+step    27:  time=1.62000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99159E+00    3.99159E+00    5.02347E-25
+v:  y-component of velocity      -3.99159E+00    3.99159E+00    1.14717E-26
+p:  geopotential deviation       -6.97167E-01    6.44941E-03   -3.02413E-10
+d:  divergence                   -1.82505E-07    2.47276E-07    2.04240E-17
+z:  relative  vorticity          -3.56984E-05    2.62622E-04   -1.51132E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79520E-05    3.46273E-04    8.36504E-05
+Z:  enstrophy                     7.43251E-29    3.44853E-08    5.44393E-18
+K:  kinetic energy                3.42763E-29    5.54889E+02    4.74932E-07
+A:  available potential energy    8.50806E-15    1.70115E+01    3.89991E-09
+
+step    30:  time=1.80000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99036E+00    3.99036E+00   -1.06939E-24
+v:  y-component of velocity      -3.99036E+00    3.99036E+00   -2.18817E-25
+p:  geopotential deviation       -7.17096E-01    7.68495E-03   -3.50615E-10
+d:  divergence                   -6.05036E-08    9.95165E-08    4.85393E-16
+z:  relative  vorticity          -3.57085E-05    2.62514E-04   -4.66631E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79419E-05    3.46165E-04    8.36504E-05
+Z:  enstrophy                     5.34072E-22    3.44568E-08    5.44142E-18
+K:  kinetic energy                1.16712E-29    5.54387E+02    4.74469E-07
+A:  available potential energy    1.48283E-10    1.79980E+01    4.32893E-09
+
+step    33:  time=1.98000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99089E+00    3.99089E+00   -1.69124E-24
+v:  y-component of velocity      -3.99089E+00    3.99089E+00    1.14299E-25
+p:  geopotential deviation       -7.14317E-01    3.90900E-05   -4.28616E-10
+d:  divergence                   -1.25129E-07    1.44263E-07    6.08661E-16
+z:  relative  vorticity          -3.57071E-05    2.62553E-04   -1.10053E-16
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14185E-12
+e:  absolute  vorticity           4.79433E-05    3.46203E-04    8.36504E-05
+Z:  enstrophy                     1.75122E-25    3.44669E-08    5.44253E-18
+K:  kinetic energy                6.11771E-29    5.54558E+02    4.74618E-07
+A:  available potential energy    3.76491E-16    1.78587E+01    4.30753E-09
+
+step    36:  time=2.16000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99169E+00    3.99169E+00    1.54855E-24
+v:  y-component of velocity      -3.99169E+00    3.99169E+00   -1.98943E-26
+p:  geopotential deviation       -7.03829E-01   -6.45524E-06   -4.35756E-10
+d:  divergence                   -6.94163E-08    5.72638E-08   -8.05240E-17
+z:  relative  vorticity          -3.57008E-05    2.62630E-04   -1.15188E-16
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14186E-12
+e:  absolute  vorticity           4.79496E-05    3.46281E-04    8.36504E-05
+Z:  enstrophy                     7.52259E-25    3.44874E-08    5.44417E-18
+K:  kinetic energy                6.54443E-29    5.54844E+02    4.74881E-07
+A:  available potential energy    1.45846E-09    1.73382E+01    4.11274E-09
+
+step    39:  time=2.34000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99140E+00    3.99140E+00   -3.39170E-24
+v:  y-component of velocity      -3.99140E+00    3.99140E+00   -2.98600E-26
+p:  geopotential deviation       -7.04446E-01    1.00095E-03   -3.62538E-10
+d:  divergence                   -1.39432E-07    5.36408E-08   -6.55521E-16
+z:  relative  vorticity          -3.57010E-05    2.62604E-04   -6.21274E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79494E-05    3.46254E-04    8.36504E-05
+Z:  enstrophy                     9.96861E-22    3.44804E-08    5.44340E-18
+K:  kinetic energy                4.35241E-29    5.54779E+02    4.74815E-07
+A:  available potential energy    2.96664E-11    1.73686E+01    4.06457E-09
+
+step    42:  time=2.52000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99123E+00    3.99123E+00    5.60557E-25
+v:  y-component of velocity      -3.99123E+00    3.99123E+00   -3.01838E-26
+p:  geopotential deviation       -7.02542E-01    7.73304E-03   -2.86751E-10
+d:  divergence                   -7.16843E-08    2.11406E-08   -5.57188E-16
+z:  relative  vorticity          -3.57003E-05    2.62588E-04   -9.52450E-18
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79500E-05    3.46239E-04    8.36504E-05
+Z:  enstrophy                     2.74236E-25    3.44764E-08    5.44292E-18
+K:  kinetic energy                7.68665E-29    5.54742E+02    4.74782E-07
+A:  available potential energy    1.34341E-13    1.72748E+01    3.99586E-09
+
+step    45:  time=2.70000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99190E+00    3.99190E+00    4.96204E-25
+v:  y-component of velocity      -3.99190E+00    3.99190E+00   -7.57754E-26
+p:  geopotential deviation       -6.90865E-01    7.39367E-03   -2.67745E-10
+d:  divergence                   -1.12374E-07    5.85433E-08   -6.35518E-17
+z:  relative  vorticity          -3.56954E-05    2.62655E-04    2.25040E-18
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14177E-12
+e:  absolute  vorticity           4.79550E-05    3.46305E-04    8.36504E-05
+Z:  enstrophy                     9.92858E-27    3.44937E-08    5.44437E-18
+K:  kinetic energy                7.80321E-29    5.55017E+02    4.75017E-07
+A:  available potential energy    3.40117E-10    1.67053E+01    3.77346E-09
+
+step    48:  time=2.88000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99218E+00    3.99218E+00   -1.13507E-25
+v:  y-component of velocity      -3.99218E+00    3.99218E+00    1.91373E-25
+p:  geopotential deviation       -6.88153E-01    4.17434E-03   -2.95758E-10
+d:  divergence                   -1.18024E-08    5.81216E-08    2.60314E-16
+z:  relative  vorticity          -3.56943E-05    2.62678E-04   -1.79629E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14179E-12
+e:  absolute  vorticity           4.79561E-05    3.46328E-04    8.36504E-05
+Z:  enstrophy                     1.89296E-24    3.44998E-08    5.44494E-18
+K:  kinetic energy                7.31616E-29    5.55109E+02    4.75101E-07
+A:  available potential energy    1.10018E-09    1.65744E+01    3.72546E-09
+
+step    51:  time=3.06000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99141E+00    3.99141E+00   -7.83861E-25
+v:  y-component of velocity      -3.99141E+00    3.99141E+00    1.13688E-25
+p:  geopotential deviation       -7.01531E-01    1.68283E-03   -3.35607E-10
+d:  divergence                   -1.34160E-08    1.53815E-07    3.15333E-16
+z:  relative  vorticity          -3.57008E-05    2.62605E-04   -4.23162E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14181E-12
+e:  absolute  vorticity           4.79495E-05    3.46256E-04    8.36504E-05
+Z:  enstrophy                     1.46176E-23    3.44808E-08    5.44344E-18
+K:  kinetic energy                1.08207E-28    5.54796E+02    4.74832E-07
+A:  available potential energy    8.77648E-13    1.72251E+01    3.99369E-09
+
+step    54:  time=3.24000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99073E+00    3.99073E+00   -1.80016E-25
+v:  y-component of velocity      -3.99073E+00    3.99073E+00   -1.17707E-25
+p:  geopotential deviation       -7.13571E-01    2.68833E-04   -3.78773E-10
+d:  divergence                   -1.98636E-09    5.03116E-08    3.48565E-16
+z:  relative  vorticity          -3.57065E-05    2.62545E-04   -7.02147E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14183E-12
+e:  absolute  vorticity           4.79439E-05    3.46195E-04    8.36504E-05
+Z:  enstrophy                     7.58472E-22    3.44649E-08    5.44222E-18
+K:  kinetic energy                6.04441E-30    5.54516E+02    4.74581E-07
+A:  available potential energy    2.76967E-14    1.78214E+01    4.26258E-09
+
+step    57:  time=3.42000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99100E+00    3.99100E+00   -1.18814E-24
+v:  y-component of velocity      -3.99100E+00    3.99100E+00    7.94794E-26
+p:  geopotential deviation       -7.11909E-01   -8.81649E-06   -4.11880E-10
+d:  divergence                   -6.97822E-08    3.51631E-08    2.35705E-16
+z:  relative  vorticity          -3.57054E-05    2.62567E-04   -9.63496E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14185E-12
+e:  absolute  vorticity           4.79450E-05    3.46218E-04    8.36504E-05
+Z:  enstrophy                     2.19910E-26    3.44708E-08    5.44278E-18
+K:  kinetic energy                1.42533E-28    5.54600E+02    4.74657E-07
+A:  available potential energy    2.72056E-09    1.77385E+01    4.25127E-09
+
+step    60:  time=3.60000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99151E+00    3.99151E+00   -8.45477E-25
+v:  y-component of velocity      -3.99151E+00    3.99151E+00   -3.64975E-26
+p:  geopotential deviation       -7.04710E-01   -2.48466E-06   -3.99178E-10
+d:  divergence                   -5.05684E-08    3.28870E-08   -1.77420E-16
+z:  relative  vorticity          -3.57016E-05    2.62612E-04   -8.99152E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14184E-12
+e:  absolute  vorticity           4.79488E-05    3.46262E-04    8.36504E-05
+Z:  enstrophy                     5.59508E-27    3.44825E-08    5.44368E-18
+K:  kinetic energy                2.31121E-28    5.54792E+02    4.74830E-07
+A:  available potential energy    2.16074E-10    1.73816E+01    4.09502E-09
+
+step    63:  time=3.78000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99152E+00    3.99152E+00    9.06592E-25
+v:  y-component of velocity      -3.99152E+00    3.99152E+00    1.21216E-26
+p:  geopotential deviation       -7.01258E-01    5.30767E-04   -3.40845E-10
+d:  divergence                   -6.17794E-08    3.35470E-09   -5.05037E-16
+z:  relative  vorticity          -3.56995E-05    2.62616E-04   -4.82741E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14181E-12
+e:  absolute  vorticity           4.79509E-05    3.46266E-04    8.36504E-05
+Z:  enstrophy                     1.82031E-21    3.44835E-08    5.44362E-18
+K:  kinetic energy                1.73248E-28    5.54827E+02    4.74862E-07
+A:  available potential energy    8.11588E-13    1.72117E+01    3.99031E-09
+
+step    66:  time=3.96000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99152E+00    3.99152E+00   -1.14752E-24
+v:  y-component of velocity      -3.99152E+00    3.99152E+00    1.24136E-27
+p:  geopotential deviation       -6.97924E-01    5.21999E-03   -2.88528E-10
+d:  divergence                   -4.11002E-08    1.38013E-10   -3.74834E-16
+z:  relative  vorticity          -3.56982E-05    2.62618E-04   -1.13079E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79522E-05    3.46268E-04    8.36504E-05
+Z:  enstrophy                     3.27854E-25    3.44840E-08    5.44357E-18
+K:  kinetic energy                3.55347E-29    5.54856E+02    4.74882E-07
+A:  available potential energy    1.62074E-10    1.70484E+01    3.90740E-09
+
+step    69:  time=4.14000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99181E+00    3.99181E+00    5.68367E-25
+v:  y-component of velocity      -3.99181E+00    3.99181E+00   -7.03434E-26
+p:  geopotential deviation       -6.93081E-01    5.47065E-03   -2.81821E-10
+d:  divergence                   -3.51576E-08    2.39199E-08    1.32039E-17
+z:  relative  vorticity          -3.56967E-05    2.62644E-04   -7.42990E-18
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14178E-12
+e:  absolute  vorticity           4.79537E-05    3.46294E-04    8.36504E-05
+Z:  enstrophy                     3.17677E-24    3.44909E-08    5.44417E-18
+K:  kinetic energy                7.08177E-29    5.54971E+02    4.74976E-07
+A:  available potential energy    6.98554E-13    1.68126E+01    3.81562E-09
+
+step    72:  time=4.32000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99179E+00    3.99179E+00   -1.24101E-24
+v:  y-component of velocity      -3.99179E+00    3.99179E+00    7.55444E-26
+p:  geopotential deviation       -6.94797E-01    2.34107E-03   -3.12837E-10
+d:  divergence                   -8.28676E-09    5.75925E-08    2.79092E-16
+z:  relative  vorticity          -3.56976E-05    2.62642E-04   -2.85227E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79527E-05    3.46292E-04    8.36504E-05
+Z:  enstrophy                     1.41550E-23    3.44903E-08    5.44419E-18
+K:  kinetic energy                8.44462E-29    5.54949E+02    4.74960E-07
+A:  available potential energy    4.13420E-13    1.68960E+01    3.85710E-09
+
+step    75:  time=4.50000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99129E+00    3.99129E+00    5.43385E-25
+v:  y-component of velocity      -3.99129E+00    3.99129E+00    4.95707E-27
+p:  geopotential deviation       -7.04255E-01    6.46242E-06   -3.54467E-10
+d:  divergence                   -1.22239E-10    9.31517E-08    3.29526E-16
+z:  relative  vorticity          -3.57020E-05    2.62595E-04   -5.57605E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79484E-05    3.46245E-04    8.36504E-05
+Z:  enstrophy                     2.29977E-24    3.44780E-08    5.44324E-18
+K:  kinetic energy                9.53412E-31    5.54739E+02    4.74780E-07
+A:  available potential energy    8.58586E-17    1.73591E+01    4.05703E-09
+
+step    78:  time=4.68000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99096E+00    3.99096E+00   -7.52179E-26
+v:  y-component of velocity      -3.99096E+00    3.99096E+00   -2.44525E-26
+p:  geopotential deviation       -7.11072E-01    3.31194E-06   -3.87275E-10
+d:  divergence                    2.22992E-10    2.44604E-08    2.41419E-16
+z:  relative  vorticity          -3.57052E-05    2.62564E-04   -7.81161E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14183E-12
+e:  absolute  vorticity           4.79452E-05    3.46214E-04    8.36504E-05
+Z:  enstrophy                     9.16987E-26    3.44699E-08    5.44265E-18
+K:  kinetic energy                5.22188E-29    5.54597E+02    4.74651E-07
+A:  available potential energy    1.29627E-13    1.76968E+01    4.21519E-09
+
+step    81:  time=4.86000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99114E+00    3.99114E+00   -5.37022E-25
+v:  y-component of velocity      -3.99114E+00    3.99114E+00   -2.01253E-26
+p:  geopotential deviation       -7.09430E-01   -5.29058E-06   -3.96398E-10
+d:  divergence                   -4.55889E-08    2.25753E-08    3.49650E-17
+z:  relative  vorticity          -3.57042E-05    2.62580E-04   -8.60096E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14184E-12
+e:  absolute  vorticity           4.79462E-05    3.46230E-04    8.36504E-05
+Z:  enstrophy                     6.50137E-29    3.44741E-08    5.44300E-18
+K:  kinetic energy                7.71845E-29    5.54656E+02    4.74705E-07
+A:  available potential energy    9.79657E-10    1.76152E+01    4.18957E-09
+
+step    84:  time=5.04000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99145E+00    3.99145E+00    2.34513E-24
+v:  y-component of velocity      -3.99145E+00    3.99145E+00    2.26199E-26
+p:  geopotential deviation       -7.03856E-01   -9.44774E-06   -3.71929E-10
+d:  divergence                   -4.61388E-08    1.34775E-08   -2.38765E-16
+z:  relative  vorticity          -3.57010E-05    2.62608E-04   -7.05179E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79494E-05    3.46259E-04    8.36504E-05
+Z:  enstrophy                     8.17352E-23    3.44815E-08    5.44354E-18
+K:  kinetic energy                3.58449E-29    5.54785E+02    4.74824E-07
+A:  available potential energy    3.12409E-09    1.73395E+01    4.05876E-09
+
+step    87:  time=5.22000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99159E+00    3.99159E+00   -1.15958E-24
+v:  y-component of velocity      -3.99159E+00    3.99159E+00   -2.38826E-26
+p:  geopotential deviation       -6.99254E-01    1.65557E-03   -3.26260E-10
+d:  divergence                   -3.93116E-08    5.37845E-10   -3.76048E-16
+z:  relative  vorticity          -3.56988E-05    2.62622E-04   -3.86685E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79516E-05    3.46273E-04    8.36504E-05
+Z:  enstrophy                     4.61115E-24    3.44853E-08    5.44374E-18
+K:  kinetic energy                4.56283E-29    5.54862E+02    4.74889E-07
+A:  available potential energy    1.14624E-15    1.71134E+01    3.94459E-09
+
+step    90:  time=5.40000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99165E+00    3.99165E+00   -1.27316E-24
+v:  y-component of velocity      -3.99165E+00    3.99165E+00    8.41055E-26
+p:  geopotential deviation       -6.96252E-01    4.60401E-03   -2.93562E-10
+d:  divergence                   -2.34149E-08   -1.36410E-10   -2.23724E-16
+z:  relative  vorticity          -3.56978E-05    2.62629E-04   -1.52831E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14179E-12
+e:  absolute  vorticity           4.79526E-05    3.46280E-04    8.36504E-05
+Z:  enstrophy                     5.32375E-25    3.44871E-08    5.44385E-18
+K:  kinetic energy                3.77016E-28    5.54903E+02    4.74919E-07
+A:  available potential energy    6.34337E-10    1.69668E+01    3.87802E-09
+
+step    93:  time=5.58000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99168E+00    3.99168E+00    2.18913E-24
+v:  y-component of velocity      -3.99168E+00    3.99168E+00   -2.79058E-26
+p:  geopotential deviation       -6.95620E-01    3.86281E-03   -2.97484E-10
+d:  divergence                   -1.89197E-08    2.11060E-08    8.21082E-17
+z:  relative  vorticity          -3.56978E-05    2.62633E-04   -1.78775E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14179E-12
+e:  absolute  vorticity           4.79526E-05    3.46283E-04    8.36504E-05
+Z:  enstrophy                     6.83587E-27    3.44879E-08    5.44395E-18
+K:  kinetic energy                5.24410E-29    5.54916E+02    4.74930E-07
+A:  available potential energy    2.27644E-09    1.69361E+01    3.86742E-09
+
+step    96:  time=5.76000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99155E+00    3.99155E+00    5.73700E-25
+v:  y-component of velocity      -3.99155E+00    3.99155E+00   -6.72128E-26
+p:  geopotential deviation       -6.99196E-01    1.03158E-03   -3.29692E-10
+d:  divergence                   -5.15303E-09    4.76389E-08    2.79132E-16
+z:  relative  vorticity          -3.56996E-05    2.62619E-04   -3.98636E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79508E-05    3.46269E-04    8.36504E-05
+Z:  enstrophy                     4.53123E-25    3.44844E-08    5.44373E-18
+K:  kinetic energy                5.94499E-28    5.54849E+02    4.74874E-07
+A:  available potential energy    1.64525E-12    1.71106E+01    3.94710E-09
+
+step    99:  time=5.94000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99126E+00    3.99126E+00    2.24003E-24
+v:  y-component of velocity      -3.99126E+00    3.99126E+00   -5.74579E-26
+p:  geopotential deviation       -7.05470E-01    7.85027E-07   -3.65493E-10
+d:  divergence                    1.52634E-10    5.28649E-08    2.74925E-16
+z:  relative  vorticity          -3.57026E-05    2.62592E-04   -6.39140E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79478E-05    3.46242E-04    8.36504E-05
+Z:  enstrophy                     5.00180E-23    3.44772E-08    5.44321E-18
+K:  kinetic energy                6.03049E-28    5.54721E+02    4.74761E-07
+A:  available potential energy    2.60057E-14    1.74191E+01    4.08875E-09
+
+step   102:  time=6.12000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99109E+00    3.99109E+00   -1.78197E-24
+v:  y-component of velocity      -3.99109E+00    3.99109E+00   -5.37713E-26
+p:  geopotential deviation       -7.09214E-01   -8.64530E-06   -3.85692E-10
+d:  divergence                   -6.61947E-11    1.63579E-08    1.33157E-16
+z:  relative  vorticity          -3.57041E-05    2.62576E-04   -7.80026E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14183E-12
+e:  absolute  vorticity           4.79463E-05    3.46227E-04    8.36504E-05
+Z:  enstrophy                     3.92134E-26    3.44731E-08    5.44290E-18
+K:  kinetic energy                6.22415E-29    5.54647E+02    4.74695E-07
+A:  available potential energy    2.61594E-09    1.76045E+01    4.17656E-09
+
+step   105:  time=6.30000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99122E+00    3.99122E+00   -4.41618E-25
+v:  y-component of velocity      -3.99122E+00    3.99122E+00   -3.80373E-26
+p:  geopotential deviation       -7.07335E-01    4.25671E-06   -3.80887E-10
+d:  divergence                   -3.79402E-08    1.44580E-08   -7.23975E-17
+z:  relative  vorticity          -3.57030E-05    2.62588E-04   -7.58054E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14183E-12
+e:  absolute  vorticity           4.79474E-05    3.46238E-04    8.36504E-05
+Z:  enstrophy                     6.33772E-25    3.44762E-08    5.44313E-18
+K:  kinetic energy                3.53736E-27    5.54697E+02    4.74743E-07
+A:  available potential energy    4.66811E-15    1.75113E+01    4.13462E-09
+
+step   108:  time=6.48000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99148E+00    3.99148E+00    1.38548E-24
+v:  y-component of velocity      -3.99148E+00    3.99148E+00   -2.37215E-26
+p:  geopotential deviation       -7.02244E-01    7.95666E-06   -3.52761E-10
+d:  divergence                   -4.45366E-08    4.98145E-09   -2.48631E-16
+z:  relative  vorticity          -3.57004E-05    2.62612E-04   -5.71531E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14181E-12
+e:  absolute  vorticity           4.79500E-05    3.46262E-04    8.36504E-05
+Z:  enstrophy                     6.67265E-23    3.44825E-08    5.44358E-18
+K:  kinetic energy                8.79053E-29    5.54807E+02    4.74841E-07
+A:  available potential energy    1.80947E-13    1.72602E+01    4.01647E-09
+
+step   111:  time=6.66000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99163E+00    3.99163E+00   -2.84929E-24
+v:  y-component of velocity      -3.99163E+00    3.99163E+00   -4.52276E-26
+p:  geopotential deviation       -6.98105E-01    2.23849E-03   -3.18259E-10
+d:  divergence                   -2.50795E-08    2.74373E-10   -2.69942E-16
+z:  relative  vorticity          -3.56985E-05    2.62626E-04   -3.31247E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79519E-05    3.46277E-04    8.36504E-05
+Z:  enstrophy                     3.62540E-25    3.44863E-08    5.44383E-18
+K:  kinetic energy                1.56216E-27    5.54881E+02    4.74903E-07
+A:  available potential energy    1.10992E-15    1.70573E+01    3.92050E-09
+
+step   114:  time=6.84000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99164E+00    3.99164E+00    1.58568E-24
+v:  y-component of velocity      -3.99164E+00    3.99164E+00    2.27385E-26
+p:  geopotential deviation       -6.96633E-01    3.75168E-03   -3.01242E-10
+d:  divergence                   -1.87603E-08   -7.52793E-11   -1.01809E-16
+z:  relative  vorticity          -3.56981E-05    2.62629E-04   -2.08267E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14179E-12
+e:  absolute  vorticity           4.79523E-05    3.46279E-04    8.36504E-05
+Z:  enstrophy                     3.21178E-26    3.44869E-08    5.44385E-18
+K:  kinetic energy                1.40819E-29    5.54898E+02    4.74915E-07
+A:  available potential energy    4.32274E-13    1.69854E+01    3.88701E-09
+
+step   117:  time=7.02000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99158E+00    3.99158E+00   -4.39043E-24
+v:  y-component of velocity      -3.99158E+00    3.99158E+00   -5.61795E-26
+p:  geopotential deviation       -6.97908E-01    2.53576E-03   -3.12859E-10
+d:  divergence                   -1.26507E-08    2.22012E-08    1.28400E-16
+z:  relative  vorticity          -3.56989E-05    2.62623E-04   -2.84743E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79514E-05    3.46273E-04    8.36504E-05
+Z:  enstrophy                     1.64852E-23    3.44854E-08    5.44377E-18
+K:  kinetic energy                1.15083E-27    5.54870E+02    4.74890E-07
+A:  available potential energy    1.02130E-14    1.70477E+01    3.91595E-09
+
+step   120:  time=7.20000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99143E+00    3.99143E+00    2.32068E-24
+v:  y-component of velocity      -3.99143E+00    3.99143E+00    7.13755E-26
+p:  geopotential deviation       -7.01702E-01    1.30796E-04   -3.42819E-10
+d:  divergence                   -1.47004E-09    3.91255E-08    2.50545E-16
+z:  relative  vorticity          -3.57008E-05    2.62608E-04   -4.88804E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14181E-12
+e:  absolute  vorticity           4.79496E-05    3.46259E-04    8.36504E-05
+Z:  enstrophy                     1.28231E-23    3.44815E-08    5.44352E-18
+K:  kinetic energy                6.75013E-28    5.54797E+02    4.74827E-07
+A:  available potential energy    1.67195E-17    1.72335E+01    4.00247E-09
+
+step   123:  time=7.38000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99124E+00    3.99124E+00    1.81713E-24
+v:  y-component of velocity      -3.99124E+00    3.99124E+00   -5.57706E-26
+p:  geopotential deviation       -7.06067E-01    3.80560E-06   -3.70258E-10
+d:  divergence                    1.90211E-10    3.10062E-08    2.03084E-16
+z:  relative  vorticity          -3.57028E-05    2.62590E-04   -6.76911E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79476E-05    3.46241E-04    8.36504E-05
+Z:  enstrophy                     1.07104E-25    3.44768E-08    5.44318E-18
+K:  kinetic energy                1.28673E-26    5.54712E+02    4.74752E-07
+A:  available potential energy    2.52932E-13    1.74486E+01    4.10328E-09
+
+step   126:  time=7.56000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99118E+00    3.99118E+00   -2.06866E-25
+v:  y-component of velocity      -3.99118E+00    3.99118E+00   -2.14840E-26
+p:  geopotential deviation       -7.07651E-01   -6.77013E-06   -3.79395E-10
+d:  divergence                   -4.49204E-09    1.40300E-08    4.36938E-17
+z:  relative  vorticity          -3.57033E-05    2.62585E-04   -7.43579E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14183E-12
+e:  absolute  vorticity           4.79471E-05    3.46235E-04    8.36504E-05
+Z:  enstrophy                     1.59592E-27    3.44753E-08    5.44306E-18
+K:  kinetic energy                3.32287E-27    5.54684E+02    4.74729E-07
+A:  available potential energy    1.60421E-09    1.75270E+01    4.14028E-09
+
+step   129:  time=7.74000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99132E+00    3.99132E+00   -2.73088E-24
+v:  y-component of velocity      -3.99132E+00    3.99132E+00    5.18423E-26
+p:  geopotential deviation       -7.05197E-01   -6.12050E-06   -3.66528E-10
+d:  divergence                   -3.43445E-08    9.00362E-09   -1.28855E-16
+z:  relative  vorticity          -3.57019E-05    2.62597E-04   -6.62179E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79485E-05    3.46247E-04    8.36504E-05
+Z:  enstrophy                     2.41483E-23    3.44786E-08    5.44330E-18
+K:  kinetic energy                7.13482E-27    5.54740E+02    4.74780E-07
+A:  available potential energy    1.31112E-09    1.74056E+01    4.08306E-09
+
+step   132:  time=7.92000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99152E+00    3.99152E+00   -2.06683E-24
+v:  y-component of velocity      -3.99152E+00    3.99152E+00   -1.36706E-26
+p:  geopotential deviation       -7.00931E-01    2.86431E-04   -3.39893E-10
+d:  divergence                   -3.46742E-08    8.07638E-10   -2.22145E-16
+z:  relative  vorticity          -3.56999E-05    2.62616E-04   -4.82788E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14181E-12
+e:  absolute  vorticity           4.79505E-05    3.46266E-04    8.36504E-05
+Z:  enstrophy                     1.42632E-24    3.44835E-08    5.44364E-18
+K:  kinetic energy                1.08375E-26    5.54828E+02    4.74857E-07
+A:  available potential energy    2.55984E-13    1.71956E+01    3.98454E-09
+
+step   135:  time=8.10000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99162E+00    3.99162E+00    4.44679E-25
+v:  y-component of velocity      -3.99162E+00    3.99162E+00    1.21409E-26
+p:  geopotential deviation       -6.97923E-01    2.39414E-03   -3.15965E-10
+d:  divergence                   -1.44265E-08   -8.67955E-11   -1.77218E-16
+z:  relative  vorticity          -3.56985E-05    2.62626E-04   -3.15482E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79519E-05    3.46276E-04    8.36504E-05
+Z:  enstrophy                     7.45105E-27    3.44862E-08    5.44382E-18
+K:  kinetic energy                3.81038E-27    5.54881E+02    4.74901E-07
+A:  available potential energy    5.58483E-15    1.70484E+01    3.91630E-09
+
+step   138:  time=8.28000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99160E+00    3.99160E+00   -9.41635E-25
+v:  y-component of velocity      -3.99160E+00    3.99160E+00    4.88613E-26
+p:  geopotential deviation       -6.97609E-01    2.87219E-03   -3.10277E-10
+d:  divergence                   -1.41958E-08    9.02600E-09   -1.63582E-17
+z:  relative  vorticity          -3.56986E-05    2.62625E-04   -2.71064E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14179E-12
+e:  absolute  vorticity           4.79518E-05    3.46275E-04    8.36504E-05
+Z:  enstrophy                     1.28333E-28    3.44859E-08    5.44380E-18
+K:  kinetic energy                9.77424E-27    5.54879E+02    4.74898E-07
+A:  available potential energy    2.69724E-10    1.70330E+01    3.90887E-09
+
+step   141:  time=8.46000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99150E+00    3.99150E+00   -1.74547E-24
+v:  y-component of velocity      -3.99150E+00    3.99150E+00   -3.75813E-26
+p:  geopotential deviation       -6.99792E-01    1.39970E-03   -3.26109E-10
+d:  divergence                   -7.12691E-09    2.59479E-08    1.50073E-16
+z:  relative  vorticity          -3.56998E-05    2.62615E-04   -3.76774E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14180E-12
+e:  absolute  vorticity           4.79506E-05    3.46266E-04    8.36504E-05
+Z:  enstrophy                     5.14386E-25    3.44834E-08    5.44363E-18
+K:  kinetic energy                1.49613E-27    5.54833E+02    4.74858E-07
+A:  available potential energy    1.72254E-13    1.71398E+01    3.95751E-09
+
+step   144:  time=8.64000E+04       minimum        maximum        average
+u:  x-component of velocity      -3.99136E+00    3.99136E+00    2.22280E-24
+v:  y-component of velocity      -3.99136E+00    3.99136E+00   -7.94227E-26
+p:  geopotential deviation       -7.03268E-01    9.40640E-06   -3.51848E-10
+d:  divergence                   -9.95688E-11    2.97328E-08    2.07484E-16
+z:  relative  vorticity          -3.57014E-05    2.62602E-04   -5.53327E-17
+q:  potential vorticity          -3.89085E-01    7.75330E-01    2.14182E-12
+e:  absolute  vorticity           4.79490E-05    3.46252E-04    8.36504E-05
+Z:  enstrophy                     9.45853E-25    3.44798E-08    5.44339E-18
+K:  kinetic energy                1.79839E-26    5.54767E+02    4.74800E-07
+A:  available potential energy    1.64375E-15    1.73105E+01    4.03757E-09

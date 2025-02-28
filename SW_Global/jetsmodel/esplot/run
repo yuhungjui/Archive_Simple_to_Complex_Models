@@ -1,0 +1,15 @@
+pgf77 order0.f 
+a.out
+
+pgf77 order80.f 
+a.out
+
+ncargf77 doc0.f pl2d.f
+a.out
+ncgm2cgm<gmeta>0es.cgm
+
+ncargf77 doc80.f pl2d.f
+a.out
+ncgm2cgm<gmeta>3000es.cgm
+
+rm -f *.o a.out

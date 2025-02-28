@@ -1,0 +1,1034 @@
+      PROGRAM VTRANS
+C
+C
+C       LATEST REVISION     21 MAY 1984
+C
+C   DISCLAIMER
+C
+C       THIS DRIVER PROGRAM FOR  VTRANS  IS NOT CLAIMED TO BE VERY
+C       UNDERSTANDABLE, WELL TESTED, OR EVEN USEFUL--USE AT YOUR RISK.
+C
+C   PURPOSE
+C
+C       THIS PROGRAM USES  VTRANS  ROUTINES TO SOLVE THE VERTICAL
+C       PROBLEM AND COMPUTE VERTICAL TRANSFORMS FOR TEMPERATURE
+C       PROFILES AND FUNCTIONS SPECIFIED AT DISCRETE PRESSURE LEVELS.
+C
+C   INPUT
+C
+C       THE INPUT TO THIS PROGRAM CONSISTS OF CARDS WHICH SPECIFY THE
+C       DATA TO BE USED AND WHAT TO DO WITH IT.  DIRECTIVE CARDS ARE
+C       RECOGNIZED BY THEIR FIRST THREE CHARACTERS (IN COLUMNS 1-3)
+C       AND MAY CONTAIN VARIOUS OTHER PARAMETERS.  DATA CARDS BEGIN
+C       WITH AT LEAST ONE BLANK (OR '?' IF THE CARD IS TO BE IGNORED).
+C       EACH CARD READ IS ECHOED ON THE OUTPUT, AND UNRECOGNIZED CARDS
+C       ARE TREATED AS COMMENTS AND IGNORED.
+C
+C       DIRECTIVE   PARAMETERS
+C       ---------   ----------
+C
+C       TEMPERATURE SPECIFIES A BASIC STATE TEMPERATURE PROFILE FROM
+C       ---         DATA.  COLUMNS 21-80 BECOME A LABEL FOR THE BASIC
+C                   STATE.  THIS CARD MUST BE FOLLOWED BY DATA CARDS
+C                   GIVING THE TEMPERATURE DATA  (P(I), T(I)), ONE DATA
+C                   POINT PER CARD IN 2F10 FORMAT, WITH PRESSURE IN ANY
+C                   UNITS (BE CONSISTENT THROUGHOUT) AND TEMPERATURE IN
+C                   EITHER CELSIUS OR KELVIN.  THE MINIMUM AND MAXIMUM
+C                   PRESSURES INPUT BECOME THE TOP AND BOTTOM PRESSURES.
+C
+C       GAMMA       SPECIFIES AN ANALYTICAL BASIC STATE OF CONSTANT
+C       ---         STATIC STABILITY  GAMMA = KAPPA*T - P*DT/DP.
+C                   PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                     GAMMA   (IN KELVIN)    21-30     F       23.79
+C                     TBOT    SURFACE TEMP.  31-40     F       29.38
+C                     PTOP    TOP    PRESS.  41-50     F       100.0
+C                     PBOT    BOTTOM PRESS.  51-60     F      1010.0
+C                     DP      P INCREMENT    61-70     F        PTOP
+C                   HERE  DP  IS USED IN GENERATING DISCRETE TEMPERATURE
+C                   DATA FROM THIS ANALYTICALLY SPECIFIED BASIC STATE.
+C
+C   **** NOTE:  ONLY ONE BASIC STATE MAY BE SPECIFIED AT A TIME ****
+C
+C       TOP         REDEFINES THE TOP PRESSURE FOR TEMP. AND FUNCTION
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      PTOP   NEW TOP PRESS  21-30     F      OLD PTOP
+C                   NOTE:  CAN ONLY INCREASE TOP PRESSURE (NOT DECREASE)
+C
+C       NSOLVE      SOLVES THE VERTICAL STRUCTURE PROBLEM NUMERICALLY
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                       N     TRUNCATION     16-20     I         16
+C                      NDEG   POLY. DEGREE   21-30     I        NT-1
+C                     NGAUSS  GAUSS POINTS   31-40     I       2*NDEG
+C                   WHERE  NT  IS THE NUMBER OF TEMPERATURE DATA POINTS.
+C                   (NDEG  AND  NGAUSS  REFER TO THE CYEBYSHEV FIT TO
+C                   THE STABILITY PROFILE--SEE ALSO  STABILITY  BELOW)
+C
+C       ASOLVE      SOLVES THE VERTICAL STRUCTURE PROBLEM ANALYTICALLY
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      N      TRUNCATION     16-20     I         32
+C                      TOL    C TOLERANCE    21-30     F       10E-10
+C
+C   **** NOTE:  ONLY ONE SOLUTION METHOD MAY BE USED AT A TIME ****
+C
+C       RNSOLVE     SOLVES REFERENCE PROBLEM (FOR ERRORS) NUMERICALLY
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      NREF   REF. TRUNC.    16-20     I         96
+C                      NDEG   POLY. DEGREE   21-30     I        NT-1
+C                     NGAUSS  GAUSS POINTS   31-40     I       2*NDEG
+C                   WHERE  NT  IS THE NUMBER OF TEMPERATURE DATA POINTS.
+C                   (NDEG  AND  NGAUSS  REFER TO THE CYEBYSHEV FIT TO
+C                   THE STABILITY PROFILE--SEE ALSO  STABILITY  BELOW)
+C
+C       RASOLVE     SOLVES REFERENCE PROBLEM (FOR ERRORS) ANALYTICALLY
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      NREF   REF. TRUNC.    16-20     I         96
+C                      TOL    C TOLERANCE    21-30     F    (REL)10E-15
+C
+C   **** NOTE:  ONLY ONE SOLUTION METHOD MAY BE USED AT A TIME ****
+C
+C       OUTPUT      SPECIFIES OUTPUT PRESSURE LEVELS AS FOLLOWS:
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                     PMIN    MIN PRESSURE   21-30     F        PTOP
+C                     PMAX    MAX PRESSURE   31-40     F        PBOT
+C                     DP      INCREMENT      41-50     F        PTOP
+C                   IF PMIN=-1.0 THE TEMPERATURE DATA PRESSURES ARE USED
+C                   IF PMIN=-2.0 THE FUNCTION    DATA PRESSURES ARE USED
+C                   IF PMIN=-3.0 THIS CARD MUST BE FOLLOWED BY DATA
+C                   CARDS GIVING THE DESIRED OUTPUT PRESSURE LEVELS,
+C                   ONE VALUE PER CARD, IN F10 FORMAT.
+C
+C       SOLUTION    PRINTS SOLUTION OF THE VERTICAL STRUCTURE PROBLEM
+C       ---         (PHASE SPEEDS AND VERTICAL STRUCTURE FUNCTIONS)
+C                   PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      MD      DERIVATIVE       20     I         0
+C                      K1      START MODE    21-30     I         0
+C                      K2      STOP  MODE    31-40     I         N
+C                      K3      INCREMENT     41-50     I         1
+C                   WHERE  MD = 0  MEANS PRINT  VALUES  OF FUNCTION
+C                          MD = 1  MEANS PRINT  D/DP    OF FUNCTION
+C                          MD = 2  MEANS PRINT -D/DLOGP OF FUNCTION
+C
+C       STABILITY   TESTS THE FIT OF A POLYNOMIAL STABILITY PROFILE
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                      NDEG   POLY. DEGREE   21-30     I        NT-1
+C                     NGAUSS  GAUSS POINTS   31-40     I       2*NDEG
+C                   WHERE  NT  IS THE NUMBER OF TEMPERATURE DATA POINTS.
+C
+C       ERRORS      PRINTS ERRORS IN THE (NUMERICAL) SOLUTION OF THE
+C       ---         VERTICAL STRUCTURE PROBLEM, COMPARED TO THE REFERNCE
+C                   SOLUTION (SEE  VRN  AND  VRA  ABOVE).  PARAMETERS:
+C                   K1, K2, K3  EXACTLY AS FOR  SOLUTION  (SEE ABOVE).
+C
+C       RECONSTRUCT RECONSTRUCTS THE VERTICAL STRUCTURE FUNCTIONS FROM
+C       ---         THEIR VALUES AT DISCRETE LEVELS AND PRINTS THE MODE-
+C                   BY-MODE ENERGETICS OF RECONSTRUCTION.  PARAMETERS:
+C                   K1, K2, K3  EXACTLY AS FOR  SOLUTION  (SEE ABOVE).
+C                   MUST BE FOLLOWED BY DATA CARDS GIVING THE DESIRED
+C                   LEVELS TO BE USED (ONE PER CARD, F FORMAT).  THESE
+C                   CARDS MUST BE FOLLOWED BY A CARD GIVING A CHARACTER
+C                   LABEL FOR THE LEVELS (BEGINNING IN COLUMN 1).
+C
+C       FUNCTION    SPECIFIES A FUNCTION TO BE TRANSFORMED FROM DATA.
+C       ---         COLUMNS 21-80 BECOME A LABEL FOR THE FUNCTION.
+C                   THIS CARD MUST BE FOLLOWED BY DATA CARDS GIVING THE
+C                   FUNCTION DATA  (P(I), F(I)), ONE DATA POINT PER CARD
+C                   IN 2F10 FORMAT (USE SAME PRESSURE UNITS AS BEFORE).
+C
+C       EVALUATE    SPECIFIES THE INDEX OF A VERTICAL STRUCTURE FUNCTION
+C       ---         TO BE EVALUATED AT THE OUTPUT PRESSURE LEVELS FOR
+C                   FOR SUBSEQUENT PROJECTION AND RECONSTRUCTION.
+C                   PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                       K    V.S.F. INDEX    21-30     I         0
+C
+C   **** NOTE:  ONLY ONE FUNCTION MAY BE DEFINED AT A TIME ****
+C
+C       PROJECT     PROJECTS THE FUNCTION ONTO THE VERTICAL BASIS.
+C       ---         PARAMETER   MEANING     COLUMNS  FORMAT   DEFAULT
+C                       IP   INNER PRODUCT   21-30     I     1 (CHEBY.)
+C                       NG   NUM. OF PNTS.   31-40     I      2*(NF+N)
+C                   WHERE  NF  IS THE NUMBER OF FUNCTION DATA POINTS.
+C                   (SEE VTRANS DOCUMENTATION FOR MEANINGS OF IP AND NG)
+C                   USE  IP = 3  FOR COLLOCATION PROJECTION OF  F  DATA.
+C
+C       INTEGRATE   PROJECTS THE INTEGRAL OF THE FUNCTION ONTO THE
+C       ---         VERTICAL BASIS (INTEGRAL SET EQUAL TO ZERO AT PBOT).
+C                   PARAMETERS:  SAME AS FOR  PROJECT  (SEE ABOVE)
+C                   TO MULTIPLY THE FUNCTION BY  KAPPA  OR  RGAS  BEFORE
+C                   INTEGRATING, PUT 'KAPPA' OR 'RGAS ' IN COL. 16-20.
+C
+C       PHYSICAL    PRINTS PHYSICAL SPACE PROFILES OF TEMPERATURE,
+C       ---         STABILITY (SIGMA AND GAMMA) AND THE FUNCTION.
+C                   PARAMETERS:  MD, K1, K2, K3  (AS FOR  SOLUTION
+C                   ABOVE).  HERE  K1, K2, K3  SPECIFY THE VERTICAL
+C                   MODES USED IN RECONSTRUCTING THE FUNCTION--THE
+C                   DEFAULT IS TO USE ALL MODES.
+C
+C       SPECTRAL    PRINTS PHASE SPEEDS, SPECTRAL COEFFICIENTS OF THE
+C       ---         FUNCTION AND MODE-BY-MODE ENERGETICS.  PARAMETERS:
+C                   K1, K2, K3  EXACTLY AS FOR  SOLUTION  (SEE ABOVE).
+C
+C       END         ENDS PROGRAM EXECUTION
+C       ---
+C
+C   LANGUAGE    FORTRAN 77
+C
+C   HISTORY     WRITTEN BY SCOTT R. FULTON IN APRIL 1984
+C
+C
+      INTEGER      NMAX      , NTMAX      , NFMAX      , NPMAX
+      PARAMETER  ( NMAX =  32, NTMAX =  47, NFMAX =  47, NPMAX =  92 )
+      INTEGER  NPP,NPPAGE     , NRMAX      , NGMAX     , NIPMAX
+      PARAMETER  ( NPPAGE = 17, NRMAX =  96, NGMAX = 99, NIPMAX = 158 )
+      PARAMETER  ( NPP = 21 )
+      INTEGER  I, IERR, IN, IP, IPAGE, J, K, M(NPP), ME(0:NMAX,NPP)
+      INTEGER  MD, MODE, M1, M2, N, NCOL, NDEG, NDL, NF, NG, NGAUSS
+      INTEGER  NGL, NIP, NP, NPAGES, NR, NT, N1, N2, N3
+      REAL  CERR, CERRL, CON(4), DP, EFSUM, ENSUM, ERR2, ERRA, ERRI
+      REAL  ERRR, FACTOR, FP, FS, GAMMA, GC, GS, KAPPA, PBOT, PERRL
+      REAL  PMAX, PMIN, PSIB, PSIRB, PTOP, RELERR, RGAMMA, RGAS, RTB
+      REAL  SIGMA, TBOT, TC, TIME, TINF, TOL, TS, TZERO
+      REAL  C (0: NMAX), PSIHAT(0: NMAX), FVBF(0:NMAX), EF(0:NMAX)
+      REAL  CR(0:NRMAX), PSIHAR(0:NRMAX), FHAT(0:NMAX), EN(0:NMAX)
+      REAL  TFOR(0: NMAX,0: NMAX), TINV(0: NMAX,0: NMAX)
+      REAL  RFOR(0:NRMAX,0:NRMAX), RINV(0:NRMAX,0:NRMAX)
+      REAL  WORK(0:NRMAX,0:NRMAX), PROM(0: NMAX,0: NMAX)
+      REAL  PT(NTMAX), RT(NTMAX,9), PF(NFMAX), FDATA(NFMAX), F(NFMAX,4)
+      REAL  W(0:NRMAX,2), PSIERR(0:NRMAX), PIP(NIPMAX), WIP(NIPMAX)
+      REAL  P(NPMAX), FVAL(NPMAX,2), FINTEG(NPMAX), VSF(NPMAX,NPPAGE)
+      REAL  PG(NGMAX), WG(NGMAX), PSI(NGMAX), PSIR(NGMAX)
+      CHARACTER  CARD*80, FIRST, FIRST3*3, LABEL(0:2)*8, LABELF*60
+      CHARACTER  LABELN*18, LABELP(3)*11, LABELR*10, LABELT*60
+      LOGICAL  ANAVSP, ANAVSR
+      EXTERNAL  FGRAND
+      COMMON  CON, NT, RT
+      COMMON  /RRGCOM/ NDEG, NGAUSS
+      COMMON  /GAMCOM/ RGAMMA
+      PARAMETER  ( RGAS = 287.0, KAPPA = 0.2859 )
+      DATA  LABEL  / '  VALUES', '   D/DP ', '-D/DLOGP' /
+      DATA  LABELP / 'CHEBYSHEV', 'VERTICAL', 'COLLOCATION' /
+C
+C   INITIALIZATIONS
+C
+      N  = 0
+      NT = 0
+      NF = 0
+      IP = 0
+      NP = 0
+      PTOP = 0.0
+      PBOT = 0.0
+C
+C   READ THE NEXT DATA CARD AND DECIDE WHAT TO DO
+C
+   10 READ '(A)', CARD
+      PRINT '('' INPUT--'',A)', CARD
+   20 FIRST3 = CARD(1:3)
+      IF ( FIRST3.EQ.'END' )  STOP
+      IF ( FIRST3.EQ.'TEM' )  GO TO 100
+      IF ( FIRST3.EQ.'GAM' )  GO TO 150
+      IF ( FIRST3.EQ.'TOP' )  GO TO 170
+      IF ( FIRST3.EQ.'NSO' )  GO TO 200
+      IF ( FIRST3.EQ.'ASO' )  GO TO 210
+      IF ( FIRST3.EQ.'RNS' )  GO TO 220
+      IF ( FIRST3.EQ.'RAS' )  GO TO 230
+      IF ( FIRST3.EQ.'OUT' )  GO TO 250
+      IF ( FIRST3.EQ.'SOL' )  GO TO 300
+      IF ( FIRST3.EQ.'STA' )  GO TO 400
+      IF ( FIRST3.EQ.'ERR' )  GO TO 500
+      IF ( FIRST3.EQ.'REC' )  GO TO 540
+      IF ( FIRST3.EQ.'FUN' )  GO TO 600
+      IF ( FIRST3.EQ.'EVA' )  GO TO 650
+      IF ( FIRST3.EQ.'PRO' )  GO TO 700
+      IF ( FIRST3.EQ.'INT' )  GO TO 710
+      IF ( FIRST3.EQ.'PHY' )  GO TO 800
+      IF ( FIRST3.EQ.'SPE' )  GO TO 900
+      GO TO 10
+C
+C   INPUT THE BASIC STATE TEMPERATURE PROFILE
+C
+  100 LABELT = CARD(21:80)
+      NT = 0
+  110 READ '(A)', CARD
+      PRINT '('' INPUT--'',A)', CARD
+C         FIRST = CARD(1:1)
+          READ ( CARD, '(A1)' )  FIRST
+          IF ( FIRST.EQ.'?' )  THEN
+              PRINT *,'(THIS DATA POINT IGNORED)'
+              GO TO 110
+          END IF
+          IF ( FIRST.NE.' ' )  GO TO 120
+          IF ( NT.GE.NTMAX )  THEN
+              PRINT *, 'TOO MANY DATA POINTS'
+              STOP
+          END IF
+          NT = NT + 1
+          READ ( CARD, 1100 )  PT(NT), RT(NT,1)
+ 1100     FORMAT(2F10.0)
+      GO TO 110
+  120 CALL SORTER( NT, PT, RT )
+      PTOP = PT( 1)
+      PBOT = PT(NT)
+      IF ( RT(NT,1).LT.100.0 )  THEN
+          TZERO = 273.15
+          PRINT *, 'TEMPERATURES ARE ASSUMED TO BE IN CELSIUS'
+      ELSE
+          TZERO = 0.0
+          PRINT *, 'TEMPERATURES ARE ASSUMED TO BE IN KELVIN'
+      END IF
+      DO 130 I=1,NT
+  130 RT(I,1) = RGAS*(RT(I,1) + TZERO)
+      RGAMMA = 0.0
+      RTB    = RT(NT,1)
+      GO TO 20
+C
+C   INPUT THE CONSTANT GAMMA BASIC STATE
+C
+  150 READ ( CARD, '(20X,5F10.0)' )  GAMMA, TBOT, PTOP, PBOT, DP
+      IF ( GAMMA.LE.0.0 )  GAMMA =  23.79
+      IF (  TBOT.LE.0.0 )   TBOT =  29.38
+      IF (  PTOP.LE.0.0 )   PTOP =  100.0
+      IF (  PBOT.LE.0.0 )   PBOT = 1010.0
+      IF (    DP.LE.0.0 )     DP =   PTOP
+      CALL PLEVEL( PTOP, PBOT, DP, PBOT, NT, PT )
+      IF ( NT.GT.NTMAX )  THEN
+          PRINT *, 'TOO MANY PRESSURE LEVELS'
+          STOP
+      END IF
+      PTOP = PT( 1)
+      PBOT = PT(NT)
+      WRITE ( LABELT, 5150 )  GAMMA, TBOT, PTOP, PBOT
+ 5150 FORMAT('GAMMA =',F6.2,'  TB =',F7.2,
+     2        '  PT =',F8.1,'  PB =',F9.1)
+      IF ( TBOT.LT.100.0 )  THEN
+          TZERO = 273.15
+      ELSE
+          TZERO = 0.0
+      END IF
+      TBOT = TBOT + TZERO
+      TINF = GAMMA/KAPPA
+      DO 160 I=1,NT
+  160 RT(I,1) = RGAS*(TINF + (TBOT - TINF)*(PT(I)/PBOT)**KAPPA)
+      CALL CSSET( NT, PT, RT, 3, 3, IERR )
+      IF ( IERR.NE.0 )  PRINT 9000, 'CSSET', IERR
+ 9000 FORMAT('0********** ERROR IN ',A,':  IERR =',I4,' **********')
+      RGAMMA = RGAS*GAMMA
+      RTB    = RT(NT,1)
+      GO TO 10
+C
+C   REDEFINE THE TOP PRESSURE
+C
+  170 READ ( CARD, '(20X,F10.0)' )  PNEW
+      IF ( RGAMMA.GT.0.0 )  THEN
+          PRINT *, 'USE  GAMMA  CARD INSTEAD'
+          GO TO 10
+      ELSE IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      END IF
+      IF ( PNEW.LE.0.0 )  PNEW = PTOP
+      IF ( PNEW.LT.PTOP )  THEN
+          PRINT *, 'CANNOT DECREASE TOP PRESSURE'
+          GO TO 10
+      END IF
+      PTOP = PNEW
+      J = 0
+  172 J = J + 1
+      IF ( PT(J+1).LE.PTOP )  GO TO 172
+      TTOP = CSVAL( PTOP, 0, NT, PT, RT, 0 )
+      PRINT 2170, 'NEW TEMPERATURE DATA'
+ 2170 FORMAT('0********** ',A,' **********'/)
+      PT(1)   = PTOP
+      RT(1,1) = TTOP
+      PRINT '(1X,F10.1,F10.2)', PT(1), RT(1,1)/RGAS - TZERO
+      NT = NT - J + 1
+      DO 174 I=2,NT
+          PT(I)   = PT(I+J-1)
+          RT(I,1) = RT(I+J-1,1)
+          PRINT '(1X,F10.1,F10.2)', PT(I), RT(I,1)/RGAS - TZERO
+  174 CONTINUE
+      IF ( NF.LE.0 )  GO TO 10
+      IF ( IP.LE.0 )  THEN
+          PRINT *, 'MUST PROJECT OR INTEGRATE THE FUNCTION FIRST'
+          GO TO 10
+      END IF
+      J = 0
+  176 J = J + 1
+      IF ( PF(J+1).LE.PTOP )  GO TO 176
+      FTOP = FUNVAL( PTOP, IN, NF, PF, F )
+      IF ( IN.GT.0 )  FTOP = -PTOP*FTOP
+      PRINT 2170, 'NEW FUNCTION DATA'
+      PF(1)    = PTOP
+      FDATA(1) = FTOP
+      PRINT '(1X,F10.1,1PE17.5)', PF(1), FDATA(1)
+      NF = NF - J + 1
+      DO 178 I=2,NF
+          PF(I)    = PF(I+J-1)
+          FDATA(I) = FDATA(I+J-1)
+          PRINT '(1X,F10.1,1PE17.5)', PF(I), FDATA(I)
+  178 CONTINUE
+      GO TO 10
+C
+C   SOLVE THE VERTICAL STRUCTURE PROBLEM (NUMERICALLY)
+C
+  200 READ ( CARD, '(15X,I5,2I10)' )  N, NDEG, NGAUSS
+      IF ( 1.GT.N .OR. N.GT.NMAX )  N = 16
+      IF ( NDEG+1.GT.5*NTMAX )  THEN
+          PRINT *, 'THE POLYNOMIAL DEGREE REQUESTED IS TOO LARGE'
+          STOP
+      END IF
+      IF (   NDEG.NE.0 )    NDEG = -NDEG
+      IF ( NGAUSS.NE.0 )  NGAUSS = -NGAUSS
+      TIME = SECOND( WORK )
+      CALL VTSET( NT, PT, RT, N, W, WORK, CON, C, TFOR, TINV, IERR )
+      TIME = SECOND( WORK ) - TIME
+      IF ( IERR.NE.0 )  PRINT 9000, 'VTSET', IERR
+      PRINT 2200, TIME, 'NUMERICAL', N, 'VERTICAL STRUCTURE'
+ 2200 FORMAT('0CPU TIME:',F8.3,' SECONDS FOR ',A,
+     2       ' SOLUTION OF  N =',I3,2X,A,' PROBLEM')
+      PRINT 2210, NDEG, NGAUSS
+ 2210 FORMAT(' (STABILITY FIT:  POLYNOMIAL OF DEGREE',I4,' USING',I4,
+     2       ' GAUSS POINTS)')
+      ANAVSP = .FALSE.
+      GO TO 10
+C
+C   SOLVE THE VERTICAL STRUCTURE PROBLEM (ANALYTICALLY)
+C
+  210 READ ( CARD, '(15X,I5,F10.0)' )  N, TOL
+      IF ( RGAMMA.LE.0.0 )  THEN
+          PRINT *, 'CANNOT DO IT--BASIC STATE SPECIFIED BY DATA'
+          GO TO 10
+      END IF
+      IF ( 1.GT.N .OR. N.GT.NMAX )  N = NMAX
+      IF ( TOL.EQ.0.0 )  TOL = -1.0E-10
+      TIME = SECOND( WORK )
+      CALL CGEVAL( RGAMMA, RTB, PBOT, PTOP, TOL, N, C, PSIHAT, IERR )
+      TIME = SECOND( WORK ) - TIME
+      IF ( IERR.NE.0 )  PRINT 9000, 'CGEVAL', IERR
+      PRINT 2200, TIME, 'ANALYTICAL', N, 'VERTICAL STRUCTURE'
+      ANAVSP = .TRUE.
+      GO TO 10
+C
+C   SOLVE THE REFERENCE VERTICAL STRUCTURE PROBLEM (NUMERICALLY)
+C
+  220 READ ( CARD, '(15X,I5,2I10)' )  NR, NDEG, NGAUSS
+      IF ( 1.GT.NR .OR. NR.GT.NRMAX )  NR = NRMAX
+      IF ( NDEG+1.GT.5*NTMAX )  THEN
+          PRINT *, 'THE POLYNOMIAL DEGREE REQUESTED IS TOO LARGE'
+          STOP
+      END IF
+      IF (   NDEG.NE.0 )    NDEG = -NDEG
+      IF ( NGAUSS.NE.0 )  NGAUSS = -NGAUSS
+      TIME = SECOND( WORK )
+      CALL VTSET( NT, PT, RT, NR, W, WORK, CON, CR, RFOR, RINV, IERR )
+      TIME = SECOND( WORK ) - TIME
+      IF ( IERR.NE.0 )  PRINT 9000, 'VTSET', IERR
+      NG = NR + 3
+      CALL GAUSSL( NG, PTOP, PBOT, PG, WG, IERR )
+      IF ( IERR.NE.0 )  PRINT 9000, 'GAUSSL', IERR
+      PRINT 2200, TIME, 'NUMERICAL', NR, 'REFERENCE'
+      PRINT 2210, NDEG, NGAUSS
+      ANAVSR = .FALSE.
+      GO TO 10
+C
+C   SOLVE THE REFERENCE VERTICAL STRUCTURE PROBLEM (ANALYTICALLY)
+C
+  230 READ ( CARD, '(15X,I5,F10.0)' )  NR, TOL
+      IF ( RGAMMA.LE.0.0 )  THEN
+          PRINT *, 'CANNOT DO IT--BASIC STATE SPECIFIED BY DATA'
+          GO TO 10
+      END IF
+      IF ( 1.GT.NR .OR. NR.GT.NRMAX )  NR = NRMAX
+      TIME = SECOND( WORK )
+      CALL CGEVAL( RGAMMA, RTB, PBOT, PTOP, TOL, NR, CR, PSIHAR, IERR )
+      TIME = SECOND( WORK ) - TIME
+      IF ( IERR.NE.0 )  PRINT 9000, 'CGEVAL', IERR
+      PRINT 2200, TIME, 'ANALYTICAL', NR, 'REFERENCE'
+      NG = NGMAX
+      CALL GAUSSL( NG, PTOP, PBOT, PG, WG, IERR )
+      IF ( IERR.NE.0 )  PRINT 9000, 'GAUSSL', IERR
+      ANAVSR = .TRUE.
+      GO TO 10
+C
+C   GENERATE THE OUTPUT PRESSURE LEVELS
+C
+  250 READ ( CARD, '(20X,3F10.0)' )  PMIN, PMAX, DP
+      IF ( PTOP.LE.0.0 .OR. PBOT.LE.0.0 )  THEN
+          PRINT *, 'MUST SPECIFY BASIC STATE FIRST'
+          GO TO 10
+      END IF
+      IF ( PMIN.EQ.-1.0 )  THEN
+          NP = NT
+          DO 251 I=1,NP
+  251     P(I) = PT(I)
+      ELSE IF ( PMIN.EQ.-2.0 )  THEN
+          IF ( NF.LE.0 )  THEN
+              PRINT *, 'MUST SPECIFY BASIC STATE FIRST'
+              GO TO 10
+          END IF
+          NP = NF
+          DO 252 I=1,NP
+  252     P(I) = PF(I)
+      ELSE IF ( PMIN.EQ.-3.0 )  THEN
+          NP = 0
+  253     READ '(A)', CARD
+          PRINT '('' INPUT--'',A)', CARD
+C             FIRST = CARD(1:1)
+              READ ( CARD, '(A1)' )  FIRST
+              IF ( FIRST.NE.' ' )  GO TO 254
+              NP = NP + 1
+              READ ( CARD, 1100 )  P(NP)
+          GO TO 253
+  254     IF ( NP.GT.NPMAX )  PRINT *, 'TOO MANY OUTPUT PRESSURE LEVELS'
+          GO TO 20
+      ELSE
+          IF ( PMIN.LE.0.0 )  PMIN = PTOP
+          IF ( PMAX.LE.0.0 )  PMAX = PBOT
+          IF (   DP.LE.0.0 )    DP = PTOP
+          CALL PLEVEL( PMIN, PMAX, DP, PBOT, NP, P )
+          IF ( NP.GT.NPMAX )  PRINT *, 'TOO MANY OUTPUT PRESSURE LEVELS'
+      END IF
+      GO TO 10
+C
+C   PRINT THE SOLUTION OF THE VERTICAL STRUCTURE PROBLEM
+C
+  300 READ ( CARD, '(19X,I1,3I10)' )  K, N1, N2, N3
+      IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      ELSE IF ( NP.LE.0 )  THEN
+          PRINT *, 'MUST SPECIFY THE OUTPUT PRESSURE LEVELS FIRST'
+          GO TO 10
+      END IF
+      K  = MAX( K, 0 )
+      K  = MIN( K, 2 )
+      MD = MIN( K, 1 )
+      IF ( 0.GT.N1 .OR. N1.GT.N )  N1 = 0
+      IF ( 1.GT.N2 .OR. N2.GT.N )  N2 = N
+      IF ( N3.EQ.0 )  N3 = 1
+      NCOL = (N2 - N1)/N3 + 1
+      NPAGES = (NCOL - 1)/NPPAGE + 1
+      LABELN = '                  '
+      DO 350 IPAGE=1,NPAGES
+          M1 = N1 + (IPAGE - 1)*NPPAGE*N3
+          M2 = MIN( N2, M1 + (NPPAGE - 1)*N3 )
+          NCOL = (M2 - M1)/N3 + 1
+          DO 330 J=1,NCOL
+              MODE = M1 + (J-1)*N3
+              IF ( ANAVSP )  THEN
+                  CALL  CGEFUN( MODE, NP, P, RGAMMA, RTB, PBOT, PTOP,
+     2                          C, PSIHAT, VSF(1,J) )
+              ELSE
+                  I = MODE*(N + 1)
+                  CALL VEVAL( TINV(I,0), MD, NP, P, CON, N, W, FVAL )
+                  DO 310 I=1,NP
+  310             VSF(I,J) = FVAL(MD*NP+I,1)
+              END IF
+              IF ( K.EQ.2 )  THEN
+                  DO 320 I=1,NP
+  320             VSF(I,J) = -P(I)*VSF(I,J)
+              END IF
+              M(J) = MODE
+  330     CONTINUE
+          IF ( NPAGES.GT.1 )  WRITE ( LABELN, 5300 ) IPAGE, NPAGES
+          PRINT 2300, LABELN, LABELT
+          IF ( ANAVSP )  PRINT 2310
+          PRINT 2320, LABEL(K), (M(J), J=1,NCOL )
+          PRINT '(10X)'
+          DO 340 I=1,NP
+  340     PRINT '(1X,F8.1,1X,17F7.3)', P(I), (VSF(I,J), J=1,NCOL)
+          PRINT '(''0  C(K) = '',17F7.3)', (C(M(J)), J=1,NCOL)
+  350 CONTINUE
+ 5300 FORMAT('     (PAGE',I2,' OF',I2,')')
+ 2300 FORMAT('1 '//'0SOLUTION OF THE VERTICAL STRUCTURE PROBLEM',A,
+     3           //'0BASIC STATE:  ',A60)
+ 2310 FORMAT(15X,'(THE VERTICAL STRUCTURE PROBLEM ',
+     2           'WAS SOLVED ANALYTICALLY)')
+ 2320 FORMAT(//21X,A,' OF THE VERTICAL STRUCTURE FUNCTIONS',
+     4       //'0     P',3X,17(2X,'K=',I2:1X))
+      PRINT 2330, N
+ 2330 FORMAT('0(PHASE SPEEDS  C  IN METERS PER SECOND, ',
+     2       'SPECTRAL TRUNCATION  N =',I4,')')
+      GO TO 10
+C
+C   TEST THE STABILITY FIT
+C
+  400 NDL = NDEG
+      NGL = NGAUSS
+      READ ( CARD, '(20X,2I10)' )  NDEG, NGAUSS
+      IF ( NP.LE.0 )  THEN
+          PRINT *, 'MUST SPECIFY THE OUTPUT PRESSURE LEVELS FIRST'
+          GO TO 10
+      ELSE IF ( NDEG+1.GT.5*NTMAX )  THEN
+          PRINT *, 'THE POLYNOMIAL DEGREE REQUESTED IS TOO LARGE'
+          GO TO 10
+      END IF
+      IF (   NDEG.NE.0 )    NDEG = -NDEG
+      IF ( NGAUSS.NE.0 )  NGAUSS = -NGAUSS
+      CALL RRGSET( NT, PT, RT, IERR )
+      IF ( IERR.NE.0 )  PRINT 9000, 'RRGSET', IERR
+      CON(2) = PBOT
+      PRINT 2400, LABELT, NDEG, NGAUSS
+ 2400 FORMAT('1 '//'0TEST OF STABILITY PROFILE FIT',
+     2           //'0BASIC STATE:  ',A60,
+     3           //'0DESCRIPTION:  CHEBYSHEV LEAST-SQUARES FIT TO  ',
+     4                            '1/GAMMA  USING',
+     5            /'               POLYNOMIAL OF DEGREE',I4,' WITH',I4,
+     6                            ' GAUSS POINTS',
+     7           //15X,'TEMPERATURE',13X,'ERROR',16X,'GAMMA',
+     8            /6X,'P',5X,'SPLINE',2X,'CHEBYSHEV',3X,'ABSOLUTE',
+     9             3X,'RELATIVE',3X,'SPLINE',2X,'CHEBYSHEV'/)
+      ERR2 = 0.0
+      ERRI = 0.0
+      RELERR = 1.0E-06
+      FINTEG(NP) = ADQUAD( P(NP), PBOT, FGRAND, RELERR, J, W, IERR )
+      IF ( IERR.NE.0 )  PRINT *, 'INTEGRAL FROM ', P(I), 'TO', PBOT
+      IF ( IERR.EQ.0 )  THEN
+      DO 410 I=NP-1,1,-1
+          FINTEG(I) = FINTEG(I+1)
+     2              + ADQUAD( P(I), P(I+1), FGRAND, RELERR, J, W, IERR )
+          IF ( IERR.NE.0 ) PRINT *, 'INTEGRAL FROM ', P(I), 'TO', P(I+1)
+  410 CONTINUE
+      END IF
+      DO 420 I=1,NP
+          TS = CSVAL( P(I), 0, NT, PT, RT, 0 )
+          GS = KAPPA*TS - P(I)*CSVAL( P(I), 1, NT, PT, RT, 2 )
+          TS = TS/RGAS - TZERO
+          GS = GS/RGAS
+          GC = RRGVAL( P(I), CON, NT, RT, IERR )
+          IF ( IERR.NE.0 )  PRINT 9000, 'RRGVAL', IERR
+          GC = 1.0/(RGAS*GC)
+          TC = (P(I)/CON(2))**KAPPA*(RTB + FINTEG(I))
+          TC = TC/RGAS - TZERO
+          ERRA = TC - TS
+          ERRR = ERRA/(TS + TZERO)
+          ERR2 = ERR2 + ERRA**2
+          ERRI = MAX( ERRI, ABS( ERRA ) )
+          PRINT 2410, P(I), TS, TC, ERRA, ERRR, GS, GC
+ 2410     FORMAT(1X,F8.1,F10.2,F9.2,F12.5,1PE11.2,0P,F10.3,F9.3)
+  420 CONTINUE
+      ERR2 = SQRT( ERR2/NP )
+      PRINT 2420, ERR2, ERRI
+ 2420 FORMAT('0',10X,'RMS ABSOLUTE ERROR:',F10.5,
+     2          /11X,'MAX ABSOLUTE ERROR:',F10.5)
+      IF ( (NDEG.NE.NDL .OR. NGAUSS.NE.NGL) .AND. NDL.NE.0 )  THEN
+          NDEG   = -NDL
+          NGAUSS = -NGL
+          CALL RRGSET( NT, PT, RT, IERR )
+          IF ( IERR.NE.0 )  PRINT 9000, 'RRGSET', IERR
+          CON(2) = PBOT
+      END IF
+      GO TO 10
+C
+C   COMPUTE AND PRINT ERRORS IN THE VERTICAL STRUCTURE PROBLEM SOLUTION
+C
+  500 READ ( CARD, '(20X,3I10)' )  N1, N2, N3
+      IF ( ANAVSP )  THEN
+          PRINT *, 'NO ERRORS--THE PROBLEM WAS SOLVED ANALYTICALLY'
+          GO TO 10
+      ELSE IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      ELSE IF ( NR.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE REFERENCE PROBLEM FIRST'
+          GO TO 10
+      END IF
+      IF ( 0.GT.N1 .OR. N1.GT.N )  N1 = 0
+      IF ( 1.GT.N2 .OR. N2.GT.N )  N2 = N
+      IF ( N3.EQ.0 )  N3 = 1
+      DO 520 K=N1,N2,N3
+          I = K*(N + 1)
+          CALL VEVAL( TINV(I,0), 0, NG,  PG, CON, N, W, PSI )
+          CALL VEVAL( TINV(I,0), 0, 1, PBOT, CON, N, W, PSIB )
+          IF ( ANAVSR )  THEN
+              CALL CGEFUN(K,NG, PG,RGAMMA,RTB,PBOT,PTOP,CR,PSIHAR,PSIR )
+              CALL CGEFUN(K,1,PBOT,RGAMMA,RTB,PBOT,PTOP,CR,PSIHAR,PSIRB)
+          ELSE
+              I = K*(NR + 1)
+              CALL VEVAL( RINV(I,0), 0, NG,  PG, CON, NR, W, PSIR  )
+              CALL VEVAL( RINV(I,0), 0, 1, PBOT, CON, NR, W, PSIRB )
+          END IF
+          J = SIGN( 1.0, PSIB/PSIRB )
+          PSIERR(K) = 0.0
+          DO 510 I=1,NG
+  510     PSIERR(K) = PSIERR(K) + WG(I)*(PSIR(I) - J*PSI(I))**2
+          PSIERR(K) = SQRT( PSIERR(K)/(PBOT - PTOP) )
+  520 CONTINUE
+      LABELR = 'ANALYTICAL'
+      IF ( .NOT.ANAVSR )  WRITE ( LABELR, '(''   N='',I3,2X)' )  NR
+      PRINT 2500, LABELT, N, LABELR
+ 2500 FORMAT('1 '//'0ERRORS IN THE NUMERICAL SOLUTION ',
+     2             'OF THE VERTICAL STRUCTURE PROBLEM',
+     3           //'0BASIC STATE:  ',A60,
+     4           //9X,' ----------- EIGENVALUE  C(K) ------------ ',
+     5             1X,'EIGENFUNCTION PSI(K)'/9X,' SPECTRAL TRUNCATION',
+     6             2X,' RELATIVE DIFFERENCE',2X,' NORM OF DIFFERENCE ',
+     7            /4X,'K',6X,'N=',I3,3X,A10,6X,'VALUE',4X,'LOG10',
+     8             8X,'VALUE',4X,'LOG10'/)
+      DO 530 K=N1,N2,N3
+          CERR = (C(K) - CR(K))/CR(K)
+          IF ( CERR.NE.0.0 )  CERRL = LOG10( ABS( CERR ) )
+          IF ( CERR.EQ.0.0 )  CERRL = 0.0
+          IF ( PSIERR(K).NE.0.0 )  PERRL = LOG10( ABS( PSIERR(K) ) )
+          IF ( PSIERR(K).EQ.0.0 )  PERRL = 0.0
+          PRINT '(1X,I4,2X,2F11.5,1PE13.2, 0PF7.2, 1PE15.2,  0PF7.2)',
+     2               K, C(K), CR(K), CERR, CERRL, PSIERR(K), PERRL
+  530 CONTINUE
+      GO TO 10
+C
+C   RECONSTRUCT VERTICAL MODES FROM THEIR VALUES AT DISCRETE LEVELS
+C
+  540 READ ( CARD, '(20X,3I10)' )  N1, N2, N3
+      IF ( ANAVSP )  THEN
+          PRINT *, 'THIS OPTION AVAILABLE FOR NUMERICAL SOLUTION ONLY'
+          GO TO 10
+      ELSE IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      END IF
+      IF ( 0.GT.N1 .OR. N1.GT.N )  N1 = 0
+      IF ( 1.GT.N2 .OR. N2.GT.N )  N2 = N
+      IF ( N3.EQ.0 )  N3 = 1
+      NF = 0
+  550 READ '(A)', CARD
+      PRINT '('' INPUT--'',A)', CARD
+C         FIRST = CARD(1:1)
+          READ ( CARD, '(A1)' )  FIRST
+          IF ( FIRST.EQ.'?' )  THEN
+              PRINT *,'(THIS LEVEL IGNORED)'
+              GO TO 550
+          END IF
+          IF ( FIRST.NE.' ' )  GO TO 560
+          IF ( NF.GE.NFMAX )  THEN
+              PRINT *, 'TOO MANY DATA POINTS'
+              STOP
+          END IF
+          NF = NF + 1
+          READ ( CARD, '(F80.0)' )  PF(NF)
+          IF ( NF.GT.1 .AND. PF(NF).LE.PF(NF-1) )  THEN
+              PRINT *, 'LEVELS MUST BE IN INCREASING ORDER'
+              STOP
+          END IF
+      GO TO 550
+  560 LABELF = CARD(1:60)
+      NIP = 2*(NF + N)
+      NCOL = (N2 - N1)/N3 + 1
+      NPAGES = (NCOL - 1)/NPP + 1
+      FIRST  = '1'
+      LABELN = '                  '
+      DO 590 IPAGE=1,NPAGES
+          M1 = N1 + (IPAGE - 1)*NPP*N3
+          M2 = MIN( N2, M1 + (NPP - 1)*N3 )
+          NCOL = (M2 - M1)/N3 + 1
+          DO 580 J=1,NCOL
+              MODE = M1 + (J-1)*N3
+              I = MODE*(N + 1)
+              CALL VEVAL( TINV(I,0), 0, NF, PF, CON, N, W, F )
+              CALL VPROJ(NF,PF,F,0,1,NIP,PIP,WIP,PROM,N,CON,W,FVBF,IERR)
+              IF ( IERR.NE.0 )  PRINT 9000, 'VPROJ', IERR
+              CALL VTRAN( FVBF, N, TFOR, FHAT )
+              DO 570 K=0,N
+  570         ME(K,J) = NINT( 100.0*FHAT(K)**2 )
+              M(J) = MODE
+  580     CONTINUE
+          IF ( NPAGES.GT.1 )  WRITE ( LABELN, 5300 ) IPAGE, NPAGES
+          PRINT 2550, FIRST, LABELN, NF, LABELF, (M(J), J=1,NCOL )
+          PRINT '(10X)'
+          DO 585 K=0,N
+  585     PRINT '( 1X, I3, F7.2, 5X, 21I5 )',
+     2                 K , C(K), (ME(K,J), J=1,NCOL)
+          FIRST = ' '
+  590 CONTINUE
+ 2550 FORMAT(A,9X///'0PERCENT ENERGY FOR VERTICAL STRUCTURE FUNCTION ',
+     2              'RECONSTRUCTION',5X,A,
+     3             /'0FROM VALUES AT',I4,'  DISCRETE LEVELS:  ',A,
+     4            //'0  K  C(K)   MODE:',I3,20I5)
+      PRINT 2330, N
+      NF = 0
+      GO TO 10
+C
+C   INPUT THE FUNCTION TO BE TRANSFORMED
+C
+  600 LABELF = CARD(21:80)
+      NF = 0
+  610 READ '(A)', CARD
+      PRINT '('' INPUT--'',A)', CARD
+C         FIRST = CARD(1:1)
+          READ ( CARD, '(A1)' )  FIRST
+          IF ( FIRST.EQ.'?' )  THEN
+              PRINT *,'(THIS DATA POINT IGNORED)'
+              GO TO 610
+          END IF
+          IF ( FIRST.NE.' ' )  GO TO 620
+          IF ( NF.GE.NFMAX )  THEN
+              PRINT *, 'TOO MANY DATA POINTS'
+              STOP
+          END IF
+          NF = NF + 1
+          READ ( CARD, 1100 )  PF(NF), FDATA(NF)
+      GO TO 610
+  620 CALL SORTER( NF, PF, FDATA )
+      GO TO 20
+C
+C   EVALUATE A VERTICAL STRUCTURE FUNCTION AT DISCRETE LEVELS
+C
+  650 READ ( CARD, '(20X,I10)' )  MODE
+      IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      ELSE IF ( NP.LE.0 )  THEN
+          PRINT *, 'MUST SPECIFY THE OUTPUT PRESSURE LEVELS FIRST'
+          GO TO 10
+      ELSE IF ( NP.GT.NFMAX )  THEN
+          PRINT *, 'TOO MANY PRESSURE LEVELS FOR INPUT DATA'
+          GO TO 10
+      END IF
+      WRITE ( LABELF, 5650 )  MODE
+ 5650 FORMAT('VERTICAL STRUCTURE FUNCTION',I4,'  FROM DISCRETE DATA')
+      NF = NP
+      DO 660 I=1,NF
+  660 PF(I) = P(I)
+      IF ( ANAVSP )  THEN
+          CALL  CGEFUN( MODE, NF, PF, RGAMMA, RTB, PBOT, PTOP,
+     2                  C, PSIHAT, FDATA )
+      ELSE
+          I = MODE*(N + 1)
+          CALL VEVAL( TINV(I,0), 0, NF, PF, CON, N, W, FDATA )
+      END IF
+      PRINT 2650, MODE
+ 2650 FORMAT('0INTERNALLY GENERATED FUNCTION DATA:',
+     2      /'0       P        PSI(',I2,')'/)
+      PRINT '(1X,F10.1,F13.5)', ( PF(I), FDATA(I), I=1,NF )
+      GO TO 10
+C
+C   PROJECT THE FUNCTION (OR ITS INTEGRAL) ONTO THE VERTICAL BASIS
+C
+  700 IN = 0
+      FACTOR = 1.0
+      GO TO 720
+  710 IN = 1
+      IF ( CARD(16:20).EQ.'KAPPA' )  THEN
+          FACTOR = KAPPA
+      ELSE IF ( CARD(16:20).EQ.'RGAS ' )  THEN
+          FACTOR = RGAS
+      ELSE
+          FACTOR = 1.0
+      END IF
+  720 READ ( CARD, '(20X,2I10)' )  IP, NIP
+      IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      END IF
+      IF ( IP.LE.0 )  IP = 1
+      IF ( IP.EQ.1 .AND. NIP.LE.0 )  NIP = 2*(NF + N)
+      IF ( IP.EQ.2 .AND. NIP.LE.0 )  NIP = 2*(NF + N)
+      IF ( IP.GE.3 )  THEN
+          NIP = NF
+          IF ( NIP.GT.NIPMAX )  STOP
+          DO 730 I=1,NIP
+              PIP(I) = PF(I)
+              WIP(I) = 1.0
+  730     CONTINUE
+      END IF
+      DO 740 I=1,NF
+  740 F(I,1) = FACTOR*FDATA(I)
+      IF ( FACTOR.NE.1.0 )  PRINT 2700, FACTOR
+ 2700 FORMAT('0********** FUNCTION VALUES MULTIPLIED BY',1PE12.5,
+     2       ' **********')
+      TIME = SECOND( WORK )
+      CALL VPROJ( NF,PF,F,IN,IP,NIP,PIP,WIP,PROM,N,CON,W,FVBF,IERR )
+      TIME = SECOND( WORK ) - TIME
+      IF ( IERR.NE.0 )  PRINT 9000, 'VPROJ', IERR
+      IF ( IN.EQ.0 )  PRINT 2710, TIME, 'FUNCTION', N, LABELP(IP), NIP
+      IF ( IN.EQ.1 )  PRINT 2710, TIME, 'INTEGRAL', N, LABELP(IP), NIP
+ 2710 FORMAT('0CPU TIME:',F8.3,' SECONDS FOR PROJECTION OF ',A,
+     2       '  (N =',I3')',
+     3       /' (PROJECTION INNER PRODUCT:  ',A,' WITH',I4,' POINTS)')
+      GO TO 10
+C
+C   COMPUTE AND PRINT PHYSICAL SPACE PROFILES
+C
+  800 READ ( CARD, '(19X,I1,3I10)' )  K, N1, N2, N3
+      IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      ELSE IF ( IP.LE.0 )  THEN
+          PRINT *, 'MUST PROJECT OR INTEGRATE THE FUNCTION FIRST'
+          GO TO 10
+      ELSE IF ( NP.LE.0 )  THEN
+          PRINT *, 'MUST SPECIFY THE OUTPUT PRESSURE LEVELS FIRST'
+          GO TO 10
+      END IF
+      K  = MAX( K, 0 )
+      K  = MIN( K, 2 )
+      MD = MIN( K, 1 )
+      IF ( 0.GT.N1 .OR. N1.GT.N )  N1 = 0
+      IF ( 1.GT.N2 .OR. N2.GT.N )  N2 = N
+      IF ( N3.EQ.0 )  N3 = 1
+      IF ( N1.NE.0 .OR. N2.NE.N .OR. N3.NE.1 )  THEN
+          CALL VTRAN( FVBF, N, TFOR, FHAT )
+          DO 810 I=0,N
+  810     EN(I) = 0.0
+          DO 820 I=N1,N2,N3
+  820     EN(I) = FHAT(I)
+          CALL VTRAN( EN, N, TINV, EF )
+      ELSE
+          DO 830 I=0,N
+  830     EF(I) = FVBF(I)
+      END IF
+      CALL VEVAL( EF, MD, NP, P, CON, N, W, FVAL )
+      IF ( K.EQ.2 )  THEN
+          DO 840 I=1,NP
+  840     FVAL(MD*NP+I,1) = -P(I)*FVAL(MD*NP+I,1)/FACTOR
+      END IF
+      PRINT 2800, LABELT, LABELF
+ 2800 FORMAT('1 '//'0PHYSICAL SPACE PROFILES',
+     2           //'0BASIC STATE:  ',A60,
+     3           //'0FUNCTION:     ',A60)
+      IF ( IN.GT.0 )  PRINT 8000
+ 8000 FORMAT(15X,'(INTEGRATED WITH RESPECT TO  -LOG(P) )')
+      PRINT 2810, LABEL(K)
+ 2810 FORMAT('0 '//21X,'BASIC  STATE',15X,A,' OF FUNCTION',
+     2           //6X,'P',9X,'T',6X,'GAMMA',6X,'SIGMA',
+     3             7X,'CUBIC SPLINE',4X,'PROJECTION'/)
+      ERR2 = 0.0
+      ERRI = 0.0
+      DO 850 I=1,NP
+          TS    = CSVAL( P(I), 0, NT, PT, RT, 0 )/RGAS - TZERO
+          GAMMA = RRGVAL( P(I), CON, NT, RT, IERR )
+          IF ( IERR.NE.0 )  PRINT 9000, 'RRGVAL', IERR
+          GAMMA = 1.0/GAMMA
+          SIGMA = GAMMA/P(I)**2
+          GAMMA = GAMMA/RGAS
+          FS = FUNVAL( P(I), MD, NF, PF, F )
+          IF ( K.EQ.2 )  FS = -P(I)*FS/FACTOR
+          FP = FVAL(MD*NP+I,1)
+          ERR2 = ERR2 + (FP - FS)**2
+          ERRI = MAX( ERRI, ABS( FP - FS) )
+          PRINT '( 1X, 0PF8.1, F10.2, F9.2, 1PE13.3, E16.4, E15.4 )',
+     2                  P(I) ,   TS , GAMMA,  SIGMA,   FS ,   FP
+  850 CONTINUE
+      ERR2 = SQRT( ERR2/NP )
+      PRINT 2820, ERR2, ERRI
+ 2820 FORMAT('0',38X,'RMS PROJECTION ERROR:',1PE12.4,
+     2          /39X,'MAX PROJECTION ERROR:',E12.4)
+      IF ( N1.NE.0 .OR. N2.NE.N .OR. N3.NE.1 )  PRINT 2830, N1, N2, N3
+ 2830 FORMAT('0(VERTICAL MODES',I4,'  TO',I4,'  STEP',I4,
+     2       '  USED IN RECONSTRUCTING THE PROJECTION)')
+      IF ( TZERO.EQ.0.0 )  PRINT 2840,  'KELVIN', N
+      IF ( TZERO.NE.0.0 )  PRINT 2840, 'CELSIUS', N
+ 2840 FORMAT('0(T  IN ',A,',  GAMMA  IN KELVIN, ',
+     2       'SPECTRAL TRUNCATION  N =',I4,')')
+      GO TO 10
+C
+C   COMPUTE AND PRINT SPECTRAL SPACE PROFILES
+C
+  900 READ ( CARD, '(20X,3I10)' )  N1, N2, N3
+      IF ( N.LE.0 )  THEN
+          PRINT *, 'MUST SOLVE THE VERTICAL STRUCTURE PROBLEM FIRST'
+          GO TO 10
+      ELSE IF ( IP.LE.0 )  THEN
+          PRINT *, 'MUST PROJECT OR INTEGRATE THE FUNCTION FIRST'
+          GO TO 10
+      END IF
+      IF ( 0.GT.N1 .OR. N1.GT.N )  N1 = 0
+      IF ( 1.GT.N2 .OR. N2.GT.N )  N2 = N
+      IF ( N3.EQ.0 )  N3 = 1
+      CALL VTRAN( FVBF, N, TFOR, FHAT )
+      ENSUM = 0.0
+      EFSUM = 0.0
+      DO 910 K=0,N
+          IF ( IN.EQ.0 )  EN(K) =  FHAT(K)**2
+          IF ( IN.GT.0 )  EN(K) = (FHAT(K)/C(K))**2
+          ENSUM = ENSUM + EN(K)
+          IF ( IN.EQ.0 )  EF(K) =  FHAT(K)
+          IF ( IN.GT.0 )  EF(K) =  FHAT(K)/C(K)**2
+          EFSUM = EFSUM + ABS( EF(K) )
+  910 CONTINUE
+      IF ( ENSUM.EQ.0.0 )  ENSUM = 1.0
+      IF ( EFSUM.EQ.0.0 )  EFSUM = 1.0
+      PRINT 2900, LABELT, LABELF
+ 2900 FORMAT('1 '//'0SPECTRAL SPACE PROFILES',
+     2           //'0BASIC STATE:  ',A60,
+     3           //'0FUNCTION:     ',A60)
+      IF ( IN.GT.0 )  PRINT 8000
+      PRINT 2910
+ 2910 FORMAT(2X/'0',33X,'PERTURBATION ENERGY',2X,'FORCING  EFFICIENCY',
+     2      /3X,'K',6X,'C(K)',8X,'FHAT(K)',9X,'VALUE',3X,'PERCENT',
+     3                                     6X,'VALUE',3X,'PERCENT'/)
+      PRINT 2920, ( K, C(K), FHAT(K), EN(K), 100*EN(K)/ENSUM,
+     2                EF(K), 100*ABS( EF(K) )/EFSUM, K=N1,N2,N3 )
+ 2920 FORMAT(1X,I3,F11.3,1PE16.5,E14.3,0PF7.2,1PE14.3,0PF7.2)
+      PRINT 2930, ENSUM, EFSUM
+ 2930 FORMAT('0',25X,'TOTALS:',1P,E12.3,E21.3)
+      IF ( IN.EQ.0 )  PRINT 2940, ' ', ' '
+      IF ( IN.GT.0 )  PRINT 2940, '/C(K)**2', '/C(K)**2'
+ 2940 FORMAT('0PERTURBATION ENERGY = FHAT(K)**2',A,
+     2      /' FORCING  EFFICIENCY = FHAT(K)   ',A)
+      PRINT 2950, N
+ 2950 FORMAT('0(PHASE SPEEDS  C  IN METERS PER SECOND, ',
+     2       'SPECTRAL TRUNCATION  N =',I4,')')
+      GO TO 10
+      END
+      SUBROUTINE SORTER( N, X, Y )
+C
+C   SORTS PAIRS (X(I),Y(I)) INTO ORDER OF INCREASING  X  (BUBBLE SORT)
+C
+      INTEGER  N, I, J, K
+      REAL  X(N), Y(N), TEMP
+C
+      I = 1
+   10 IF ( I.GE.N )  RETURN
+      I = I + 1
+      J = I
+   20 IF ( X(J-1).EQ.X(J) )  THEN
+          DO 30 K=J+1,N
+              X(K-1) = X(K)
+              Y(K-1) = Y(K)
+   30     CONTINUE
+          N = N - 1
+          I = I - 1
+          GO TO 20
+      END IF
+      IF ( X(J-1).LE.X(J) )  GO TO 10
+      TEMP   = X(J-1)
+      X(J-1) = X(J)
+      X(J)   = TEMP
+      TEMP   = Y(J-1)
+      Y(J-1) = Y(J)
+      Y(J)   = TEMP
+      J = J-1
+      IF ( J.GT.1 )  GO TO 20
+      GO TO 10
+      END
+      SUBROUTINE PLEVEL( PMIN, PMAX, DP, PBOT, NP, P )
+C
+C   ROUTINE TO GENERATE THE OUTPUT PRESSURE LEVELS
+C
+      INTEGER  NP, I
+      REAL  PMIN, PMAX, DP, PBOT, P(1), P1, P2, P3
+C
+      P1 = MIN( PMIN, PMAX )
+      P2 = MAX( PMIN, PMAX )
+      P3 = ABS( DP )
+      IF ( P3.EQ.0.0 )  P3 = P2 - P1
+      IF ( P3.EQ.0.0 )  P3 = 1.0
+      NP = (P2 - P1)/P3 + 1.000001
+      DO 10 I=1,NP
+   10 P(I) = P1 + (I-1)*P3
+      IF ( P(NP).GE.PBOT )  RETURN
+      NP = NP+1
+      P(NP) = PBOT
+      RETURN
+      END
+      FUNCTION FGRAND( PVAL )
+C
+C   INTEGRAND TO GIVE  R*T  FROM  1/(R*GAMMA)
+C
+      REAL  FGRAND, PVAL, KAPPA, RGAMMA
+      PARAMETER  ( KAPPA = 0.2859 )
+      COMMON  CON(4), NT, RT(1)
+C
+      RGAMMA = RRGVAL( PVAL, CON, NT, RT, IERR )
+      IF ( IERR.NE.0 )  STOP
+      FGRAND = (CON(2)/PVAL)**KAPPA/(PVAL*RGAMMA)
+      RETURN
+      END

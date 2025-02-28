@@ -1,0 +1,83 @@
+gamma
+rasolve
+asolve
+output pressures
+solution                              16
+errors
+nsolve
+solution                              16
+errors
+rnsolve           64
+errors
+stability fit
+temperature         marshall islands (1956) mean temperature sounding
+     100.0    -73.97
+     125.0    -73.03
+     150.0    -68.52
+     175.0    -62.00
+     225.0    -49.19
+     275.0    -38.03
+     325.0    -28.87
+     375.0    -21.07
+     425.0    -14.58
+     475.0     -9.13
+     525.0     -4.41
+     575.0     -0.26
+     625.0      3.57
+     675.0      7.13
+     725.0     10.31
+     775.0     13.12
+     825.0     15.63
+     875.0     18.26
+     925.0     21.18
+     975.0     24.38
+    1000.0     26.08
+    1010.0     26.78
+nsolve            24
+solution                              16
+stability fit
+function            marshall islands  q1  (from yanai et al., 1976)
+     100.0      0.00
+     125.0      2.14
+     150.0      2.63
+     175.0      2.78
+     200.0      2.52
+     225.0      2.41
+     250.0      2.89
+     275.0      3.57
+     300.0      4.32
+     350.0      5.38
+     400.0      6.02
+     450.0      6.39
+     500.0      6.39
+     550.0      6.20
+     600.0      5.60
+     650.0      4.74
+     700.0      4.06
+     750.0      3.76
+     800.0      3.35
+     850.0      2.67
+     900.0      1.80
+     950.0      0.94
+    1000.0      0.15
+    1010.0      0.00
+output pressures          -2.0
+project
+physical
+spectral
+project                      2
+physical
+spectral
+project                      3
+physical
+spectral
+integrate                    1
+physical           2
+spectral
+integrate                    2
+physical           2
+spectral
+integrate                    3
+physical           2
+spectral
+end

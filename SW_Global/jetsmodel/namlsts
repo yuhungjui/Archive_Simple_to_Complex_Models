@@ -1,0 +1,33 @@
+ &modlst
+ hmean=5574.,     !
+ taui= 0.0,
+ taue= 28800.0,   ! 1200 days    !
+ tauo=  9600.0,   !  400 days    !
+ dt=300.0,        !
+ baro=f,          ! barotropic
+ linear=f,        ! nonlinear
+ rnkut4=f,        ! leap frog
+ tfilter=0.05,
+ dohdi=t,
+ hfilt=1.0e13,
+ ktop=0,          !
+
+ bogus=f,
+ numtyp=2,
+
+ t1lat=20.0,
+ t1lon=90.0,
+ t1vm=30.0,       ! m/s
+ t1rvm=100.,      ! km
+
+ t2lat=-20.0,
+ t2lon=270.0,
+ t2vm=30.0,       ! m/s
+ t2rvm=100.,
+
+ rm2=800.,        ! km
+ bb=1.0,          ! shape
+
+ fricv=0.
+ fricd=0.
+ &end

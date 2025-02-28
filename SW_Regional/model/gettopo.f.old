@@ -1,0 +1,52 @@
+      subroutine gettopo(nxr,myr,topo)
+c
+      dimension topo(nxr,myr)
+c
+      data clon/300.01/,clat/300.01/,tradx/25./,trady/50./,tamp/3000./
+c
+c  ktopo=0: elips or circle
+c       =2: strip
+c       =1: no topo
+      data ktopo/0/
+c
+      do 110 i=1,nxr*myr
+      topo(i,1)=0.
+ 110  continue
+c
+      if(ktopo.eq.0)then
+c- elips
+      ixy=200
+      ix=clon
+      jy=clat
+      print *,'clat,clon=',clat,clon
+      a=tradx
+      b=trady
+      do 101 j=jy-ixy,jy+ixy
+      do 101 i=ix-ixy,ix+ixy
+        x=1.0*(i-clon)
+        y=1.0*(j-clat)
+c        topo(i,j)=(tamp-(tamp/a)*sqrt(x*x+y*y))*9.806
+c        if (topo(i,j).lt.0.)topo(i,j)=0.
+        topo(i,j)=tamp*exp(-(x/a)**2-(y/b)**2)*9.806
+ 101  continue
+c
+      else if(ktopo.eq.2)then
+c- strip
+      wide=tradx/2.
+      pir2=4.*atan(1.0)/2.
+      do 6 i=1,nxr
+      if(abs(i-clon).le.wide)then
+      do 8 j=1,myr
+          topo(i,j)=tamp*(1-abs((i-clon)/wide))*9.806
+ 8    continue
+      endif
+ 6    continue
+c
+      endif
+      call qmaxn3(topo,'regional','output sgeo',1,1,1,nxr,myr,1)
+      write(41,rec=1)topo
+c      print *,'after writing topo'
+      close(41)
+c
+      return
+      end

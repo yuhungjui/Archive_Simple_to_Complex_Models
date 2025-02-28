@@ -1,0 +1,56 @@
+PRO CONTOURXY_COLOR, field, xcoord, ycoord, $
+                clevels, auto, hour_run, plot_title
+
+; Plots contoured X-Y plots of a 2D(number x points, number y points)
+; field.  Automatic contour levels set to 8 with standard color table
+      
+contour_num = 8
+cont_int = (MAX(field) - MIN(field)) / contour_num
+IF (cont_int EQ 0.0) THEN cont_int = 1.0
+cont_lvls = FLTARR(contour_num)
+IF (auto EQ 1) THEN BEGIN
+   cont_lvls = (MIN(field) + FINDGEN(contour_num) * cont_int)
+ENDIF ELSE BEGIN
+   cont_lvls = clevels
+ENDELSE
+
+; activate for PSNDP color plots
+;cont_lvls = [0.00005,0.0001,0.0005,0.0010,0.0015,0.0020,0.0025,0.0030]
+;cont_lvls = [0.05,0.1,0.2,0.4,0.6,0.8,1.0,1.2]
+;cont_lvls = [0.0001,0.0005,0.0010,0.0015,0.0020,0.0025,0.0030,0.0050]
+; activate for dynamic active core simulations
+;cont_lvls = [0.00025, 0.0003,0.00075,0.00105,0.0015,0.0045,0.0105,0.015]
+
+cont_lbl = FLTARR(contour_num)
+cont_lbl = cont_lbl + 1
+cont_sty = FLTARR(contour_num)
+
+flag_lt = WHERE(cont_lvls lt 0)
+flag_gt = WHERE(cont_lvls gt 0)
+
+IF (flag_lt[0] NE -1) THEN cont_sty[flag_lt] = 1
+IF (flag_gt[0] NE -1) THEN cont_sty[flag_gt] = 0
+
+red = [0, 100,0,  0,  0  ,255,255,255,255]
+green = [0, 0,  0,  100,255,255,170,100,0]
+blue = [50,100,180,255  ,100,0  ,0  ,0  ,0]
+TVLCT, red, green, blue
+
+;cont_lvls = cont_lvls / 1.0d+10
+
+CONTOUR, field, xcoord, ycoord, $
+    TITLE = plot_title + ', t = ' + hour_run + 'h.', $
+    XTITLE = 'x (km)', $
+    YTITLE = 'y (km)', $
+    LEVELS = cont_lvls, $
+    C_LABELS = cont_lbl, $
+    C_LINESTYLE = cont_sty, $
+    C_CHARSIZE = 0.7, $
+    XSTYLE = 1, $
+    YSTYLE = 1, $
+    CHARSIZE = 1.5, /FILL, $
+    C_COLORS = [1,2,3,4,5,6,7,8]
+
+RETURN
+
+END

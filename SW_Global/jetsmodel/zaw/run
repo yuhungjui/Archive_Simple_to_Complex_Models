@@ -1,0 +1,9 @@
+ncargf77 doc.f pl2d.f
+a.out 
+ncgm2cgm<gmeta>3000zaw.cgm
+
+ncargf77 curve.f
+a.out
+ncgm2cgm<gmeta>tazaw.cgm
+
+rm *.o a.out

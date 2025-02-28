@@ -1,0 +1,158 @@
+Periodic Shallow Water Model:  Overview
+
+This file gives an overview of how the pieces of the model are arranged in 
+the various directories and how to install and run it.  Here $(PSWM) denotes
+the home directory of this model.
+
+Overview of the Model Code:
+--------------------------
+The source code for the model (in the subdirectory $(PSWM)/src) consists of
+standard Fortran95 code with one Fortran03 extension (in subroutine get_runid,
+to get a parameter from the command line).  Real variables are double
+precision as defined in module kinds.f90.  The code compiles with the g95
+complier (available free from http://www.g95.org) running under Linux (Fedora
+Core 6).  It currently does NOT compile with gfortran (part of the gcc
+compiler collection), due to an internal compiler error for which I have
+submitted a bug report.  The build (compile and link) process is automated 
+by Makefiles as described below.
+
+Most aspects of the model are controlled by "model parameters" (i.e., user-
+specifiable constants) which are described in the module pswm_pars.f90, where
+the default values are set.  Since these parameters can be read from an input
+file, you do NOT have to modify this code and recompile each time you want to
+change something.  In particular, arrays (e.g., for the transform grid) are
+allocated dynamically (using Fortran95 capabilities), so you can run the code
+as is using any space and time resolution without recompiling.
+
+The only parts of the code which you may have to change (I hope) are:
+
+(1) pswm_data.f90:  initial data and forcing functions.  
+These supply the data for a model run.  The version included here contains
+several different initial conditions, but you'll probably have to modify this
+code to generate your initial data.  This module also contains "hooks" for
+including forcing, but you'll need to put in the code for your own forcing
+functions--none is included (this is the place to do it).  See the comments 
+in this module for details.  This module also contains routines for reading
+initial condition parameters from a file (again to avoid recompiling often).
+
+(2) pswm_main.f90:  the main program.  
+This mostly calls component routines of the model to set it up and run it; 
+you might have to change something here depending on how you want to handle 
+input and output.
+
+Output from the model is handled by routines in the module pswm_output.f90.
+The comments there describe the files which are written (based on the settings
+of various model parameters).  These are compatible (I believe) with the
+output files from the Chebyshev shallow-water model cswm, and can be read
+and plotted by the Matlab codes in $(PSWM)/plt.
+
+The code is organized into modules, which contain related variables and
+subroutines.  The way things are divided up may appear somewhat random, but is
+designed with two related goals in mind:  controlling the scope of variables
+(what is seen where) and simplifying the coding of each part.  The principal
+division is in separating the space and time discretizations.  The time
+discretization is handled entirely by the module sitpack.f90, which "knows"
+nothing about the equations--or even about the model variables.  It simply
+does the bookkeeping to identify which terms to compute and how to combine
+them to step the model forward in time.  The terms themselves are computed by
+routines in the module pswm_terms.f90, which knows nothing about time
+differencing--or even about multiple time levels.  It just takes the variables
+at a given time and computes the model terms based on them.  The interface
+between the time and space discretization is handled by the routines in the
+module sitpack_interface.f90; these simple routines are the only ones which
+need to know both about variables in both space and time (but doesn't know
+anything about the discretizations in either).  
+
+The complete list of modules which make up the model is as follows:
+
+  pswm_main.f90		main program (just calls the pieces)
+  pswm_data.f90		initial data and forcing functions
+  pswm_pars.f90		model parameters (user-specifiable constants)
+  pswm_cons.f90		model constants (not user-specifiable but constant)
+  pswm_vars.f90		model variables (change during a run)
+  pswm_setup.f90	routines for initializing the model
+  pswm_terms.f90	primary code to compute the terms in the model
+  pswm_output.f90	output routines
+  ss_ops.f90		routines to compute operations in spectral space
+  sitpack_interface.f90	interface routines between the model and  sitpack
+  sitpack.f90		model-independent semi-implicit time integration package
+  kinds.f90		definitions of variable kinds used in the model
+
+Libraries:
+---------
+The model uses library fft99f (Temperton Fast Fourier Transform package).
+The library source code is in $(PSWM)/fft99f, and the corresponding library
+file is in $(PSWM)/lib.  This is automatically generated when the model is
+built as described below, or via "make install" in the directory
+$(PSWM)/fft99.
+
+Building the Model:
+------------------
+To build the model type "make install" in the main directory (or in the
+subdirectory $(PSWM)/bin).  This compiles the model (and libraries if needed)
+and links everything together to build the executable code "pswm" which is put
+into $(PSWM)/bin.  You can run it there or move it (or link it) to wherever.
+
+The build process is controlled by the Makefiles (especially the one in
+$(PSWM)/bin).  These require the GNU version of "make" (standard on most 
+linux systems).  The Makefiles are commented and generally follow the GNU
+conventions.  
+
+System-dependent information (e.g., name of the compiler, compiler options,
+etc.) is specified in $(PSWM)/bin/Makefile-host.  You can also specify
+optimization options here.  Makefile rules for processing Fortran files are
+defined in $(PSWM)/bin/Makefile-fortran.  Both of these are read by the other
+Makefiles.
+
+Running the Model:
+-----------------
+The directory $(PSWM)/run is set up as a place to run the model.  This
+contains input files for some sample runs and a Makefile which may make it
+easier to select between different input files without editing anything. 
+
+I'd suggest starting with the test run (runid=pstest) in $(PSWM)/run.
+Once you have this running, then read the comments in the module pswm_pars.f90 
+to learn about the input parameters (which are specified in the input file 
+pstest.dat).  Try changing them to explore the various options available.
+Then to run the model with different initial data, read through the module
+pswm_data.f90 and change what you need to run the problems you want to do.
+
+Displaying the Results:
+----------------------
+Here you're on your own.  The directory $(PSWM)/plt contains some Matlab
+functions which I use to display the results (movies of model fields, contour
+plots, and plots of scalar diagnostics).  I've tried to document these but
+they may not be entirely clear.  And if you don't have Matlab available....
+
+Some Cautions:
+-------------
+THIS IS A PRELIMINARY VERSION OF THE MODEL--IT IS NOT YET FULLY TESTED.
+I doubt I'll change a lot, but it's possible some things may get reorganized,
+renamed, or otherwise changed before the first "official" release.
+
+One known bug:  the PV (q) is not computed correctly--with ieq=1 or ieq=2
+the output values of q may be wrong.  I'll fix this soon...
+
+Other Documentation:
+-------------------
+The notes pswm-doc.pdf describe the equation forms and the details of 
+the transforms and spectral-space operations.  Further details on the
+semi-implicit schemes used in the model (implemented in the module
+sitpack.f90) are given in the notes siswm.pdf.  Both of these files are 
+in $(PSWM)/doc, along with their LaTeX source.
+
+Most individual modules (and the subroutines within them) are documented
+internally; in particular, almost every variable is described where declared.
+
+Support:
+-------
+I will attempt to answer questions and fix bugs as time permits.  Ideas for 
+improvements are also welcome but are not guaranteed to be implemented any
+time soon (if at all).
+
+Scott R. Fulton
+Department of Mathematics
+Clarkson University, Potsdam, NY    13699-5815
+fulton@clarkson.edu   www.clarkson.edu/~fulton
+phone:   315-268-2379       FAX:  315-268-2371
+----------------------------------------------

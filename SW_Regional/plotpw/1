@@ -1,0 +1,1 @@
+ncargf77 -o plotpw.exe plotpw.f pl2d.f windbar.f

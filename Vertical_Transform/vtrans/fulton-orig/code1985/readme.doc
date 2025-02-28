@@ -1,0 +1,27 @@
+This directory contains software for vertical transforms as described in 
+
+     Fulton, S. R. and W. H. Schubert, 1985:  Vertical Normal Mode Transforms:
+     Theory and Application.  Monthly Weather Review, vol. 113, pp. 647-658.
+
+    **filename**    ***** contents *****
+     vtrans.for     Vertical transform package
+     vtrans.dri     Driver program for use with data cards/files
+     vtrans.tes     Sample job file (used to produce a test run)
+     vtrans.job     Sample job file (used to produce results for paper above)
+     cgamma.for     Vertical structure functions for constant gamma
+     cgamma.fod     Double precision version of  cgamma.for
+
+Use of the various routines is fully explained in their comments.  
+Note that the job files use CRAY COS statements; I have not reworked this
+for running under UNIX systems yet.  Also, note that the EISPACK routine 
+rsg  (not included) is required to run  vtrans.  The code should run; 
+I will try to help out if there are problems, but do not have time to 
+fully support this package.  Direct comments/questions to me:
+
+     Scott R. Fulton
+     Department of Mathematics and Computer Science
+     Clarkson University
+     Potsdam, NY  13699-5815
+     (315) 268-2379
+     email:  fulton@sun.mcs.clarkson.edu
+

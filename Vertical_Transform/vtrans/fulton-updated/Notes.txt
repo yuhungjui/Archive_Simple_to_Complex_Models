@@ -1,0 +1,18 @@
+File Notes.txt for directory vtrans:  Vertical Normal Mode Transforms
+
+Mon Feb 22 16:55:13 EST 1999
+----------------------------
+Dug up old code for vtrans.  Converted to lower case, set up Makefile, etc.  
+Converted to double precision and checked routine gaussl.
+
+Thu Mar 11 11:15:19 EST 2004
+----------------------------
+Did some minimal updates of Makefile and README.txt to reflect the current
+state of the code.  In particular, it doesn't run, since it references the
+adaptive quadrature routine "adquad" (an old NCAR routine) which I don't have.
+This could be replaced by something equivalent but I haven't done so yet.
+
+Fri May 29 16:32:51  EDT  2009
+------------------------------
+This directory is now under revision control using Mercurial (hg).
+Updated comments in vtrans.f (capitalization of T and R, spelling errors).

@@ -1,0 +1,120 @@
+! PSWM input file for run pstest:  standard test run
+! See pswm_pars for details of model parameters and format of this file
+
+! Problem domain and physical constants:
+! -------------------------------------
+lunits	km
+x0	-300	x-coordinate of origin
+y0	-300	y-coordinate of origin
+!xl	 0	domain length in x (if zero, xl=2*abs(x0) for centered domain)
+!yl	 0	domain length in x (if zero, yl=2*abs(y0) for centered domain)
+cval	200	reference phase speed (m/s) (~500 m depth)
+fcor	0	Coriolis parameter (1/s)
+dlat	15	latitude (degrees)
+! Note:  Specify either  fcor  or  dlat  (the other will be set accordingly)
+
+! Model equations:
+! ---------------
+ieq	 2	equation form:  1=u,v,p  2=z,d,p  3=q,d,p  (negative for linear)
+icond	 4	initial z specified (or use icond=ieq to specify predicted vars) (icond=5 readfile)
+iforce	 1	no forcing
+
+! Dissipation (see also Sponge):
+! -----------------------------
+idiss	1	exponent of (-del^2) in dissipation (0 for Rayleigh friction)
+cdiss	100	coefficient of dissipation (specified directly)
+tdiss	0	corresponding e-folding time (in HOURS) for shortest wave
+! Note:  Specify either  cdiss  or  tdiss  (the other will be set accordingly)
+
+! Sponge (see also Dissipation):
+! -----------------------------
+isponge	  0	exponent of (-del^2) in sponge layer (0 for Rayleigh friction)
+fsponge   3	specifies sponge function
+lsponge  -0.1	length scale of sponge (negative for relative to domain size)
+csponge   0	coefficient of sponge (specified directly)
+tsponge	  0.1	corresponding e-folding time (in HOURS) for shortest wave
+! Note:  Specify either csponge or tsponge (the other will be set accordingly)
+
+! Discretization:
+! --------------
+nx	512	number of grid intervals in  x  on transform grid
+ny	512	number of grid intervals in  y  on transform grid
+mx	  0	spectral truncation in  x  (index of last  x  mode carried)
+my	  0	spectral truncation in  y  (index of last  x  mode carried)
+itd	  3	specifies the time discretization scheme (see setup_time)
+tunits	sec	time units for input:  seconds, minutes, hours, or days
+dt	  5	time step for execution
+
+! Output specification:
+! --------------------
+tunits	hrs	time units for input:  seconds, minutes, hours, or days
+tstop	120 	model time to end run (if negative, number of time steps)
+tunits	min	time units for input:  seconds, minutes, hours, or days
+dtout0	 15	time increment between output of scalar diagnostics
+dtout2	 15	time increment between output of two-dimensional fields
+! Note:  If negative, interpret the absolute value as the number of time steps
+j1	  0	output at x(j) for j=j1,j2,jinc
+j2	  0	output at x(j) for j=j1,j2,jinc
+jinc	  1	output at x(j) for j=j1,j2,jinc
+k1	  0	output at y(k) for k=k1,k2,kinc
+k2	  0	output at y(k) for k=k1,k2,kinc
+kinc	  1	output at y(k) for k=k1,k2,kinc
+
+! ifield specifies which field(s) to output as sum of:
+!   1: u           x-component of velocity
+!   2: v           y-component of velocity
+!   4: p           scaled geopotential deviation:  p = grav*(h - href)/cval
+!   8: d = delta   divergence
+!  16: z = zeta    relative  vorticity
+!  32: q           potential vorticity:  q = (fcor + zeta)/(1 + p/cval)
+!ifield	20
+!ifield	7
+ifield	63
+end of model parameters
+
+! --------------------------------------
+! initial condition parameters
+! --------------------------------------
+lunits	km
+xc	 0	x-center
+yc	 0	y-center
+
+! Parameters for initial Gaussian vortex:
+! --------------------------------------
+!rmax	50	radius of maximum wind
+!vmax	 4	value  of maximum wind
+!imbalance 0.2	relative excess of geopotential (beyond geostrophic balance)
+
+! Parameters for initial PV ring:
+! --------------------------------------
+lunits	km
+r1	 28	outer edge of inner region (transition zone:  r1 to r2)
+r2	 32	inner edge of outer region
+r3	 58	outer edge of outer region (transition zone:  r3 to r4)
+r4	 62	inner edge of environment
+z1       7.e-04  eye vorticity
+z2       7.e-04  eyewall vorticity
+pamp      0	amplitude of perturbation (relative to z2)
+minwav   0      perturbation min wavenumber
+maxwav   8      perturbation max wavenumber
+
+! Parameters for elliptical vortex:
+! --------------------------------------
+lunits	km
+ze     3e-03    vorticity
+ri	 35	inner radius
+ro	 40	outer radius
+ec	 0.86	eccentricity
+lam	 4.0	steepness parameter
+
+! Parameters for annular mass sink (iforce must equal 1 to activate):
+! --------------------------------------
+lunits	km
+rm1	 28	outer edge of inner region (transition zone:  r1 to r2)
+rm2	 32	inner edge of outer region
+rm3	 58	outer edge of outer region (transition zone:  r3 to r4)
+rm4	 62	inner edge of environment
+m1        0     eye mass sink (K/day) (usually set to zero)
+m2      125     eyewall mass sink (K/day) (typical 125 K/day)
+
+end of initial condition parameters

@@ -1,0 +1,17 @@
+
+LIBNAME = libintegrate_sngl.a
+
+LIBOBJ  = intlib.o
+
+FC     = pgf90
+FFLAGS = -O2 
+
+$(LIBNAME): $(LIBOBJ)
+	ar r $@ $(LIBOBJ)
+	ranlib $@
+
+%.o: ../%.f90
+	$(FC) $(FFLAGS) -c -o $@ $<
+
+clean:
+	rm -f *.o $(LIBNAME)

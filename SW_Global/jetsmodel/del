@@ -1,0 +1,2 @@
+rm -f *.o a.out gsw.exe core*
+rm -f jets5.sh.*

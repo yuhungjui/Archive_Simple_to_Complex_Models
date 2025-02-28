@@ -1,0 +1,60 @@
+============================================================= 
+
+  Parameters 
+
+============================================================= 
+
+Start Time = 100100 
+End Time   = 123121 
+
+Surface Height (m) =    0.00 
+PBL Top Height (m) =  397.01 
+500-hPa Height (m) = 5858.96 
+
+Surface Pressure (hPa) =  1009.5 
+PBL Top Pressure (hPa) =   965.3 
+500-hPa Pressure (hPa) =   500.0 
+Top Pressure (hPa)     =   100.0 
+
+PBL Depth (hPa) =  44.2 
+
+SST (degC) = 29.04 
+
+PBL Equilibrium Temp. (degC) 	   = 25.89 
+PBL Top Equilibrium Temp. (degC) = 24.39 
+
+Surface DSE. (J/kg) = 3.034e+05 
+PBL DSE. (J/kg)     = 3.024e+05 
+PBL Top DSE. (J/kg) = 3.026e+05 
+
+Surface Saturated q. (g/kg) = 25.77 
+
+Pressure Scale for Moisture. (hPa) =   100.0 
+
+Precipitation Efficiency Factor = 0.6 
+
+Mean Surface Wind (m/s) =  4.4 
+
+Surface Air Density (kg/m^3) = 1.225 
+
+Radiation Relaxation Time (day) = 20.0 
+
+Time Step (s)          =    60 
+Time Integration (day) =  92.0 
+
+============================================================= 
+
+  Initial Conditions 
+
+============================================================= 
+
+Initial PBL Temp. (degC)     = 26.01 
+Initial PBL Top Temp. (degC) = 24.62 
+
+Initail PBL DSE. (J/kg)      = 3.026e+05 
+Initial PBL Top DSE. (J/kg)  = 3.029e+05 
+
+Initial PBL q. (g/kg)        = 19.39 
+
+Initial PBL Top q. (g/kg)    = 18.90 
+

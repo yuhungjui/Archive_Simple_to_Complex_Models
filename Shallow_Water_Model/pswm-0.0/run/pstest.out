@@ -1,0 +1,14 @@
+pswm version 0.90 (08/01/07)
+fcor=  3.774616953775E-05 beta=  0.000000000000E+00 cval=  2.000000000000E+02
+
+step     0:  time=0.00000E+00       minimum        maximum        average
+u:  x-component of velocity       0.00000E+00    0.00000E+00    0.00000E+00
+v:  y-component of velocity       0.00000E+00    0.00000E+00    0.00000E+00
+p:  geopotential deviation        0.00000E+00    0.00000E+00    0.00000E+00
+d:  divergence                    0.00000E+00    0.00000E+00    0.00000E+00
+z:  relative  vorticity           0.00000E+00    0.00000E+00    0.00000E+00
+q:  potential vorticity           3.77462E-05    3.77462E-05    2.74859E-11
+e:  absolute  vorticity           3.77462E-05    3.77462E-05    3.77462E-05
+Z:  enstrophy                     0.00000E+00    0.00000E+00    0.00000E+00
+K:  kinetic energy                0.00000E+00    0.00000E+00    0.00000E+00
+A:  available potential energy    0.00000E+00    0.00000E+00    0.00000E+00

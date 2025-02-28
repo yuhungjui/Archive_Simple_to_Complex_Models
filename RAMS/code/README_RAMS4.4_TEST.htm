@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0059)http://bridge.atmet.org/rams-test/rams-4.4/README_RAMS_TEST -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=big5">
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY><PRE>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    Test Run for RAMS Version 4.4 
+        Craig Tremback - tremback@atmet.com - ATMET - April 2003
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+INSTRUCTIONS
+------------
+
+This README describes the running of RAMS version 4.4
+for the test run under Linux. Although the execution under the various 
+Unix versions should be the same, there may be slight differences in 
+some of the system commands.
+
+Note that this run is configured as a very small run to make it easy 
+to run as a test. It is NOT intended to serve as a default configuration
+for necessarily any of the namelist settings. Please see the namelist 
+documentation for further guidance.
+
+
+
+
+1) Download the Unix gzipped tar file...
+
+     rams-test-4.4.tar.gz
+
+   from the web address...
+
+     http://bridge.atmet.org/rams-test/rams-4.4
+
+2) Unpack the contents of the tar file in your rams root directory...
+
+     tar -xzvf rams-test-4.4.tar.gz
+ 
+   Go to the test-rams44 directory, which will serve as the working directory 
+   for this run and check its contents...
+  
+     cd test-rams44
+     ls -l
+     
+   This should produce the following...
+  
+     README_RAMS_TEST   this file  
+     data/              test run initialization data
+     geodata/           contains geophysical surface data
+     VTABLE             VTABLE for the test run
+     RAMSIN-makesfc     RAMSIN files for the test run
+     RAMSIN-makevfile   RAMSIN files for the test run
+     RAMSIN-initial     RAMSIN files for the test run
+     isan/              location for varaible initialization file storage
+     sfc/               location for surface file storage
+     sst/               location for sea surface temperature file storage
+     hist/              location for history file storage
+     anal/              location for analysis file storage
+     s44                script to assist in copying executables to cluster nodes
+     
+
+   All of the directories except the "data" and "geodata" directories are empty 
+   and are used for rams output. The data directory contains the gridded and 
+   observation data used to create the isan files for input into the 
+   simulation. The geodata directory contains the geophysical data used 
+   for the test run. Geophysical data for other regions is available from...
+  
+     http://www.atmet.com/html/data.shtml
+  
+3) Make sure that the RAMS v4.4 executable is compiled as described in the 
+   installation README file. To use the executables, I have usually found it 
+   best to make symbolic links in the working directory
+     
+     ln -s rams-executable-name rams44
+     
+   On some machines, you may need to make a physical copy of the executables in
+   your working directory, ie...
+     
+     cp rams-executable-name rams44
+
+   Note here that "rams-executable-name" is the actual file name of 
+   the executable. For example, /home/rams/bin/rams-4.4  or 
+   /home/rams/bin/rams-4.4-opt. The link  or copy will simply be 
+   called "rams44" in your working directory.
+  
+   If you do make copies of the executables in your working directory, 
+   don't forget to update these when you remake in the bin directory. Otherwise,
+   your changes will not appear in your simulations.
+
+4) To run the test simulation...
+
+   To run the executables, there are two possible command line methods to use.
+   
+      - If you compiled for a sequential executable (non-parallel) by not defining
+         -DRAMS_MPI when you compiled, then you can simply give the name of the 
+         link/copied executable in the working directory. 
+         In this case, "./rams44" would work.
+         
+      - On some machines, if you created the executable with the MPI libraries,
+         you may have to run even a sequential run using the "mpirun" command.
+         In this case, you would have to use: 
+         "/usr/local/mpich/bin/mpirun -np 1 rams44" to run a non-parallel job.
+         Obviously, you will need to find the location of the correct mpirun 
+         executable for your installation.
+         
+   For the following examples, I will assume the simpler command line.
+   
+
+   Step 1: Make the surface files. This will create intermediate files of 
+           topography, land use, and sst that will be used by RAMS as 
+           long as your grids do not change.
+  
+          To execute:
+          
+          ./rams44 -f RAMSIN-makesfc
+          
+  
+          This should produce the surface files...
+  
+            sfc/sfc-S-g1.vfm
+            sfc/sfc-S-g2.vfm
+       
+            sst/sst-S-0000-01-16-120000-g1.vfm
+            sst/sst-S-0000-02-15-000000-g1.vfm
+            sst/sst-S-0000-03-16-120000-g1.vfm
+            sst/sst-S-0000-04-16-000000-g1.vfm
+            sst/sst-S-0000-05-16-120000-g1.vfm
+            sst/sst-S-0000-06-16-000000-g1.vfm
+            sst/sst-S-0000-07-16-120000-g1.vfm
+            sst/sst-S-0000-08-16-120000-g1.vfm
+            sst/sst-S-0000-09-16-000000-g1.vfm
+            sst/sst-S-0000-10-16-120000-g1.vfm
+            sst/sst-S-0000-11-16-000000-g1.vfm
+            sst/sst-S-0000-12-16-120000-g1.vfm
+            sst/sst-S-0000-01-16-120000-g2.vfm
+            sst/sst-S-0000-02-15-000000-g2.vfm
+            sst/sst-S-0000-03-16-120000-g2.vfm
+            sst/sst-S-0000-04-16-000000-g2.vfm
+            sst/sst-S-0000-05-16-120000-g2.vfm
+            sst/sst-S-0000-06-16-000000-g2.vfm
+            sst/sst-S-0000-07-16-120000-g2.vfm
+            sst/sst-S-0000-08-16-120000-g2.vfm
+            sst/sst-S-0000-09-16-000000-g2.vfm
+            sst/sst-S-0000-10-16-120000-g2.vfm
+            sst/sst-S-0000-11-16-000000-g2.vfm
+            sst/sst-S-0000-12-16-120000-g2.vfm
+     
+         The surface files created on our Linux machine are posted at...
+  
+            http://bridge.atmet.org/rams-test/rams-4.4/results/sfc.tar.gz
+            http://bridge.atmet.org/rams-test/rams-4.4/results/sst.tar.gz
+  
+         and the output listing at...
+  
+            http://bridge.atmet.org/rams-test/rams-4.4/results/rams-makesfc.lis
+  
+         if you wish to compare your output with ours.
+  
+   Step 2. Make the variable initialization files. These are files that contain the
+           analyzed data which are used for RAMS initial conditions, boundary 
+           conditions, and four-dimensional data assimilation. 
+   
+           To execute:
+           
+           ./rams44 -f RAMSIN-makevfile
+  
+           This should produce the isan files...
+    
+               isan/a-V-2000-07-30-120000-g1.vfm
+               isan/a-V-2000-07-30-120000-g2.vfm
+               isan/a-V-2000-07-30-120000.tag
+               isan/a-V-2000-07-30-180000-g1.vfm
+               isan/a-V-2000-07-30-180000-g2.vfm
+               isan/a-V-2000-07-30-180000.tag
+               isan/a-V-2000-07-31-000000-g1.vfm
+               isan/a-V-2000-07-31-000000-g2.vfm
+               isan/a-V-2000-07-31-000000.tag
+               isan/a-V-2000-07-31-060000-g1.vfm
+               isan/a-V-2000-07-31-060000-g2.vfm
+               isan/a-V-2000-07-31-060000.tag
+               isan/a-V-2000-07-31-120000-g1.vfm
+               isan/a-V-2000-07-31-120000-g2.vfm
+               isan/a-V-2000-07-31-120000.tag
+     
+           The isan files created on our Linux machine are posted at...
+  
+            http://bridge.atmet.org/rams-test/rams-4.4/results/isan.tar.gz
+
+           and the output listing at...
+  
+            http://bridge.atmet.org/rams-test/rams-4.4/results/rams-makevfile.lis
+  
+  
+  Step 3. Run the simulation (in non-parallel, sequential mode):
+  
+            To execute:
+               
+            ./rams44 -f RAMSIN-initial
+  
+            This should produce the history and analysis files...
+
+               hist/a-H-2000-07-30-180000-head.txt
+               hist/a-H-2000-07-30-180000.vfm
+       
+               anal/a-A-2000-07-30-120000-g1.vfm
+               anal/a-A-2000-07-30-120000-g2.vfm
+               anal/a-A-2000-07-30-120000-head.txt
+               anal/a-A-2000-07-30-150000-g1.vfm
+               anal/a-A-2000-07-30-150000-g2.vfm
+               anal/a-A-2000-07-30-150000-head.txt
+               anal/a-A-2000-07-30-180000-g1.vfm
+               anal/a-A-2000-07-30-180000-g2.vfm
+               anal/a-A-2000-07-30-180000-head.txt
+               anal/a-A-2000-07-30-210000-g1.vfm
+               anal/a-A-2000-07-30-210000-g2.vfm
+               anal/a-A-2000-07-30-210000-head.txt
+               anal/a-B-2000-07-30-130000-g1.vfm
+               anal/a-B-2000-07-30-130000-g2.vfm
+               anal/a-B-2000-07-30-130000-head.txt
+               anal/a-B-2000-07-30-140000-g1.vfm
+               anal/a-B-2000-07-30-140000-g2.vfm
+               anal/a-B-2000-07-30-140000-head.txt
+               anal/a-B-2000-07-30-150000-g1.vfm
+               anal/a-B-2000-07-30-150000-g2.vfm
+               anal/a-B-2000-07-30-150000-head.txt
+               anal/a-B-2000-07-30-160000-g1.vfm
+               anal/a-B-2000-07-30-160000-g2.vfm
+               anal/a-B-2000-07-30-160000-head.txt
+               anal/a-B-2000-07-30-170000-g1.vfm
+               anal/a-B-2000-07-30-170000-g2.vfm
+               anal/a-B-2000-07-30-170000-head.txt
+               anal/a-B-2000-07-30-180000-g1.vfm
+               anal/a-B-2000-07-30-180000-g2.vfm
+               anal/a-B-2000-07-30-180000-head.txt
+               anal/a-B-2000-07-30-190000-g1.vfm
+               anal/a-B-2000-07-30-190000-g2.vfm
+               anal/a-B-2000-07-30-190000-head.txt
+               anal/a-B-2000-07-30-200000-g1.vfm
+               anal/a-B-2000-07-30-200000-g2.vfm
+               anal/a-B-2000-07-30-200000-head.txt
+               anal/a-B-2000-07-30-210000-g1.vfm
+               anal/a-B-2000-07-30-210000-g2.vfm
+               anal/a-B-2000-07-30-210000-head.txt
+               anal/a-B-2000-07-30-220000-g1.vfm
+               anal/a-B-2000-07-30-220000-g2.vfm
+               anal/a-B-2000-07-30-220000-head.txt
+               anal/a-B-2000-07-30-230000-g1.vfm
+               anal/a-B-2000-07-30-230000-g2.vfm
+               anal/a-B-2000-07-30-230000-head.txt
+               anal/a-L-2000-07-30-120000-g1.vfm
+               anal/a-L-2000-07-30-120000-g2.vfm
+               anal/a-L-2000-07-30-120000-head.txt
+               anal/a-L-2000-07-30-130000-g1.vfm
+               anal/a-L-2000-07-30-130000-g2.vfm
+               anal/a-L-2000-07-30-130000-head.txt
+               anal/a-L-2000-07-30-140000-g1.vfm
+               anal/a-L-2000-07-30-140000-g2.vfm
+               anal/a-L-2000-07-30-140000-head.txt
+               anal/a-L-2000-07-30-150000-g1.vfm
+               anal/a-L-2000-07-30-150000-g2.vfm
+               anal/a-L-2000-07-30-150000-head.txt
+               anal/a-L-2000-07-30-160000-g1.vfm
+               anal/a-L-2000-07-30-160000-g2.vfm
+               anal/a-L-2000-07-30-160000-head.txt
+               anal/a-L-2000-07-30-170000-g1.vfm
+               anal/a-L-2000-07-30-170000-g2.vfm
+               anal/a-L-2000-07-30-170000-head.txt
+               anal/a-L-2000-07-30-180000-g1.vfm
+               anal/a-L-2000-07-30-180000-g2.vfm
+               anal/a-L-2000-07-30-180000-head.txt
+               anal/a-L-2000-07-30-190000-g1.vfm
+               anal/a-L-2000-07-30-190000-g2.vfm
+               anal/a-L-2000-07-30-190000-head.txt
+               anal/a-L-2000-07-30-200000-g1.vfm
+               anal/a-L-2000-07-30-200000-g2.vfm
+               anal/a-L-2000-07-30-200000-head.txt
+               anal/a-L-2000-07-30-210000-g1.vfm
+               anal/a-L-2000-07-30-210000-g2.vfm
+               anal/a-L-2000-07-30-210000-head.txt
+               anal/a-L-2000-07-30-220000-g1.vfm
+               anal/a-L-2000-07-30-220000-g2.vfm
+               anal/a-L-2000-07-30-220000-head.txt
+               anal/a-L-2000-07-30-230000-g1.vfm
+               anal/a-L-2000-07-30-230000-g2.vfm
+               anal/a-L-2000-07-30-230000-head.txt
+               anal/a-M-2000-07-30-150000-g1.vfm
+               anal/a-M-2000-07-30-150000-g2.vfm
+               anal/a-M-2000-07-30-150000-head.txt
+               anal/a-M-2000-07-30-180000-g1.vfm
+               anal/a-M-2000-07-30-180000-g2.vfm
+               anal/a-M-2000-07-30-180000-head.txt
+               anal/a-M-2000-07-30-210000-g1.vfm
+               anal/a-M-2000-07-30-210000-g2.vfm
+               anal/a-M-2000-07-30-210000-head.txt
+
+            Note the different analysis filename prefixes refer to:
+            
+               A   standard analysis file
+               L   lite analysis file
+               M   standard average analysis file
+               B   lite average analysis file
+               
+            Note also that the L, M, and B files will depend on your application
+            and may not be required for any specific run.
+            
+            The output analysis and history files created on our Linux machine
+            are posted at...
+  
+               http://bridge.atmet.org/rams-test/rams-4.4/results/anal.tar.gz
+               http://bridge.atmet.org/rams-test/rams-4.4/results/hist.tar.gz
+           
+            and the output listings at...
+           
+               http://bridge.atmet.org/rams-test/rams-4.4/results/rams-initial.lis-np1
+               http://bridge.atmet.org/rams-test/rams-4.4/results/rams-initial.lis-np4
+            
+            where the "-np1" is from a single processor sequential run and 
+            the "-np4" is from a four processor parallel run.
+  
+  
+    
+  Step 3a. Run the simulation in parallel:   
+    
+    
+            If you compiled in parallel and have a parallel machine to use, 
+            you can repeat the run using multiple processors. Note that the 
+            MAKESFC or MAKEVFILE executions do not run in parallel.
+            
+            The actual technique to run in parallel will vary depending
+            on your platform. We have found that there are mostly two ways
+            to execute:
+            
+            1) If you are running on a shared-memory machine using the 
+               manufacturer's version of MPI, you will usually need to 
+               consult their documentation. Typically, the command line 
+               would be:
+               
+               mpirun -np 4 rams44 -f RAMSIN-initial
+               
+               where -np specifies the number of processes (usually equal to
+               the number of processors) that you wish to run.
+               
+            2) If you are running the MPICH software from Argonne National 
+               Laboratory (http://www-unix.mcs.anl.gov/mpi/mpich/index.html)
+               on a cluster or other system, there is way to configure it to
+               also be able to use the -np option. Consult the MPICH 
+               documentation if you wish to do this. However, we have 
+               usually found it more flexible to use a "p4pg" file to 
+               specify exactly which machines and executables we want to use.
+    
+               Following is an example of the p4pg file, which we frequently 
+               call a "machs" file. It containing one line for the master 
+               processor, then additional lines for each compute node. Each 
+               line contains the machine name, the number of processes to 
+               start on the machine, and the full path to the executable 
+               (as it will be seen from the individual machine).
+    
+                  rock  0 /r1/rams/test-rams44/rams44
+                  fire  1 /home/rams/bin/43
+                  air   2 /home/rams/bin/43
+                  earth 2 /home/rams/bin/43    
+    
+               where the 0 indicates the master node. You will then need to 
+               copy the executable to the location and names on the nodes as 
+               specified in this "machs" file. (I won't get into NFS 
+               options here.) You then use the following command:
+    
+               mpirun -p4pg machs rams44 -f RAMSIN-initial
+ 
+               Of course, this assumes that the mpirun executable location is 
+               in your Unix/Linux $PATH variable.
+               
+               The same history and analysis files as listed for the non-parallel
+               run should be created.
+               
+               A small script "s44", or "send rams44" has been included in the 
+               test directory to assist in copying the RAMS executable to the compute 
+               nodes. It WILL need to be modified for your installation.
+               
+               And finally, this discussion has assumed that the MPICH software
+               and cluster networking has been configured properly. Ahh, a 
+               document for another day....
+               
+               
+Good Luck!
+
+- Craig               
+</PRE></BODY></HTML>

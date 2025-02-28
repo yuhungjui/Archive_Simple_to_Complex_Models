@@ -1,0 +1,16 @@
+ncargf77 doc1.f pl2d.f
+a.out
+ncgm2cgm<gmeta>0.cgm
+
+ncargf77 doc2.f pl2d.f
+a.out
+ncgm2cgm<gmeta>1000.cgm
+
+ncargf77 doc3.f pl2d.f
+a.out
+ncgm2cgm<gmeta>2000.cgm
+
+ncargf77 doc4.f pl2d.f
+a.out
+ncgm2cgm<gmeta>3000.cgm
+

@@ -1,0 +1,246 @@
+dir = ''
+var = ''
+temp = ''
+outfile = ''
+infilene = ''
+infile2 = ''
+
+dir = '/home/eric/scratch3/modelruns/pswm-0.0/e7o20hres/'
+infilene = 'e7o20'
+
+;READ, dir, PROMPT="Enter output directory path: "
+;dir = STRCOMPRESS(STRING(dir), /REMOVE_ALL)
+;READ, infilene, PROMPT="Enter infile (no extension): "
+infilene = STRCOMPRESS(STRING(infilene+'_'), /REMOVE_ALL)
+
+READ, plotcolor, PROMPT="Color (0) or Black & White (1) plots: "
+
+CLOSE, 1, 2, 3
+
+;######################################################################
+; Set up plotting colors
+;######################################################################
+
+new_color_table
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Rainbow Colors.
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+rbw_red_color = [153, 125, 077, 000, 070, 070, 070, 070, 050, 200, 255, $
+238, 238, 220, 238, 220, 255]
+rbw_gre_color = [050, 095, 000, 000, 070, 150, 235, 255, 220, 255, 255, $
+205, 154, 105, 069, 075, 000]
+rbw_blu_color = [204, 186, 186, 205, 255, 255, 255, 160, 050, 050, 000, $
+000, 000, 000, 000, 075, 000]
+
+; THIS IS MODIFIED RAINBOW SO LAST COLOR IS WHITE (FOR NEGATIVE VALUES)
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Rainbow Colors.
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+rbw_red_color = [254, 125, 077, 000, 070, 070, 070, 070, 050, 200, 255, $
+                 238, 238, 220, 238, 220, 255]
+rbw_gre_color = [254, 095, 000, 000, 070, 150, 235, 255, 220, 255, 255, $
+                 205, 154, 105, 069, 075, 000]
+rbw_blu_color = [254, 186, 186, 205, 255, 255, 255, 160, 050, 050, 000, $
+                 000, 000, 000, 000, 075, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Cold to warm
+;c2w_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+;c2w_red_color = [000, 032, 064, 096, 128, 160, 191, 223, 254, 255, 255, $
+;255, 255, 255, 255, 255, 255]
+;c2w_gre_color = [000, 032, 064, 096, 128, 160, 191, 223, 254, 213, 181, $
+;150, 118, 086, 054, 022, 000]
+;c2w_blu_color = [255, 255, 255, 255, 255, 255, 255, 255, 254, 223, 191, $
+;160, 128, 096, 064, 032, 000]
+
+;
+; NOTE: THIS C2W HAS TWO WHITES IN THE CENTER
+; DONE FOR THE DIVERGENCE PLOTS FOR THE RADIATIVE VORTEX
+;
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Cold to warm
+;c2w_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+c2w_red_color = [000, 032, 064, 096, 128, 160, 191, 254, 254, 255, 255, $
+255, 255, 255, 255, 255, 255]
+c2w_gre_color = [000, 032, 064, 096, 128, 160, 191, 254, 254, 213, 181, $
+150, 118, 086, 054, 022, 000]
+c2w_blu_color = [255, 255, 255, 255, 255, 255, 255, 254, 254, 223, 191, $
+160, 128, 096, 064, 032, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors (low value - black, high value - white)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwh_red_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+bwh_gre_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+bwh_blu_color = [000, 015, 030, 045, 060, 075, 090, 105, 120, 135, 150, $
+165, 180, 195, 210, 225, 240]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors. (low value - white, high value - black)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwl_red_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+bwl_gre_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+bwl_blu_color = [250, 225, 210, 195, 180, 165, 150, 135, 120, 105, 090, $
+075, 060, 045, 030, 015, 000]
+
+;$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+; Black-White Colors HIGH CONTRAST. (low value - white, high value - black)
+;rbw_ELM_LIST = [ 1    2    3    4    5    6    7    8    9    10   11   
+;12   13   14   15   16   17]
+bwc_red_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+bwc_gre_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+bwc_blu_color = [250, 170, 160, 150, 140, 130, 120, 110, 100, 090, 080, $
+070, 060, 045, 030, 015, 000]
+
+c2w_plot_colors = c32(c2w_red_color, c2w_gre_color, c2w_blu_color, 1)
+rbw_plot_colors = c32(rbw_red_color, rbw_gre_color, rbw_blu_color, 1)
+bwh_plot_colors = c32(bwh_red_color, bwh_gre_color, bwh_blu_color, 1)
+bwl_plot_colors = c32(bwl_red_color, bwl_gre_color, bwl_blu_color, 1)
+bwc_plot_colors = c32(bwc_red_color, bwc_gre_color, bwc_blu_color, 1)
+NLEV1 = FIX(SIZE(c2w_plot_colors, /DIMENSIONS))
+NLEV  = NLEV1(0)
+black_cons = c32(intarr(NLEV), intarr(NLEV), intarr(NLEV), 1)
+
+omega = 7.292d-05
+nfiles = 1000
+pi = 3.14159d0
+g = 9.81d0
+ostamp = ''
+;if (var EQ 'q') then fcor = 2.0d*omega*sin(fcor*pi/180.0d)
+
+;
+; BEGIN FILE LOOP
+;
+
+nfiles = 960
+ke = FLTARR(nfiles)
+tarr = FLTARR(nfiles)
+
+
+FOR l = 0, nfiles-1 DO BEGIN
+
+lstring = STRCOMPRESS(STRING(l), /REMOVE_ALL)
+
+if (l lt 100) then begin
+
+if (l lt 10) then begin
+     tstamp = 't0' + lstring
+  endif else begin
+     tstamp = 't' + lstring
+  endelse
+endif else begin
+  tstamp = lstring
+endelse
+
+;
+; OPEN THE FILE
+; 
+infile1 = dir + infilene + 'u.' + tstamp
+infile2 = dir + infilene + 'v.' + tstamp
+infile3 = dir + infilene + 'p.' + tstamp
+OPENR, 1, infile1, ERROR = err 
+OPENR, 2, infile2, ERROR = err
+OPENR, 3, infile3, ERROR = err
+if (err NE 0) then begin 
+   PRINT, "** pswm.pro: file not found, exiting..."  
+   break
+endif
+
+FOR i = 1, 3 DO BEGIN
+READF, i, temp
+READF, i, temp
+READF, i, nx, ny
+READF, i, xmin, xmax, ymin, ymax
+READF, i, fcor, beta, cval, timesec
+ENDFOR
+
+tarr(l) = timesec / 3600.0d0
+nx = FIX(nx)
+ny = FIX(ny)
+fieldu = DBLARR(nx+1,ny+1)
+fieldv = DBLARR(nx+1,ny+1)
+fieldh = DBLARR(nx+1,ny+1)
+y = DBLARR(ny+1)
+x = DBLARR(nx+1)
+xc = fix(nx / 2.0)
+yc = fix(ny / 2.0)
+
+timehour = STRCOMPRESS(STRING(timesec/3600.), /REMOVE_ALL)
+
+deltax = (xmax-xmin)/nx
+deltay = (ymax-ymin)/ny
+
+FOR j = 0, ny DO BEGIN
+y(j) = j*deltay - 0.5d*(ymax-ymin)
+FOR i = 0, nx DO BEGIN
+x(i) = i*deltax - 0.5d*(xmax-xmin)
+	READF, 1, dum1
+	fieldu(i,j) = dum1
+        READF, 2, dum2
+	fieldv(i,j) = dum2
+        READF, 3, dum3
+	fieldh(i,j) = dum3          
+ENDFOR
+ENDFOR
+CLOSE, 1,2,3
+
+;
+; COMPUTE FLUID DEPTH
+;
+fieldh = ( cval^2 + cval * fieldh )  / g
+ 
+;
+;  COMPUTE KE
+;
+
+ke_spec = DBLARR(nx+1,ny+1)
+ke_spec = (fieldu * fieldu + fieldv * fieldv) / 2.0d0
+ketmp = 0.0d0
+rho0 = 1.13d0
+FOR j = 0, ny DO BEGIN
+FOR i = 0, nx DO BEGIN
+    
+        ketmp = ketmp + ke_spec(i,j) * deltax * deltay * $
+                        fieldh(i,j) * rho0   
+       
+ENDFOR
+ENDFOR
+ke(l) = ketmp
+
+
+PRINT, "KINETIC ENERGY (J) = ", tarr(l), ke(l)
+
+
+ENDFOR
+
+xaxis = "time (hrs.)"
+yaxis = "KE(t)/KE(0)"
+titles = ["Domain KE",xaxis,yaxis]
+bounds = [0,max(tarr),0.8,1,timesec/3600.0d0] 
+outfile = dir + infilene + 'ke.ps' 
+onedplotter, ke/ke(18), tarr, TITLES, BOUNDS, outfile
+
+OPENW, 4, dir + infilene + 'ke.dat'
+FOR i = 0, nfiles-1 DO BEGIN
+    PRINTF, 4, tarr(i), ke(i), ke(i)/ke(0)
+ENDFOR
+CLOSE, 4
+
+PRINT, "** ke.pro: DONE."
+
+
+END
